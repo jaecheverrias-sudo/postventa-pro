@@ -1,0 +1,3299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nidus">
+<meta name="application-name" content="Nidus">
+<meta name="theme-color" content="#1E2D28">
+<meta name="description" content="Portal de Postventa para propietarios — LGUC Art. 18">
+<link rel="manifest" href="#" id="manifest-placeholder">
+<title>Nidus</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root {
+    --bg: #F4F7F4;
+    --surface: #FFFFFF;
+    --surface2: #EDF1ED;
+    --border: rgba(30,45,40,0.09);
+    --border2: rgba(30,45,40,0.16);
+    --text: #1E2D28;
+    --text2: #5C7268;
+    --text3: #8FA89E;
+    --accent: #3D6B5E;
+    --accent2: #4F8272;
+    --accent-bg: #EBF3F0;
+    --green: #2D7A5A;
+    --green-bg: #E8F4EE;
+    --red: #7A3A3A;
+    --red-bg: #F4EDED;
+    --amber: #7A6B32;
+    --amber-bg: #F4F0E2;
+    --blue: #2E5C8A;
+    --blue-bg: #E8EFF6;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --shadow: 0 2px 16px rgba(30,45,40,0.07);
+    --shadow-md: 0 4px 24px rgba(30,45,40,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; }
+
+  /* ── LOGIN ── */
+  #screen-login {
+    background: linear-gradient(145deg, #1E2D28 0%, #2A3D36 50%, #3D6B5E 100%);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #screen-login::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(79,130,114,0.22) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+  .login-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 420px;
+    backdrop-filter: blur(20px);
+    position: relative;
+  }
+  .login-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2.5rem;
+  }
+  .login-logo-mark {
+    width: 44px; height: 44px;
+    background: #4F8272;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .login-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  .login-logo-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+  .login-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .login-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 2rem;
+  }
+  .login-label {
+    display: block;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .login-input {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    margin-bottom: 1.2rem;
+    transition: border-color 0.2s;
+  }
+  .login-input:focus { border-color: var(--accent2); }
+  .login-input::placeholder { color: rgba(255,255,255,0.25); }
+  .login-btn {
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.3px;
+  }
+  .login-btn:hover { background: #4F8272; }
+  .login-btn:active { transform: scale(0.98); }
+  .login-demo {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+  }
+  .login-demo a {
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .login-error {
+    background: rgba(184,50,50,0.2);
+    border: 1px solid rgba(184,50,50,0.4);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #F5A0A0;
+    margin-bottom: 1rem;
+    display: none;
+  }
+
+  /* ── APP SHELL ── */
+  #screen-app {
+    flex-direction: column;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .topbar-mark {
+    width: 34px; height: 34px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .topbar-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.2px;
+  }
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .topbar-badge {
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .topbar-avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+  }
+  .topbar-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    min-width: 180px;
+    overflow: hidden;
+    display: none;
+    z-index: 200;
+  }
+  .topbar-menu.open { display: block; }
+  .topbar-menu-item {
+    padding: 10px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar-menu-item:hover { background: var(--bg); }
+  .topbar-menu-item.danger { color: var(--red); }
+  .topbar-menu-sep { border-top: 1px solid var(--border); }
+
+  /* ── MAIN LAYOUT ── */
+  .app-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    height: calc(100vh - 58px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 220px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  .sidebar-section {
+    margin-bottom: 0.3rem;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 0.5rem 1.2rem;
+    margin-top: 0.5rem;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 1.2rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    color: var(--text2);
+    font-size: 13.5px;
+    font-weight: 400;
+    border-radius: 0;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--bg); color: var(--text); }
+  .nav-item.active {
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    border-radius: 0 2px 2px 0;
+  }
+  .nav-icon { width: 18px; text-align: center; font-size: 15px; }
+  .nav-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+  }
+  .sidebar-property {
+    margin: 0.8rem 1rem;
+    background: var(--accent-bg);
+    border: 1px solid rgba(61,107,94,0.2);
+    border-radius: var(--radius);
+    padding: 0.8rem;
+  }
+  .sp-label { font-size: 10px; color: var(--accent); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+  .sp-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .sp-address { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+  /* ── CONTENT ── */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    background: var(--bg);
+  }
+
+  /* ── VIEW PANELS ── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── PAGE HEADERS ── */
+  .page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.8rem;
+    gap: 1rem;
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .page-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 10px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 9px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-secondary:hover { background: var(--bg); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  /* ── DASHBOARD ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-size: 28px;
+    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-sub {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+  .stat-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-top: 6px;
+  }
+  .stat-trend.up { background: var(--green-bg); color: var(--green); }
+  .stat-trend.warn { background: var(--amber-bg); color: var(--amber); }
+
+  /* ── SOLICITUD LIST ── */
+  .solicitud-list { display: flex; flex-direction: column; gap: 1rem; }
+  .solicitud-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem 1.5rem;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .solicitud-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border2);
+    transform: translateY(-1px);
+  }
+  .sol-thumb {
+    width: 70px; height: 70px;
+    border-radius: 10px;
+    background: var(--surface2);
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border: 1px solid var(--border);
+  }
+  .sol-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .sol-body { flex: 1; min-width: 0; }
+  .sol-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .sol-id { font-size: 11px; color: var(--text3); font-weight: 600; }
+  .sol-date { font-size: 11px; color: var(--text3); margin-left: auto; }
+  .sol-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sol-desc {
+    font-size: 12.5px;
+    color: var(--text2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sol-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.2px;
+  }
+  .badge-pending { background: var(--amber-bg); color: var(--amber); }
+  .badge-approved { background: var(--green-bg); color: var(--green); }
+  .badge-rejected { background: var(--red-bg); color: var(--red); }
+  .badge-progress { background: var(--blue-bg); color: var(--blue); }
+  .badge-info { background: var(--blue-bg); color: var(--blue); }
+
+  /* ── NEW REQUEST MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    display: none;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--shadow-md);
+  }
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text2);
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: var(--surface2); }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .modal-sub { font-size: 13px; color: var(--text2); margin-bottom: 1.5rem; }
+  .field-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    letter-spacing: 0.3px;
+    margin-bottom: 6px;
+    margin-top: 1rem;
+  }
+  .field-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field-input:focus { border-color: var(--accent); }
+  select.field-input { appearance: none; cursor: pointer; }
+  textarea.field-input { resize: vertical; min-height: 90px; }
+
+  /* ── PHOTO UPLOAD ── */
+  .upload-zone {
+    border: 2px dashed var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--bg);
+    margin-top: 0.5rem;
+  }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--accent-bg); }
+  .upload-zone-icon { font-size: 32px; margin-bottom: 0.5rem; }
+  .upload-zone-text { font-size: 13px; color: var(--text2); }
+  .upload-zone-text b { color: var(--accent); }
+  .upload-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  .upload-thumb {
+    width: 80px; height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .upload-thumb-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .upload-thumb-del {
+    position: absolute;
+    top: -6px; right: -6px;
+    width: 18px; height: 18px;
+    background: var(--red);
+    color: white;
+    border-radius: 50%;
+    border: none;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  /* ── AI ANALYSIS ── */
+  .ai-result {
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    display: none;
+  }
+  .ai-result.show { display: block; }
+  .ai-result.approved {
+    background: var(--green-bg);
+    border: 1px solid rgba(45,122,79,0.2);
+  }
+  .ai-result.rejected {
+    background: var(--red-bg);
+    border: 1px solid rgba(184,50,50,0.2);
+  }
+  .ai-result.pending {
+    background: var(--amber-bg);
+    border: 1px solid rgba(160,92,16,0.2);
+  }
+  .ai-result-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.8rem;
+  }
+  .ai-result-icon { font-size: 22px; }
+  .ai-result-title { font-size: 15px; font-weight: 600; }
+  .ai-result.approved .ai-result-title { color: var(--green); }
+  .ai-result.rejected .ai-result-title { color: var(--red); }
+  .ai-result.pending .ai-result-title { color: var(--amber); }
+  .ai-result-body { font-size: 13px; line-height: 1.6; color: var(--text); }
+  .ai-result-items { margin-top: 0.8rem; }
+  .ai-result-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 12.5px;
+  }
+  .ai-result-item:last-child { border-bottom: none; }
+  .ai-item-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .dot-green { background: var(--green); }
+  .dot-red { background: var(--red); }
+  .dot-amber { background: var(--amber); }
+
+  .loading-bar {
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  .loading-bar-inner {
+    height: 100%;
+    background: var(--accent);
+    width: 0;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+  .loading-text {
+    font-size: 13px;
+    color: var(--text2);
+    text-align: center;
+    padding: 0.5rem;
+  }
+
+  /* ── DETAIL VIEW ── */
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .detail-back {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .detail-back:hover { background: var(--bg); }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 1.5rem;
+  }
+  .detail-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .detail-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: var(--radius);
+    object-fit: cover;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .detail-img.main { grid-column: 1 / -1; aspect-ratio: 16/9; font-size: 48px; }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 1.2rem;
+    position: relative;
+  }
+  .timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 22px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-dot {
+    width: 23px; height: 23px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    border: 2px solid;
+  }
+  .tl-dot-green { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .tl-dot-amber { background: var(--amber-bg); border-color: var(--amber); color: var(--amber); }
+  .tl-dot-blue { background: var(--blue-bg); border-color: var(--blue); color: var(--blue); }
+  .tl-dot-gray { background: var(--surface2); border-color: var(--border2); color: var(--text3); }
+  .timeline-content { flex: 1; }
+  .tl-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .tl-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .tl-date { font-size: 11px; color: var(--text3); }
+
+  /* ── VIVIENDA VIEW ── */
+  .property-banner {
+    background: linear-gradient(135deg, #1E2D28 0%, #3D6B5E 100%);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .property-banner::after {
+    content: '🏠';
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 80px;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .pb-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+  .pb-sub { font-size: 13px; opacity: 0.6; margin-top: 4px; }
+  .pb-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+  .pb-meta-item { }
+  .pb-meta-label { font-size: 10px; opacity: 0.5; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }
+  .pb-meta-value { font-size: 14px; font-weight: 500; margin-top: 2px; }
+
+  .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .doc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .doc-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border2);
+    transform: translateY(-1px);
+  }
+  .doc-icon { font-size: 30px; }
+  .doc-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .doc-meta { font-size: 11px; color: var(--text3); }
+
+  /* ── GARANTIAS ── */
+  .garantia-list { display: flex; flex-direction: column; gap: 0.8rem; }
+  .garantia-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .garantia-icon { font-size: 22px; flex-shrink: 0; }
+  .garantia-body { flex: 1; }
+  .garantia-name { font-size: 13.5px; font-weight: 600; }
+  .garantia-detail { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .garantia-progress {
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .garantia-years {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+  .fill-green { background: var(--green); }
+  .fill-amber { background: #F5A623; }
+  .fill-red { background: var(--red); }
+
+  /* ── PERFIL ── */
+  .profile-hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .profile-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 600;
+    flex-shrink: 0;
+    font-family: 'Playfair Display', serif;
+  }
+  .profile-info {}
+  .profile-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+  .profile-unit { font-size: 13px; color: var(--text2); margin-top: 3px; }
+  .profile-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+  /* ── SCROLL ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit:scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+  .tab {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text2);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  /* ── TOAST ── */
+  .toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toast {
+    background: var(--text);
+    color: var(--surface);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 220px;
+    box-shadow: var(--shadow-md);
+    animation: slideIn 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  .toast-icon { font-size: 16px; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  .empty-state-icon { font-size: 52px; margin-bottom: 1rem; opacity: 0.4; }
+  .empty-state-title { font-size: 16px; font-weight: 600; margin-bottom: 0.5rem; }
+  .empty-state-sub { font-size: 13px; color: var(--text2); }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.2rem 0;
+  }
+
+  /* 2-col grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-2 .span-2 { grid-column: 1 / -1; }
+
+
+  /* ── PWA / MOBILE ── */
+  :root { --safe-top: env(safe-area-inset-top,0px); --safe-bottom: env(safe-area-inset-bottom,0px); }
+  body { overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
+
+  .bottom-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    height: calc(60px + var(--safe-bottom)); padding-bottom: var(--safe-bottom);
+    background: var(--surface); border-top: 1px solid var(--border);
+    z-index: 200; flex-direction: row; align-items: stretch;
+  }
+  .bottom-nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; cursor: pointer; gap: 3px;
+    transition: background 0.15s; padding-top: 6px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .bottom-nav-item:active { background: var(--bg); }
+  .bottom-nav-item.active .bn-icon { filter: none; }
+  .bottom-nav-item.active .bn-label { color: var(--accent); font-weight: 600; }
+  .bn-icon { font-size: 20px; line-height: 1; }
+  .bn-label { font-size: 10px; color: var(--text3); letter-spacing: 0.2px; }
+  .bottom-nav-item.active .bn-label { color: var(--accent); }
+
+  .fab {
+    display: none; position: fixed; right: 1.2rem;
+    bottom: calc(70px + var(--safe-bottom));
+    width: 54px; height: 54px; background: var(--accent); color: #fff;
+    border-radius: 50%; border: none; font-size: 28px; cursor: pointer;
+    z-index: 150; box-shadow: 0 4px 20px rgba(61,107,94,0.40);
+    align-items: center; justify-content: center;
+    transition: transform 0.15s, background 0.15s;
+    -webkit-tap-highlight-color: transparent; font-weight: 300;
+  }
+  .fab:active { transform: scale(0.90); background: var(--accent2); }
+
+  .install-banner {
+    position: fixed; bottom: calc(70px + var(--safe-bottom) + 10px);
+    left: 1rem; right: 1rem; background: var(--text); color: var(--surface);
+    border-radius: var(--radius-lg); padding: 1rem 1.2rem;
+    display: none; align-items: center; gap: 12px;
+    z-index: 400; box-shadow: var(--shadow-md); animation: slideUp 0.4s ease;
+  }
+  .install-banner.show { display: flex; }
+  @keyframes slideUp { from { transform:translateY(80px);opacity:0; } to { transform:translateY(0);opacity:1; } }
+  .ib-icon { font-size: 28px; flex-shrink: 0; }
+  .ib-body { flex: 1; }
+  .ib-title { font-size: 13px; font-weight: 600; }
+  .ib-sub { font-size: 11px; opacity: 0.6; margin-top: 2px; }
+  .ib-btn { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; font-family: 'DM Sans',sans-serif; }
+  .ib-close { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 18px; cursor: pointer; padding: 0 4px; }
+
+  .ios-tip {
+    position: fixed; bottom: calc(70px + var(--safe-bottom) + 10px);
+    left: 1rem; right: 1rem; background: var(--text); color: #fff;
+    border-radius: var(--radius-lg); padding: 1rem 1.2rem;
+    z-index: 400; box-shadow: var(--shadow-md); display: none; font-size: 13px; line-height: 1.7;
+  }
+  .ios-tip.show { display: block; }
+  .ios-tip-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .ios-tip-close { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 18px; cursor: pointer; flex-shrink: 0; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none !important; }
+    .bottom-nav { display: flex; }
+    .fab { display: flex; }
+    .app-body { height: calc(100vh - 58px - 60px - var(--safe-bottom)); }
+    .content { padding: 1.2rem; }
+    .topbar { padding: 0 1rem; }
+    .topbar-name { font-size: 15px; }
+    .page-title { font-size: 20px; }
+    .page-header { flex-direction: column; align-items: flex-start; }
+    .page-header .btn-primary { display: none; }
+    .modal { padding: 1.5rem; border-radius: var(--radius-lg) var(--radius-lg) 0 0; max-height: 92vh; }
+    .modal-overlay { align-items: flex-end; padding: 0; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .docs-grid { grid-template-columns: 1fr 1fr; }
+    .garantia-progress { width: 90px; }
+    .property-banner::after { display: none; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 380px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .docs-grid { grid-template-columns: 1fr; }
+  }
+  @media (display-mode: standalone) {
+    .topbar { padding-top: var(--safe-top); height: calc(58px + var(--safe-top)); }
+    .app-body { height: calc(100vh - 58px - var(--safe-top) - 60px - var(--safe-bottom)); }
+  }
+
+
+/* ── NOTIFICACIONES ── */
+.notif-bell {
+  position: relative;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.15s;
+  margin-right: 4px;
+  user-select: none;
+}
+.notif-bell:hover { background: var(--surface2); }
+.notif-badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  background: #C0533A;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  border: 2px solid var(--card);
+}
+.notif-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.notif-item:hover { background: var(--bg3); }
+.notif-item.unread { background: rgba(79,130,114,0.08); }
+.notif-dot { width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:5px; }
+.notif-dot.read { background:transparent;border:1px solid var(--border); }
+.notif-title { font-size:13px;font-weight:600;margin-bottom:2px; }
+.notif-msg { font-size:12px;color:var(--text3);margin-bottom:2px; }
+.notif-fecha { font-size:11px;color:var(--text3); }
+
+</style>
+</head>
+<body>
+
+<!-- ════════ LOGIN ════════ -->
+<div id="screen-login" class="screen active">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-mark">🏗️</div>
+      <div>
+        <div class="login-logo-text">Nidus</div>
+        <div class="login-logo-sub">Gestión de garantías</div>
+      </div>
+    </div>
+    <div class="login-title">Bienvenido a su portal de propietario</div>
+    <div class="login-sub">Ingrese con las credenciales entregadas por su constructora</div>
+    <div class="login-error" id="login-error">Usuario o contraseña incorrectos. Intente nuevamente.</div>
+    <label class="login-label">CORREO ELECTRÓNICO</label>
+    <input class="login-input" id="login-email" type="text" placeholder="Correo electrónico" autocomplete="username">
+    <label class="login-label">CONTRASEÑA</label>
+    <input class="login-input" id="login-pass" type="password" placeholder="••••••••" value="1234" />
+    <button class="login-btn" onclick="doLogin()">Ingresar al Portal</button>
+    <div class="login-demo">¿Primera vez? Usa las credenciales que te envió tu constructora</div>
+  </div>
+</div>
+
+<!-- ════════ APP ════════ -->
+<div id="screen-app" class="screen">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-logo" onclick="navigate('dashboard')">
+      <div class="topbar-mark">🏗️</div>
+      <span class="topbar-name">Nidus</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-badge" id="topbar-prop"></span>
+      <div class="notif-bell" id="notif-bell" onclick="toggleNotifPanel()">
+        🔔
+        <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+      </div>
+      <div class="topbar-avatar" id="avatar-btn" onclick="toggleMenu()">
+        <span id="avatar-initials">JA</span>
+        <div class="topbar-menu" id="topbar-menu">
+          <div class="topbar-menu-item" onclick="navigate('perfil')">👤 Mi Perfil</div>
+          <div class="topbar-menu-item" onclick="navigate('vivienda')">🏠 Mi Vivienda</div>
+          <div class="topbar-menu-sep"></div>
+          <div class="topbar-menu-item danger" onclick="doLogout()">🚪 Cerrar Sesión</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="app-body">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-property">
+        <div class="sp-label">Mi Vivienda</div>
+        <div class="sp-name" id="sb-prop-name"></div>
+        <div class="sp-address" id="sb-prop-addr"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Principal</div>
+        <div class="nav-item active" data-view="dashboard" onclick="navigate('dashboard')">
+          <span class="nav-icon">🏠</span> Mi Portal
+        </div>
+        <div class="nav-item" data-view="solicitudes" onclick="navigate('solicitudes')">
+          <span class="nav-icon">📋</span> Mis Solicitudes
+          <span class="nav-badge" id="badge-sol">3</span>
+        </div>
+        <div class="nav-item" data-view="nueva" onclick="openNewModal()">
+          <span class="nav-icon">➕</span> Nueva Solicitud
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Mi Propiedad</div>
+        <div class="nav-item" data-view="vivienda" onclick="navigate('vivienda')">
+          <span class="nav-icon">🏠</span> Mi Vivienda
+        </div>
+        <div class="nav-item" data-view="garantias" onclick="navigate('garantias')">
+          <span class="nav-icon">🛡️</span> Garantías
+        </div>
+        <div class="nav-item" data-view="documentos" onclick="navigate('documentos')">
+          <span class="nav-icon">📁</span> Documentos
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Cuenta</div>
+        <div class="nav-item" data-view="perfil" onclick="navigate('perfil')">
+          <span class="nav-icon">👤</span> Mi Perfil
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <!-- NOTIFICACIONES PANEL -->
+      <div id="notif-panel" style="display:none;position:fixed;top:56px;right:16px;width:340px;max-height:480px;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.4);z-index:500;flex-direction:column;">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:14px;font-weight:700;">🔔 Notificaciones</span>
+          <button onclick="marcarTodasLeidas()" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;">Marcar leídas</button>
+        </div>
+        <div id="notif-lista" style="overflow-y:auto;max-height:400px;">
+          <div style="padding:24px;text-align:center;color:var(--text3);font-size:13px;">Cargando...</div>
+        </div>
+      </div>
+
+      <div class="view active" id="view-dashboard">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Mi Portal 👋 <span id="dash-name"></span></div>
+            <div class="page-sub">Bienvenido a tu portal de postventa · <span id="dash-date"></span></div>
+          </div>
+          <button class="btn-primary" onclick="openNewModal()">➕ Nueva Solicitud</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Solicitudes</div>
+            <div class="stat-value" id="dash-sol-total">—</div>
+            <div class="stat-sub" id="dash-sol-total-sub">Cargando...</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">En Proceso</div>
+            <div class="stat-value" id="dash-sol-proceso" style="color:var(--blue)">—</div>
+            <div class="stat-sub" id="dash-sol-proceso-sub"></div>
+            <div class="stat-trend up" id="dash-sol-proceso-trend"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Resueltas</div>
+            <div class="stat-value" id="dash-sol-resueltas" style="color:var(--green)">—</div>
+            <div class="stat-sub" id="dash-sol-resueltas-sub"></div>
+            <div class="stat-trend up" id="dash-sol-resueltas-trend"></div>
+          </div>
+          <div class="stat-card" id="dash-stat-garantia">
+            <div class="stat-label">Garantía Estructura</div>
+            <div class="stat-value" id="dash-gar-años" style="font-size:20px">—</div>
+            <div class="stat-sub" id="dash-gar-vence">Calculando...</div>
+            <div class="stat-trend" id="dash-gar-trend"></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+              <div style="font-size:16px;font-weight:600;">Solicitudes Recientes</div>
+              <span style="font-size:13px;color:var(--accent);cursor:pointer;" onclick="navigate('solicitudes')">Ver todas →</span>
+            </div>
+            <div class="solicitud-list" id="recent-sol-list"></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:1rem;">
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;margin-bottom:1rem;">🛡️ Estado Garantías</div>
+              <div id="dash-garantias"></div>
+            </div>
+            <div class="card" id="dash-prox-card" style="background:linear-gradient(135deg,#1E2D28,#3D6B5E);color:#fff;border:none;">
+              <div style="font-size:13px;opacity:0.6;margin-bottom:6px;">Próximo vencimiento</div>
+              <div style="font-size:16px;font-weight:600;" id="dash-prox-nombre">—</div>
+              <div style="font-size:12px;opacity:0.5;margin-top:4px;" id="dash-prox-años">Calculando...</div>
+              <div style="margin-top:1rem;">
+                <div style="font-size:12px;opacity:0.5;margin-bottom:6px;">Cobertura restante</div>
+                <div style="height:6px;background:rgba(255,255,255,0.15);border-radius:4px;">
+                  <div id="dash-prox-bar" style="width:0%;height:100%;background:#4F8272;border-radius:4px;transition:width 0.6s;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SOLICITUDES ── -->
+      <div class="view" id="view-solicitudes">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Mis Solicitudes</div>
+            <div class="page-sub">Historial completo de requerimientos de postventa</div>
+          </div>
+          <button class="btn-primary" onclick="openNewModal()">➕ Nueva Solicitud</button>
+        </div>
+
+        <div class="tabs">
+          <div class="tab active" onclick="filterSol(this,'all')">Todas</div>
+          <div class="tab" onclick="filterSol(this,'enviada')">Enviadas</div>
+          <div class="tab" onclick="filterSol(this,'en_revision')">En revisión</div>
+          <div class="tab" onclick="filterSol(this,'resuelta')">Resueltas</div>
+          <div class="tab" onclick="filterSol(this,'rechazada')">Rechazadas</div>
+        </div>
+
+        <div class="solicitud-list" id="sol-list-full"></div>
+      </div>
+
+      <!-- ── DETALLE SOLICITUD ── -->
+      <div class="view" id="view-detalle">
+        <div class="detail-header">
+          <button class="detail-back" onclick="navigate('solicitudes')">← Volver</button>
+          <div style="font-size:16px;font-weight:600;" id="det-title">Solicitud #001</div>
+          <div id="det-badge"></div>
+        </div>
+
+        <div class="detail-grid">
+          <div>
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="detail-images" id="det-images"></div>
+              <div style="margin-top:1rem;">
+                <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:6px;">Descripción del problema</div>
+                <div style="font-size:14px;line-height:1.6;" id="det-desc"></div>
+              </div>
+              <hr class="divider">
+              <div class="grid-2">
+                <div>
+                  <div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Categoría</div>
+                  <div style="font-size:13.5px;margin-top:4px;" id="det-cat"></div>
+                </div>
+                <div>
+                  <div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Fecha solicitud</div>
+                  <div style="font-size:13.5px;margin-top:4px;" id="det-date"></div>
+                </div>
+                <div>
+                  <div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Urgencia</div>
+                  <div style="font-size:13.5px;margin-top:4px;" id="det-urgencia"></div>
+                </div>
+                <div>
+                  <div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">N° Solicitud</div>
+                  <div style="font-size:13.5px;margin-top:4px;" id="det-id"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI ANALYSIS in detail -->
+            <div class="card" id="det-ai-box">
+              <div style="font-size:14px;font-weight:600;margin-bottom:0.8rem;">🤖 Análisis IA — Evaluación de Garantía</div>
+              <div id="det-ai-content"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:1rem;">
+              <div style="font-size:14px;font-weight:600;margin-bottom:1rem;">📅 Historial</div>
+              <div class="timeline" id="det-timeline"></div>
+            </div>
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;margin-bottom:1rem;">💬 Comentarios</div>
+              <div id="det-comments" style="margin-bottom:1rem;"></div>
+              <textarea class="field-input" placeholder="Agregar comentario..." rows="3" id="comment-input"></textarea>
+              <button class="btn-primary" style="margin-top:0.8rem;width:100%;" onclick="addComment()">Enviar comentario</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── VIVIENDA ── -->
+      <div class="view" id="view-vivienda">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Mi Vivienda</div>
+            <div class="page-sub">Información y documentos de tu propiedad</div>
+          </div>
+        </div>
+
+        <div class="property-banner">
+          <div class="pb-title" id="viv-nombre">Edificio Las Araucarias</div>
+          <div class="pb-sub" id="viv-dir">Av. Caupolicán 1234, Temuco, Araucanía</div>
+          <div class="pb-meta">
+            <div class="pb-meta-item">
+              <div class="pb-meta-label">Unidad</div>
+              <div class="pb-meta-value" id="viv-unidad">Depto. 4B · Piso 4</div>
+            </div>
+            <div class="pb-meta-item">
+              <div class="pb-meta-label">Superficie</div>
+              <div class="pb-meta-value" id="viv-sup">68 m²</div>
+            </div>
+            <div class="pb-meta-item">
+              <div class="pb-meta-label">Entrega</div>
+              <div class="pb-meta-value" id="viv-entrega">—</div>
+            </div>
+            <div class="pb-meta-item">
+              <div class="pb-meta-label">Recepción DOM</div>
+              <div class="pb-meta-value" id="viv-fecha-dom">—</div>
+            </div>
+            <div class="pb-meta-item">
+              <div class="pb-meta-label">Inscripción CBR</div>
+              <div class="pb-meta-value" id="viv-fecha-cbr">—</div>
+            </div>
+            <div class="pb-meta-item">
+              <div class="pb-meta-label">Constructora</div>
+              <div class="pb-meta-value" id="viv-constructora">—</div>
+            </div>
+            <div class="pb-meta-item">
+              <div class="pb-meta-label">Rol Propiedad</div>
+              <div class="pb-meta-value" id="viv-rol">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <div class="tab active" onclick="vivTab(this,'planos')">Planos</div>
+          <div class="tab" onclick="vivTab(this,'certificados')">Certificados</div>
+          <div class="tab" onclick="vivTab(this,'manuales')">Manuales</div>
+          <div class="tab" onclick="vivTab(this,'visitas')">📅 Visitas</div>
+        </div>
+
+        <div id="viv-tab-planos" class="docs-grid">
+          <div class="doc-card">
+            <div class="doc-icon">📐</div>
+            <div class="doc-name">Plano Arquitectura</div>
+            <div class="doc-meta">PDF · 2.4 MB · Oct 2023</div>
+            <div><span class="badge badge-approved">✓ Vigente</span></div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon">⚡</div>
+            <div class="doc-name">Plano Eléctrico</div>
+            <div class="doc-meta">PDF · 1.8 MB · Oct 2023</div>
+            <div><span class="badge badge-approved">✓ Vigente</span></div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon">🔧</div>
+            <div class="doc-name">Plano Sanitario</div>
+            <div class="doc-meta">PDF · 1.2 MB · Oct 2023</div>
+            <div><span class="badge badge-approved">✓ Vigente</span></div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon">🌡️</div>
+            <div class="doc-name">Plano Calefacción</div>
+            <div class="doc-meta">PDF · 0.9 MB · Oct 2023</div>
+            <div><span class="badge badge-approved">✓ Vigente</span></div>
+          </div>
+        </div>
+        <div id="viv-tab-certificados" class="docs-grid" style="display:none;">
+          <div class="doc-card" onclick="descargarDocumento(this)" data-nombre="Recepción Municipal" data-storage="certificados/recepcion-municipal.pdf">
+            <div class="doc-icon">🏆</div>
+            <div class="doc-name">Recepción Municipal</div>
+            <div class="doc-meta">PDF · Sep 2023</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span class="badge badge-approved">✓ Emitido</span>
+              <span style="font-size:11px;color:var(--accent);">⬇ Descargar</span>
+            </div>
+          </div>
+          <div class="doc-card" onclick="descargarDocumento(this)" data-nombre="Certificado Gas" data-storage="certificados/cert-gas.pdf">
+            <div class="doc-icon">🔥</div>
+            <div class="doc-name">Certificado Instalaciones Gas</div>
+            <div class="doc-meta">PDF · Oct 2023</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span class="badge badge-approved">✓ Vigente</span>
+              <span style="font-size:11px;color:var(--accent);">⬇ Descargar</span>
+            </div>
+          </div>
+          <div class="doc-card" onclick="descargarDocumento(this)" data-nombre="Certificado Agua" data-storage="certificados/cert-agua.pdf">
+            <div class="doc-icon">💧</div>
+            <div class="doc-name">Certificado Instalaciones Agua</div>
+            <div class="doc-meta">PDF · Oct 2023</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span class="badge badge-approved">✓ Vigente</span>
+              <span style="font-size:11px;color:var(--accent);">⬇ Descargar</span>
+            </div>
+          </div>
+          <div class="doc-card" onclick="descargarDocumento(this)" data-nombre="Certificado SEC Eléctrico" data-storage="certificados/cert-sec.pdf">
+            <div class="doc-icon">⚡</div>
+            <div class="doc-name">Certificado SEC Eléctrico</div>
+            <div class="doc-meta">PDF · Oct 2023</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span class="badge badge-approved">✓ Vigente</span>
+              <span style="font-size:11px;color:var(--accent);">⬇ Descargar</span>
+            </div>
+          </div>
+          <div class="doc-card" onclick="descargarDocumento(this)" data-nombre="Escritura Compraventa" data-storage="certificados/escritura.pdf">
+            <div class="doc-icon">📋</div>
+            <div class="doc-name">Escritura Compraventa</div>
+            <div class="doc-meta">PDF · Nov 2023</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span class="badge badge-approved">✓ Notariada</span>
+              <span style="font-size:11px;color:var(--accent);">⬇ Descargar</span>
+            </div>
+          </div>
+        </div>
+        <div id="viv-tab-manuales" class="docs-grid" style="display:none;">
+          <div class="doc-card" onclick="descargarDocumento(this)" data-nombre="Manual del Propietario" data-storage="manuales/manual-propietario.pdf">
+            <div class="doc-icon">📖</div>
+            <div class="doc-name">Manual del Propietario</div>
+            <div class="doc-meta">PDF · Oct 2023</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span class="badge badge-info">v2.1</span>
+              <span style="font-size:11px;color:var(--accent);">⬇ Descargar</span>
+            </div>
+          </div>
+          <div class="doc-card" onclick="descargarDocumento(this)" data-nombre="Manual Artefactos Sanitarios" data-storage="manuales/manual-sanitarios.pdf">
+            <div class="doc-icon">🚿</div>
+            <div class="doc-name">Manual Artefactos Sanitarios</div>
+            <div class="doc-meta">PDF · Oct 2023</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span class="badge badge-info">Grohe</span>
+              <span style="font-size:11px;color:var(--accent);">⬇ Descargar</span>
+            </div>
+          </div>
+          <div class="doc-card" onclick="descargarDocumento(this)" data-nombre="Reglamento Copropiedad" data-storage="manuales/reglamento-copropiedad.pdf">
+            <div class="doc-icon">🏠</div>
+            <div class="doc-name">Reglamento Copropiedad</div>
+            <div class="doc-meta">PDF · Nov 2023</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span class="badge badge-info">Vigente</span>
+              <span style="font-size:11px;color:var(--accent);">⬇ Descargar</span>
+            </div>
+          </div>
+        </div>
+            <div><span class="badge badge-info">Vigente</span></div>
+          </div>
+        </div>
+
+        <!-- TAB VISITAS -->
+        <div id="viv-tab-visitas" class="docs-grid" style="display:none;">
+          <div id="visitas-lista" style="grid-column:1/-1;">
+            <div style="text-align:center;padding:32px;color:var(--text3);">Cargando visitas...</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── GARANTÍAS ── -->
+      <div class="view" id="view-garantias">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Mis Garantías</div>
+            <div class="page-sub">Plazos según Ley General de Urbanismo y Construcciones (LGUC, Art. 18)</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:1.5rem;background:var(--blue-bg);border-color:rgba(46,92,138,0.2);">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:22px;">ℹ️</span>
+            <div style="font-size:13px;line-height:1.6;color:var(--blue);">
+              <strong>Ley General de Urbanismo y Construcciones (LGUC):</strong> Establece 3 plazos de garantía según tipo de falla: <strong>10 años</strong> estructural, <strong>5 años</strong> instalaciones y filtraciones, <strong>3 años</strong> terminaciones. Cada plazo tiene su propia fecha de inicio: la recepción definitiva DOM (sept. 2023) o la inscripción en el Conservador de Bienes Raíces (nov. 2023).
+            </div>
+          </div>
+        </div>
+
+        <div class="garantia-list" id="garantia-list"></div>
+      </div>
+
+      <!-- ── DOCUMENTOS ── -->
+      <div class="view" id="view-documentos">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Documentos</div>
+            <div class="page-sub">Todos los archivos de tu propiedad</div>
+          </div>
+          <button class="btn-secondary">📤 Subir documento</button>
+        </div>
+        <div class="docs-grid">
+          <div class="doc-card"><div class="doc-icon">📐</div><div class="doc-name">Plano Arquitectura</div><div class="doc-meta">PDF · 2.4 MB</div></div>
+          <div class="doc-card"><div class="doc-icon">⚡</div><div class="doc-name">Plano Eléctrico</div><div class="doc-meta">PDF · 1.8 MB</div></div>
+          <div class="doc-card"><div class="doc-icon">🔧</div><div class="doc-name">Plano Sanitario</div><div class="doc-meta">PDF · 1.2 MB</div></div>
+          <div class="doc-card"><div class="doc-icon">🏆</div><div class="doc-name">Recepción Municipal</div><div class="doc-meta">PDF · 0.4 MB</div></div>
+          <div class="doc-card"><div class="doc-icon">📋</div><div class="doc-name">Escritura Compraventa</div><div class="doc-meta">PDF · 1.1 MB</div></div>
+          <div class="doc-card"><div class="doc-icon">📖</div><div class="doc-name">Manual del Propietario</div><div class="doc-meta">PDF · 3.2 MB</div></div>
+          <div class="doc-card"><div class="doc-icon">🏠</div><div class="doc-name">Reglamento Copropiedad</div><div class="doc-meta">PDF · 0.8 MB</div></div>
+          <div class="doc-card"><div class="doc-icon">🔥</div><div class="doc-name">Certif. Gas</div><div class="doc-meta">PDF · 0.3 MB</div></div>
+        </div>
+      </div>
+
+      <!-- ── PERFIL ── -->
+      <div class="view" id="view-perfil">
+        <div class="page-header">
+          <div class="page-title">Mi Perfil</div>
+        </div>
+        <div class="profile-hero">
+          <div class="profile-avatar" id="perf-avatar"></div>
+          <div class="profile-info">
+            <div class="profile-name" id="perf-name"></div>
+            <div class="profile-unit">Depto. 4B · Edificio Las Araucarias · Temuco</div>
+            <div class="profile-tags">
+              <span class="badge badge-approved">✓ Propietario verificado</span>
+              <span class="badge badge-info" id="perf-cliente-desde">Cliente desde —</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div style="font-size:14px;font-weight:600;margin-bottom:1rem;">Datos Personales</div>
+            <table style="width:100%;font-size:13px;border-collapse:collapse;">
+              <tr><td style="color:var(--text3);padding:6px 0;width:40%;">Nombre</td><td style="font-weight:500;">Juan Antonio González</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">RUT</td><td>12.345.678-9</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Email</td><td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="187b74717d766c7d587b77766b6c6a6d7b6c776a79367b74">[email&#160;protected]</a></td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Teléfono</td><td>+56 9 1234 5678</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Ciudad</td><td>Temuco, Araucanía</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:600;margin-bottom:1rem;">Datos de Propiedad</div>
+            <table style="width:100%;font-size:13px;border-collapse:collapse;">
+              <tr><td style="color:var(--text3);padding:6px 0;width:40%;">Proyecto</td><td style="font-weight:500;" id="perf-proyecto">—</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Unidad</td><td id="perf-unidad">—</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Superficie</td><td id="perf-sup">—</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Entrega</td><td id="perf-entrega">—</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Recepción DOM</td><td id="perf-dom">—</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Inscripción CBR</td><td id="perf-cbr">—</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Constructora</td><td id="perf-constructora">—</td></tr>
+              <tr><td style="color:var(--text3);padding:6px 0;">Rol Propiedad</td><td id="perf-rol">—</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /app-body -->
+</div><!-- /screen-app -->
+
+<!-- ════════ MODAL NUEVA SOLICITUD ════════ -->
+<div class="modal-overlay" id="modal-nueva">
+  <div class="modal">
+    <button class="modal-close" onclick="closeNewModal()">✕</button>
+    <div class="modal-title">Nueva Solicitud de Postventa</div>
+    <div class="modal-sub">Completa el formulario. La IA evaluará si corresponde a garantía.</div>
+
+    <div id="form-step-1">
+      <div class="grid-2">
+        <div class="span-2">
+          <label class="field-label">CATEGORÍA DEL PROBLEMA *</label>
+          <select class="field-input" id="f-categoria" onchange="updateSubcat()">
+            <option value="">Seleccionar categoría...</option>
+            <option value="estructura">Estructura / Obra Gruesa</option>
+            <option value="impermeabilizacion">Impermeabilización / Humedad</option>
+            <option value="terminaciones">Terminaciones / Revestimientos</option>
+            <option value="instalaciones_elect">Instalaciones Eléctricas</option>
+            <option value="instalaciones_san">Instalaciones Sanitarias</option>
+            <option value="puertas_ventanas">Puertas y Ventanas</option>
+            <option value="equipos">Equipos / Artefactos</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">UBICACIÓN EN LA VIVIENDA *</label>
+          <select class="field-input" id="f-ubicacion">
+            <option value="">Seleccionar...</option>
+            <option>Living / Comedor</option>
+            <option>Dormitorio principal</option>
+            <option>Dormitorio 2</option>
+            <option>Baño principal</option>
+            <option>Baño visita</option>
+            <option>Cocina</option>
+            <option>Terraza / Loggia</option>
+            <option>Pasillo</option>
+            <option>Toda la vivienda</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">URGENCIA *</label>
+          <select class="field-input" id="f-urgencia">
+            <option value="baja">Baja — No interfiere en habitabilidad</option>
+            <option value="media">Media — Molestia significativa</option>
+            <option value="alta">Alta — Afecta habitabilidad</option>
+            <option value="critica">Crítica — Emergencia / Riesgo</option>
+          </select>
+        </div>
+        <div class="span-2">
+          <label class="field-label">DESCRIPCIÓN DEL PROBLEMA *</label>
+          <textarea class="field-input" id="f-desc" placeholder="Describa detalladamente el problema: qué ocurre, cuándo se detectó, si empeoró con el tiempo..."></textarea>
+        </div>
+      </div>
+
+      <label class="field-label">FOTOS DEL PROBLEMA (recomendado)</label>
+      <div class="upload-zone" id="upload-zone"
+           onclick="document.getElementById('file-input').click()"
+           ondragover="event.preventDefault();this.classList.add('drag')"
+           ondragleave="this.classList.remove('drag')"
+           ondrop="handleDrop(event)">
+        <div class="upload-zone-icon">📷</div>
+        <div class="upload-zone-text">
+          <b>Haz clic para subir</b> o arrastra tus fotos aquí<br>
+          <span style="font-size:11px;color:var(--text3);">JPG, PNG, HEIC · Máx. 5 fotos · 10 MB c/u</span>
+        </div>
+        <div class="upload-preview" id="upload-preview"></div>
+      </div>
+      <input type="file" id="file-input" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+
+      <div style="display:flex;gap:0.8rem;margin-top:1.5rem;justify-content:flex-end;">
+        <button class="btn-secondary" onclick="closeNewModal()">Cancelar</button>
+        <button class="btn-primary" onclick="analyzeRequest()">🤖 Analizar con IA →</button>
+      </div>
+    </div>
+
+    <!-- PASO 2: RESULTADO IA -->
+    <div id="form-step-2" style="display:none;">
+      <div class="loading-bar" id="ai-loading-bar">
+        <div class="loading-bar-inner" id="ai-loading-fill"></div>
+      </div>
+      <div class="loading-text" id="ai-loading-text">Analizando con IA...</div>
+
+      <div class="ai-result" id="ai-result-box">
+        <div class="ai-result-header">
+          <span class="ai-result-icon" id="ai-icon"></span>
+          <div>
+            <div class="ai-result-title" id="ai-title"></div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px;" id="ai-subtitle"></div>
+          </div>
+        </div>
+        <div class="ai-result-body" id="ai-body"></div>
+        <div class="ai-result-items" id="ai-items"></div>
+      </div>
+
+      <div style="display:flex;gap:0.8rem;margin-top:1.5rem;justify-content:flex-end;" id="ai-actions" style="display:none">
+        <button class="btn-secondary" onclick="backToForm()">← Modificar</button>
+        <button class="btn-primary" onclick="submitRequest()" id="btn-submit">✓ Confirmar y Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ TOAST ════════ -->
+<div class="toast-container" id="toast-container"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ═══════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════
+
+const SUPA_URL = 'https://mndfizjyuupzovwcupdk.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZGZpemp5dXVwem92d2N1cGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjg1NDYsImV4cCI6MjA5MDY0NDU0Nn0.5mlbaMRvF9kMp5JrPQmJrGWVWim5dTfL30JcBs_Ow-0';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// ═══════════════════════════════════════
+// ESTADO GLOBAL
+// ═══════════════════════════════════════
+
+let USER = null;
+let VIVIENDA = null;
+let PROYECTO = null;
+let CONSTRUCTORA = null;
+let SOLICITUDES = [];
+
+function getFechaBase(baseCalculo) {
+  if (!VIVIENDA) return new Date();
+  if (baseCalculo === 'dom') return PROYECTO && PROYECTO.fecha_recepcion_dom ? new Date(PROYECTO.fecha_recepcion_dom) : new Date();
+  if (baseCalculo === 'cbr') return VIVIENDA.fecha_inscripcion_cbr ? new Date(VIVIENDA.fecha_inscripcion_cbr) : new Date();
+  return VIVIENDA.fecha_entrega ? new Date(VIVIENDA.fecha_entrega) : new Date();
+}
+function getAñosTranscurridos(baseCalculo) {
+  return (new Date() - getFechaBase(baseCalculo)) / (1000 * 60 * 60 * 24 * 365.25);
+}
+
+// Garantías según LGUC (Ley General de Urbanismo y Construcciones)
+// Tres bases de cómputo distintas según tipo de falla
+const GARANTIAS = [
+  {
+    nombre: 'Fallas Estructurales',
+    icono: '🏗️',
+    años: 10,
+    categoria: 'estructura',
+    ley: 'Art. 18 LGUC',
+    descripcion: 'Cimientos, vigas, muros de carga, losas. Afectan estabilidad de la edificación.',
+    baseCalculo: 'dom',   // desde Recepción Definitiva DOM
+    baseLabel: 'Desde recepción DOM'
+  },
+  {
+    nombre: 'Instalaciones — Gas, Agua, Alcantarillado',
+    icono: '🔧',
+    años: 5,
+    categoria: 'instalaciones_san',
+    ley: 'Art. 18 LGUC',
+    descripcion: 'Redes de agua potable, alcantarillado y gas interior.',
+    baseCalculo: 'dom',
+    baseLabel: 'Desde recepción DOM'
+  },
+  {
+    nombre: 'Instalaciones Eléctricas',
+    icono: '⚡',
+    años: 5,
+    categoria: 'instalaciones_elect',
+    ley: 'Art. 18 LGUC',
+    descripcion: 'Red eléctrica interior, tableros, circuitos y puntos de consumo.',
+    baseCalculo: 'dom',
+    baseLabel: 'Desde recepción DOM'
+  },
+  {
+    nombre: 'Filtraciones — Cubiertas y Muros',
+    icono: '💧',
+    años: 5,
+    categoria: 'impermeabilizacion',
+    ley: 'Art. 18 LGUC',
+    descripcion: 'Filtraciones de agua por techos, cubiertas o muros perimetrales.',
+    baseCalculo: 'dom',
+    baseLabel: 'Desde recepción DOM'
+  },
+  {
+    nombre: 'Otras Fallas Constructivas',
+    icono: '🏠',
+    años: 5,
+    categoria: 'otro',
+    ley: 'Art. 18 LGUC',
+    descripcion: 'Defectos no clasificados en las otras categorías. Plazo general de 5 años.',
+    baseCalculo: 'dom',
+    baseLabel: 'Desde recepción DOM'
+  },
+  {
+    nombre: 'Terminaciones y Acabados',
+    icono: '🪟',
+    años: 3,
+    categoria: 'terminaciones',
+    ley: 'Art. 18 LGUC',
+    descripcion: 'Pinturas, cerámicas, guardapolvos, pisos flotantes, estucos visibles.',
+    baseCalculo: 'cbr',  // desde inscripción CBR
+    baseLabel: 'Desde inscripción en CBR'
+  },
+  {
+    nombre: 'Puertas y Ventanas',
+    icono: '🚪',
+    años: 3,
+    categoria: 'puertas_ventanas',
+    ley: 'Art. 18 LGUC',
+    descripcion: 'Puertas de acceso, ventanas, marcos y herrajes. Defecto de terminación.',
+    baseCalculo: 'cbr',
+    baseLabel: 'Desde inscripción en CBR'
+  },
+  {
+    nombre: 'Equipos y Artefactos',
+    icono: '⚙️',
+    años: 1,
+    categoria: 'equipos',
+    ley: 'Garantía fabricante',
+    descripcion: 'Artefactos sanitarios, calderas, equipos de climatización. Garantía del fabricante.',
+    baseCalculo: 'entrega',
+    baseLabel: 'Desde entrega de unidad'
+  },
+];
+
+
+let uploadedFiles = [];
+let currentView = 'dashboard';
+let currentDetalle = null;
+let aiResultData = null;
+
+// ═══════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value.trim();
+  const btn = document.querySelector('.login-btn');
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+  if (!email || !pass) {
+    errEl.textContent = 'Ingresa tu correo y contraseña.';
+    errEl.style.display = 'block'; return;
+  }
+  btn.textContent = 'Ingresando...'; btn.disabled = true;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  btn.textContent = 'Ingresar al Portal'; btn.disabled = false;
+  if (error) {
+    errEl.textContent = 'Correo o contraseña incorrectos.';
+    errEl.style.display = 'block'; return;
+  }
+  await loadUserData(data.user);
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  USER = null; VIVIENDA = null; PROYECTO = null; SOLICITUDES = [];
+  document.getElementById('screen-app').classList.remove('active');
+  document.getElementById('screen-login').classList.add('active');
+  document.getElementById('topbar-menu').classList.remove('open');
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+function fillDemo() {
+  showToast('💡 Ingresa el correo y contraseña que te envió la constructora');
+}
+
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+// Pre-fill demo credentials safely (split to avoid email obfuscation by proxies)
+// Login credentials provided by constructora per client
+
+// ═══════════════════════════════════════
+// APP INIT
+// ═══════════════════════════════════════
+
+// Carga todos los datos del cliente desde Supabase
+async function loadUserData(authUser) {
+  showLoadingScreen(true);
+  try {
+    // 1. Buscar cliente
+    const { data: cliente, error: eCliente } = await sb
+      .from('clientes')
+      .select('*')
+      .eq('auth_user_id', authUser.id)
+      .single();
+
+    if (eCliente || !cliente) {
+      showLoadingScreen(false);
+      showToast('No se encontró vivienda asociada a tu cuenta. Contacta a la constructora.');
+      console.error('Cliente error:', eCliente);
+      return;
+    }
+
+    // 2. Buscar vivienda
+    const { data: vivienda, error: eViv } = await sb
+      .from('viviendas')
+      .select('*')
+      .eq('id', cliente.vivienda_id)
+      .single();
+
+    if (eViv || !vivienda) {
+      showLoadingScreen(false);
+      showToast('No se encontró la vivienda. Contacta a la constructora.');
+      console.error('Vivienda error:', eViv);
+      return;
+    }
+
+    // 3. Buscar proyecto
+    const { data: proyecto, error: eProj } = await sb
+      .from('proyectos')
+      .select('*')
+      .eq('id', vivienda.proyecto_id)
+      .single();
+
+    if (eProj || !proyecto) {
+      showLoadingScreen(false);
+      showToast('No se encontró el proyecto. Contacta a la constructora.');
+      console.error('Proyecto error:', eProj);
+      return;
+    }
+
+    // 4. Cargar constructora
+    const { data: constructora } = await sb
+      .from('constructoras')
+      .select('*')
+      .eq('id', proyecto.constructora_id)
+      .single();
+    CONSTRUCTORA = constructora;
+
+    // 5. Guardar en estado global
+    USER = {
+      id: cliente.id,
+      name: cliente.nombre + ' ' + cliente.apellido,
+      initials: (cliente.nombre[0] + cliente.apellido[0]).toUpperCase(),
+      email: cliente.email,
+    };
+    VIVIENDA = vivienda;
+    PROYECTO = proyecto;
+
+    // 5. Cargar solicitudes
+    await loadSolicitudes();
+
+    // 6. Activar la app
+    document.getElementById('screen-login').classList.remove('active');
+    document.getElementById('screen-app').classList.add('active');
+    initApp();
+  } catch(err) {
+    showLoadingScreen(false);
+    showToast('Error al cargar datos. Intenta nuevamente.');
+    console.error('loadUserData error:', err);
+  }
+}
+
+async function loadSolicitudes() {
+  const { data, error } = await sb
+    .from('solicitudes')
+    .select('*')
+    .eq('cliente_id', USER.id)
+    .order('created_at', { ascending: false });
+
+  if (!error && data) {
+    SOLICITUDES = data.map(s => ({
+      ...s,
+      fotos: [],
+      comments: [],
+      timeline: [
+        {
+          icon: s.resultado_ia === 'aprobada' ? '✓' : s.resultado_ia === 'rechazada' ? '✗' : '⚡',
+          clase: s.resultado_ia === 'aprobada' ? 'tl-dot-green' : s.resultado_ia === 'rechazada' ? 'tl-dot-amber' : 'tl-dot-blue',
+          titulo: s.resultado_ia === 'aprobada' ? 'Aprobada — dentro de garantía LGUC' : s.resultado_ia === 'rechazada' ? 'Revisión IA — no aplica garantía' : 'Análisis IA completado',
+          desc: 'Evaluación automática',
+          fecha: new Date(s.created_at).toLocaleDateString('es-CL',{day:'numeric',month:'short',year:'numeric'})
+        },
+        {
+          icon: '○',
+          clase: 'tl-dot-gray',
+          titulo: 'Solicitud creada',
+          desc: USER ? USER.name : '',
+          fecha: new Date(s.created_at).toLocaleDateString('es-CL',{day:'numeric',month:'short',year:'numeric'})
+        }
+      ],
+      ai: s.resultado_ia ? {
+        resultado: s.resultado_ia === 'aprobada' ? 'approved' : s.resultado_ia === 'rechazada' ? 'rejected' : 'pending',
+        garantia: s.garantia_aplica,
+        años_gar: s.garantia_anos || 5,
+        años_uso: 0,
+        mensaje: s.ia_resumen || ''
+      } : null
+    }));
+  } else {
+    console.error('Error cargando solicitudes:', error);
+  }
+}
+
+// Pantalla de carga mientras se conecta a Supabase
+function showLoadingScreen(show) {
+  let el = document.getElementById('loading-screen');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'loading-screen';
+    el.style.cssText = 'position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:1rem;';
+    el.innerHTML = '<div style="font-size:40px;">🏗️</div><div style="font-size:14px;color:var(--text2);">Cargando tu portal...</div><div style="width:160px;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;"><div id="ld-bar" style="height:100%;background:var(--accent);border-radius:2px;animation:ldAnim 1.2s ease-in-out infinite;"></div></div>';
+    document.head.insertAdjacentHTML('beforeend','<style>@keyframes ldAnim{0%{width:0%;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}</style>');
+    document.body.appendChild(el);
+  }
+  el.style.display = show ? 'flex' : 'none';
+}
+
+function initApp() {
+  showLoadingScreen(false);
+  // Topbar
+  document.getElementById('avatar-initials').textContent = USER.initials;
+  document.getElementById('dash-name').textContent = ', ' + USER.name.split(' ')[0];
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('es-CL', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  // Sidebar vivienda info
+  document.getElementById('sb-prop-name').textContent = PROYECTO.nombre;
+  document.getElementById('sb-prop-addr').textContent = (VIVIENDA.tipo_unidad || 'Unidad') + ' ' + VIVIENDA.numero_unidad + (VIVIENDA.piso ? ' — Piso ' + VIVIENDA.piso : '');
+  document.getElementById('topbar-prop').textContent = (VIVIENDA.tipo_unidad || 'Unidad') + ' ' + VIVIENDA.numero_unidad;
+  // Vivienda view
+  document.getElementById('viv-nombre').textContent = PROYECTO.nombre;
+  document.getElementById('viv-dir').textContent = PROYECTO.direccion + ', ' + PROYECTO.ciudad;
+  // Unidad: mostrar tipo + número, sin "piso" si es null
+  const tipoUnidad = VIVIENDA.tipo_unidad || 'Unidad';
+  const pisoText = VIVIENDA.piso ? ' · Piso ' + VIVIENDA.piso : '';
+  document.getElementById('viv-unidad').textContent = tipoUnidad + ' ' + VIVIENDA.numero_unidad + pisoText;
+  document.getElementById('viv-sup').textContent = (VIVIENDA.superficie_total || VIVIENDA.superficie_interior || '—') + ' m²';
+  document.getElementById('viv-entrega').textContent = VIVIENDA.fecha_entrega ? new Date(VIVIENDA.fecha_entrega + 'T12:00:00').toLocaleDateString('es-CL',{month:'long',year:'numeric'}) : '—';
+  // Datos adicionales del banner — DOM, CBR, constructora, rol
+  const elDOM = document.getElementById('viv-fecha-dom');
+  const elCBR = document.getElementById('viv-fecha-cbr');
+  const elConst = document.getElementById('viv-constructora');
+  const elRol = document.getElementById('viv-rol');
+  if (elDOM) elDOM.textContent = PROYECTO.fecha_recepcion_dom ? new Date(PROYECTO.fecha_recepcion_dom + 'T12:00:00').toLocaleDateString('es-CL',{month:'long',year:'numeric'}) : '—';
+  if (elCBR) elCBR.textContent = VIVIENDA.fecha_inscripcion_cbr ? new Date(VIVIENDA.fecha_inscripcion_cbr + 'T12:00:00').toLocaleDateString('es-CL',{month:'long',year:'numeric'}) : '—';
+  if (elConst) elConst.textContent = CONSTRUCTORA ? CONSTRUCTORA.nombre : '—';
+  if (elRol) elRol.textContent = PROYECTO.rol_avaluo || '—';
+  // Perfil — mismos datos que Mi Vivienda
+  const fmtD = d => d ? new Date(d+'T12:00:00').toLocaleDateString('es-CL',{month:'long',year:'numeric'}) : '—';
+  const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '—'; };
+  const unidadLabel = (VIVIENDA.tipo_unidad||'Unidad') + ' ' + VIVIENDA.numero_unidad + (VIVIENDA.piso ? ' · Piso ' + VIVIENDA.piso : '');
+  setEl('perf-proyecto',     PROYECTO.nombre);
+  setEl('perf-unidad',       unidadLabel);
+  setEl('perf-sup',          (VIVIENDA.superficie_total || VIVIENDA.superficie_interior || '—') + ' m²');
+  setEl('perf-entrega',      fmtD(VIVIENDA.fecha_entrega));
+  setEl('perf-dom',          fmtD(PROYECTO.fecha_recepcion_dom));
+  setEl('perf-cbr',          fmtD(VIVIENDA.fecha_inscripcion_cbr));
+  setEl('perf-constructora', CONSTRUCTORA ? CONSTRUCTORA.nombre : '—');
+  setEl('perf-rol',          PROYECTO.rol_avaluo || '—');
+  setEl('perf-unit',         unidadLabel + ' · ' + PROYECTO.nombre + ' · ' + PROYECTO.ciudad);
+  // Render all views
+  renderDashStats();
+  renderRecentSolicitudes();
+  cargarNotificaciones();
+  renderDashGarantias();
+  renderSolicitudesFull();
+  renderGarantias();
+  navigate('dashboard');
+  // Check for session restore auto-login
+  checkIOSInstall && checkIOSInstall();
+}
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+
+function navigate(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  const viewEl = document.getElementById('view-' + view);
+  if (viewEl) viewEl.classList.add('active');
+  
+  const navEl = document.querySelector(`[data-view="${view}"]`);
+  if (navEl) navEl.classList.add('active');
+  
+  currentView = view;
+  document.getElementById('topbar-menu').classList.remove('open');
+}
+
+function toggleMenu() {
+  document.getElementById('topbar-menu').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#avatar-btn')) {
+    document.getElementById('topbar-menu').classList.remove('open');
+  }
+});
+
+// ═══════════════════════════════════════
+// RENDER SOLICITUDES
+// ═══════════════════════════════════════
+
+const ESTADO_CONFIG = {
+  // Valores Supabase (enum estado_solicitud)
+  enviada:       { label: '○ Enviada',      cls: 'badge-pending' },
+  borrador:      { label: '✎ Borrador',     cls: 'badge-pending' },
+  en_revision:   { label: '→ En revisión',  cls: 'badge-progress' },
+  aprobada:      { label: '✓ Aprobada',     cls: 'badge-approved' },
+  rechazada:     { label: '✗ Rechazada',    cls: 'badge-rejected' },
+  en_reparacion: { label: '🔧 En reparación', cls: 'badge-progress' },
+  resuelta:      { label: '✓ Resuelta',     cls: 'badge-approved' },
+  cerrada:       { label: '— Cerrada',      cls: 'badge-pending' },
+  // Aliases legacy
+  approved: { label: '✓ Resuelta',   cls: 'badge-approved' },
+  rejected: { label: '✗ Rechazada',  cls: 'badge-rejected' },
+  progress: { label: '→ En proceso', cls: 'badge-progress' },
+  pending:  { label: '○ Pendiente',  cls: 'badge-pending' },
+};
+
+const URGENCIA_CONFIG = {
+  baja: { label: 'Baja', cls: 'badge-approved' },
+  media: { label: 'Media', cls: 'badge-pending' },
+  alta: { label: 'Alta', cls: 'badge-rejected' },
+  critica: { label: '🚨 Crítica', cls: 'badge-rejected' },
+};
+
+const CAT_ICONS = {
+  estructura:'🏗️', impermeabilizacion:'💧', terminaciones:'🪟',
+  instalaciones_elect:'⚡', instalaciones_san:'🔧', puertas_ventanas:'🚪',
+  equipos:'⚙️', otro:'📋'
+};
+
+async function loadSolFoto(solId) {
+  // Carga la primera foto de una solicitud desde Supabase
+  try {
+    const { data } = await sb.from('fotos_solicitud')
+      .select('url_publica')
+      .eq('solicitud_id', solId)
+      .order('orden')
+      .limit(1)
+      .single();
+    return data?.url_publica || null;
+  } catch { return null; }
+}
+
+function renderSolicitudCard(sol, container) {
+  const div = document.createElement('div');
+  div.className = 'solicitud-card';
+  const est = ESTADO_CONFIG[sol.estado] || ESTADO_CONFIG['enviada'] || {label:'Enviada', cls:'badge-pending'};
+  const titulo = sol.titulo || sol.title || 'Sin título';
+  const desc = sol.descripcion || sol.desc || '';
+  const ubicacion = sol.ubicacion_vivienda || sol.ubicacion || '';
+  const fecha = sol.created_at ? new Date(sol.created_at).toLocaleDateString('es-CL',{day:'numeric',month:'short',year:'numeric'}) : (sol.fecha || '');
+  const num = sol.numero || sol.id?.substring(0,12) || '';
+  const iconFallback = CAT_ICONS[sol.categoria] || '📋';
+
+  // Thumb: foto real si existe, ícono si no
+  const thumbId = 'thumb-' + sol.id;
+  div.innerHTML =
+    '<div class="sol-thumb" id="' + thumbId + '" style="font-size:28px;">' + iconFallback + '</div>' +
+    '<div class="sol-body">' +
+      '<div class="sol-header">' +
+        '<span class="sol-id">' + num + '</span>' +
+        '<span class="sol-date">' + fecha + '</span>' +
+      '</div>' +
+      '<div class="sol-title">' + titulo + '</div>' +
+      '<div class="sol-desc">' + (ubicacion ? ubicacion + (desc ? ' · ' : '') : '') + desc.substring(0,80) + (desc.length>80?'...':'') + '</div>' +
+      '<div class="sol-footer">' +
+        '<span class="badge ' + est.cls + '">' + est.label + '</span>' +
+        '<span class="badge ' + (URGENCIA_CONFIG[sol.urgencia]?.cls||'badge-pending') + '">Urgencia ' + (URGENCIA_CONFIG[sol.urgencia]?.label||sol.urgencia||'media') + '</span>' +
+      '</div>' +
+    '</div>';
+
+  div.onclick = () => openDetalle(sol.id);
+  container.appendChild(div);
+
+  // Cargar foto real de forma asíncrona sin bloquear el render
+  if (sol.id) {
+    loadSolFoto(sol.id).then(url => {
+      if (!url) return;
+      const thumb = document.getElementById(thumbId);
+      if (!thumb) return;
+      thumb.style.padding = '0';
+      thumb.style.fontSize = '0';
+      const img = document.createElement('img');
+      img.src = url;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:10px;';
+      img.onerror = function() { thumb.innerHTML = iconFallback; thumb.style.fontSize = '28px'; thumb.style.padding = ''; };
+      thumb.innerHTML = '';
+      thumb.appendChild(img);
+    });
+  }
+}
+
+function renderRecentSolicitudes() {
+  const c = document.getElementById('recent-sol-list');
+  c.innerHTML = '';
+  SOLICITUDES.slice(0,3).forEach(s => renderSolicitudCard(s, c));
+}
+
+function renderSolicitudesFull(filter='all') {
+  const c = document.getElementById('sol-list-full');
+  c.innerHTML = '';
+  const filtered = filter === 'all' ? SOLICITUDES : SOLICITUDES.filter(s => s.estado === filter || s.estado === filter);
+  if (!filtered.length) {
+    c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-title">Sin solicitudes</div><div class="empty-state-sub">No tienes solicitudes en esta categoría.</div></div>';
+    return;
+  }
+  filtered.forEach(s => renderSolicitudCard(s, c));
+}
+
+function filterSol(el, filter) {
+  document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderSolicitudesFull(filter);
+}
+
+// ═══════════════════════════════════════
+// DETALLE
+// ═══════════════════════════════════════
+
+async function openDetalle(id) {
+  const sol = SOLICITUDES.find(s => s.id === id);
+  if (!sol) return;
+  currentDetalle = sol;
+
+  // Cargar comentarios e historial desde Supabase
+  const [{ data: comentarios }, { data: historial }, { data: fotos }] = await Promise.all([
+    sb.from('comentarios_solicitud').select('*').eq('solicitud_id', id).order('created_at'),
+    sb.from('historial_solicitud').select('*').eq('solicitud_id', id).order('created_at', { ascending: false }),
+    sb.from('fotos_solicitud').select('*').eq('solicitud_id', id).order('orden'),
+  ]);
+
+  sol.comments = (comentarios || []).map(cm => ({
+    autor: cm.autor_nombre,
+    texto: cm.texto,
+    fecha: new Date(cm.created_at).toLocaleDateString('es-CL',{day:'numeric',month:'short',year:'numeric'})
+  }));
+  sol.timeline = (historial || []).map(h => ({
+    icon: h.estado_nuevo === 'resuelta' ? '✓' : h.estado_nuevo === 'rechazada' ? '✗' : h.estado_nuevo === 'visita_programada' ? '📅' : h.estado_nuevo === 'materiales_comprados' ? '🛒' : h.estado_nuevo === 'en_reparacion' ? '🔧' : h.es_automatico ? '⚡' : '→',
+    clase: h.estado_nuevo === 'resuelta' ? 'tl-dot-green' : h.estado_nuevo === 'rechazada' ? 'tl-dot-amber' : (h.estado_nuevo === 'en_reparacion' || h.estado_nuevo === 'visita_programada' || h.estado_nuevo === 'materiales_comprados') ? 'tl-dot-blue' : 'tl-dot-gray',
+    titulo: h.descripcion,
+    desc: h.autor_nombre ? '👷 Equipo postventa' : '',
+  }));
+  sol.fotos = fotos || [];
+
+  // Header
+  const est = ESTADO_CONFIG[sol.estado] || { label: sol.estado, cls: 'badge-pending' };
+  document.getElementById('det-title').textContent = 'Solicitud ' + (sol.numero || sol.id.substring(0,8));
+  document.getElementById('det-badge').innerHTML = '<span class="badge ' + est.cls + '">' + est.label + '</span>';
+  document.getElementById('det-desc').textContent = sol.descripcion || '';
+  document.getElementById('det-cat').textContent = (CAT_ICONS[sol.categoria] || '') + ' ' + (sol.categoria || '').replace(/_/g,' ').replace(/\w/g, l => l.toUpperCase());
+  document.getElementById('det-date').textContent = sol.created_at ? new Date(sol.created_at).toLocaleDateString('es-CL') : '';
+  document.getElementById('det-urgencia').innerHTML = '<span class="badge ' + (URGENCIA_CONFIG[sol.urgencia]?.cls || 'badge-pending') + '">' + (URGENCIA_CONFIG[sol.urgencia]?.label || sol.urgencia) + '</span>';
+  document.getElementById('det-id').textContent = sol.numero || sol.id.substring(0,12);
+
+  // Fotos
+  const imgC = document.getElementById('det-images');
+  if (sol.fotos.length > 0) {
+    imgC.innerHTML = sol.fotos.map((f, i) =>
+      '<img class="detail-img' + (i===0?' main':'') + '" src="' + f.url_publica + '" alt="Foto ' + (i+1) + '">'
+    ).join('');
+  } else {
+    imgC.innerHTML = '<div class="detail-img main">' + (CAT_ICONS[sol.categoria] || '📷') + '</div>';
+  }
+
+  // Timeline
+  const tlC = document.getElementById('det-timeline');
+  tlC.innerHTML = '';
+  if (sol.timeline.length === 0) {
+    tlC.innerHTML = '<div style="font-size:13px;color:var(--text3);">Sin historial aún.</div>';
+  } else {
+    sol.timeline.forEach(t => {
+      tlC.innerHTML += '<div class="timeline-item"><div class="timeline-dot ' + t.clase + '">' + t.icon + '</div><div class="timeline-content"><div class="tl-title">' + t.titulo + '</div><div class="tl-sub">' + (t.desc||'') + '</div><div class="tl-date">' + t.fecha + '</div></div></div>';
+    });
+  }
+
+  // Comentarios
+  renderComments(sol);
+
+  // Análisis IA
+  const aiC = document.getElementById('det-ai-content');
+  if (sol.resultado_ia) {
+    const aprobada = sol.resultado_ia === 'aprobada';
+    const rechazada = sol.resultado_ia === 'rechazada';
+    const cls = aprobada ? 'approved' : rechazada ? 'rejected' : 'pending';
+    const icon = aprobada ? '✅' : rechazada ? '❌' : '⚠️';
+    const title = aprobada ? 'Solicitud dentro de garantía' : rechazada ? 'Fuera de garantía / No aplica' : 'Requiere revisión manual';
+    const fechaVenc = sol.garantia_fecha_venc ? new Date(sol.garantia_fecha_venc).toLocaleDateString('es-CL',{month:'short',year:'numeric'}) : '—';
+    const fechaInicio = sol.garantia_fecha_inicio ? new Date(sol.garantia_fecha_inicio).toLocaleDateString('es-CL',{month:'short',year:'numeric'}) : '—';
+    aiC.innerHTML = '<div class="ai-result show ' + cls + '">' +
+      '<div class="ai-result-header"><span class="ai-result-icon">' + icon + '</span>' +
+      '<div><div class="ai-result-title">' + title + '</div>' +
+      '<div style="font-size:12px;color:var(--text2);margin-top:2px;">' + (sol.categoria||'').replace(/_/g,' ') + ' · Garantía: ' + (sol.garantia_anos||'—') + ' años · Base: ' + (sol.garantia_base_calculo||'—') + '</div></div></div>' +
+      '<div class="ai-result-body">' + (sol.ia_resumen || '') + '</div>' +
+      '<div class="ai-result-items">' +
+      '<div class="ai-result-item"><div class="ai-item-dot ' + (sol.garantia_aplica ? 'dot-green' : 'dot-red') + '"></div>' +
+      '<span>' + (sol.garantia_aplica ? 'Dentro del período de garantía' : 'Fuera del período de garantía') + '</span></div>' +
+      '<div class="ai-result-item"><div class="ai-item-dot dot-amber"></div>' +
+      '<span>Inicio: ' + fechaInicio + ' · Vencimiento: ' + fechaVenc + '</span></div>' +
+      '</div></div>';
+  } else {
+    aiC.innerHTML = '<div style="font-size:13px;color:var(--text3);">Análisis IA no disponible para esta solicitud.</div>';
+  }
+
+  navigate('detalle');
+}
+
+function renderComments(sol) {
+  const c = document.getElementById('det-comments');
+  c.innerHTML = '';
+  if (!sol.comments.length) {
+    c.innerHTML = '<div style="font-size:13px;color:var(--text3);">Sin comentarios aún.</div>';
+    return;
+  }
+  sol.comments.forEach(cm => {
+    const isUser = cm.autor === USER.name;
+    const isEquipo = !isUser && cm.autor && cm.autor !== '';
+    const bgColor = isUser ? 'var(--accent-bg, #1E3A30)' : isEquipo ? 'var(--bg3)' : 'var(--surface2, #1A2820)';
+    const align = isUser ? 'text-align:right;' : '';
+    const etiqueta = isEquipo ? '<span style="font-size:10px;background:var(--green);color:#fff;padding:1px 6px;border-radius:8px;margin-left:4px;">Equipo</span>' : '';
+    c.innerHTML +=
+      '<div style="margin-bottom:0.8rem;' + align + '">' +
+      '<div style="font-size:11px;color:var(--text3);margin-bottom:3px;">' + cm.autor + etiqueta + ' · ' + cm.fecha + '</div>' +
+      '<div style="display:inline-block;background:' + bgColor + ';border-radius:10px;padding:8px 12px;font-size:13px;max-width:90%;text-align:left;line-height:1.5;">' + cm.texto + '</div>' +
+      '</div>';
+  });
+}
+
+async function addComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text || !currentDetalle) return;
+  input.disabled = true;
+  const { error } = await sb.from('comentarios_solicitud').insert({
+    solicitud_id: currentDetalle.id,
+    cliente_id: USER.id,
+    autor_nombre: USER.name,
+    texto: text,
+    es_interno: false
+  });
+  input.disabled = false;
+  if (error) { showToast('⚠️ Error al enviar comentario'); return; }
+  const fechaStr = new Date().toLocaleDateString('es-CL',{day:'numeric',month:'short',year:'numeric'});
+  currentDetalle.comments.push({ autor: USER.name.split(' ')[0] + ' Antonio', texto: text, fecha: fechaStr });
+  renderComments(currentDetalle);
+  input.value = '';
+  showToast('💬 Comentario enviado');
+}
+
+// ═══════════════════════════════════════
+// GARANTÍAS
+// ═══════════════════════════════════════
+
+function renderGarantias() {
+  const c = document.getElementById('garantia-list');
+  c.innerHTML = '';
+
+  GARANTIAS.forEach(g => {
+    const fechaBase = getFechaBase(g.baseCalculo);
+    const añosUso = getAñosTranscurridos(g.baseCalculo);
+    const restante = Math.max(0, g.años - añosUso);
+    const porcentaje = Math.min(100, (restante / g.años) * 100);
+    const fillClass = porcentaje > 60 ? 'fill-green' : porcentaje > 25 ? 'fill-amber' : 'fill-red';
+    const vigente = restante > 0;
+    const fechaVenc = new Date(fechaBase.getFullYear()+g.años, fechaBase.getMonth(), fechaBase.getDate());
+    c.innerHTML += `<div class="garantia-item">
+      <div class="garantia-icon">${g.icono}</div>
+      <div class="garantia-body">
+        <div class="garantia-name">${g.nombre}</div>
+        <div class="garantia-detail" style="margin-bottom:3px;">${g.descripcion}</div>
+        <div style="font-size:11px;color:var(--text3);">${g.ley} · ${g.años} años · <strong>${g.baseLabel}</strong> · ${vigente?'Vence '+fechaVenc.toLocaleDateString('es-CL',{month:'short',year:'numeric'}):'<span style=color:var(--red)>Vencida</span>'}</div>
+      </div>
+      <div class="garantia-progress">
+        <div class="garantia-years">
+          <span style="color:${vigente?'var(--green)':'var(--red)'};font-weight:600;">${vigente?restante.toFixed(1)+' años':'Vencida'}</span>
+          <span class="badge ${vigente?'badge-approved':'badge-rejected'}" style="font-size:10px;">${vigente?'\u2713':'\u2717'}</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill ${fillClass}" style="width:${porcentaje.toFixed(0)}%"></div></div>
+      </div>
+    </div>`;
+  });
+}
+
+function renderDashStats() {
+  // Contar solicitudes desde datos reales
+  const total = SOLICITUDES.length;
+  const enProceso = SOLICITUDES.filter(s => ['enviada','en_revision','en_proceso','asignada'].includes(s.estado)).length;
+  const resueltas = SOLICITUDES.filter(s => ['resuelta','cerrada'].includes(s.estado)).length;
+
+  const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+  setEl('dash-sol-total', total);
+  setEl('dash-sol-total-sub', total === 0 ? 'Sin solicitudes aún' : total === 1 ? '1 solicitud registrada' : total + ' solicitudes registradas');
+
+  setEl('dash-sol-proceso', enProceso);
+  setEl('dash-sol-proceso-sub', enProceso > 0 ? 'Esperando respuesta' : 'Sin solicitudes activas');
+  setEl('dash-sol-proceso-trend', enProceso > 0 ? '↑ Activa' : '');
+
+  setEl('dash-sol-resueltas', resueltas);
+  setEl('dash-sol-resueltas-sub', resueltas > 0 ? resueltas + ' completadas' : 'Ninguna aún');
+  setEl('dash-sol-resueltas-trend', resueltas > 0 ? '✓ Completadas' : '');
+
+  // "Cliente desde" en perfil — desde fecha entrega o CBR
+  const fechaBase = VIVIENDA.fecha_entrega || VIVIENDA.fecha_inscripcion_cbr;
+  const elCliente = document.getElementById('perf-cliente-desde');
+  if (elCliente && fechaBase) {
+    const año = new Date(fechaBase + 'T12:00:00').getFullYear();
+    elCliente.textContent = 'Cliente desde ' + año;
+  }
+}
+
+function renderDashGarantias() {
+  const cont = document.getElementById('dash-garantias');
+  cont.innerHTML = '';
+  const ahora = new Date();
+
+  // Calcular todas las garantías con datos reales
+  const calcs = GARANTIAS.map(g => {
+    const añosUso = getAñosTranscurridos(g.baseCalculo);
+    const restante = Math.max(0, g.años - añosUso);
+    const porcentaje = Math.min(100, (restante / g.años) * 100);
+    return { g, restante, porcentaje };
+  });
+
+  // Barras de progreso (primeras 5)
+  calcs.slice(0,5).forEach(({ g, restante, porcentaje }) => {
+    const fillClass = porcentaje > 60 ? 'fill-green' : porcentaje > 25 ? 'fill-amber' : 'fill-red';
+    const nombre = g.nombre.length > 22 ? g.nombre.substring(0,22)+'...' : g.nombre;
+    cont.innerHTML += '<div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text2);">' + g.icono + ' ' + nombre + '</span><span style="font-weight:600;color:var(--text);">' + (restante > 0 ? restante.toFixed(1)+'a' : 'Vencida') + '</span></div><div class="progress-bar"><div class="progress-fill ' + fillClass + '" style="width:' + porcentaje.toFixed(0) + '%"></div></div></div>';
+  });
+
+  // Stat card: garantía estructural (la más importante, 10 años)
+  const estructura = calcs.find(x => x.g.categoria === 'estructura');
+  if (estructura) {
+    const { restante, porcentaje } = estructura;
+    const vigente = restante > 0;
+    const elAños = document.getElementById('dash-gar-años');
+    const elVence = document.getElementById('dash-gar-vence');
+    const elTrend = document.getElementById('dash-gar-trend');
+    const fechaBase = getFechaBase('dom');
+    const fechaVenc = new Date(fechaBase);
+    fechaVenc.setFullYear(fechaVenc.getFullYear() + 10);
+    if (elAños) {
+      elAños.textContent = vigente ? restante.toFixed(1) + ' años' : 'Vencida';
+      elAños.style.color = vigente ? (porcentaje > 40 ? 'var(--green)' : 'var(--amber)') : 'var(--red)';
+    }
+    if (elVence) elVence.textContent = vigente ? 'Vence ' + fechaVenc.toLocaleDateString('es-CL',{month:'short',year:'numeric'}) : 'Garantía vencida';
+    if (elTrend) {
+      elTrend.className = 'stat-trend ' + (vigente ? (porcentaje > 40 ? 'up' : 'warn') : 'warn');
+      elTrend.textContent = vigente ? (porcentaje > 40 ? '✓ Vigente' : '⚠ Por vencer') : '✗ Vencida';
+    }
+  }
+
+  // Próximo vencimiento: la garantía con MENOS tiempo restante (pero aún vigente)
+  const vigentes = calcs.filter(x => x.restante > 0).sort((a,b) => a.restante - b.restante);
+  const prox = vigentes[0];
+  if (prox) {
+    const fechaBaseProx = getFechaBase(prox.g.baseCalculo);
+    const fechaVencProx = new Date(fechaBaseProx);
+    fechaVencProx.setFullYear(fechaVencProx.getFullYear() + prox.g.años);
+    const elNombre = document.getElementById('dash-prox-nombre');
+    const elAñosP = document.getElementById('dash-prox-años');
+    const elBar = document.getElementById('dash-prox-bar');
+    if (elNombre) elNombre.textContent = prox.g.icono + ' ' + prox.g.nombre + ' · ' + fechaVencProx.getFullYear();
+    if (elAñosP) elAñosP.textContent = 'Quedan ' + prox.restante.toFixed(1) + ' años de garantía';
+    if (elBar) elBar.style.width = prox.porcentaje.toFixed(0) + '%';
+  }
+}
+
+// ═══════════════════════════════════════
+// MODAL + AI
+// ═══════════════════════════════════════
+
+function openNewModal() {
+  document.getElementById('modal-nueva').classList.add('open');
+  document.getElementById('form-step-1').style.display = 'block';
+  document.getElementById('form-step-2').style.display = 'none';
+  uploadedFiles = [];
+  document.getElementById('upload-preview').innerHTML = '';
+  document.getElementById('f-categoria').value = '';
+  document.getElementById('f-ubicacion').value = '';
+  document.getElementById('f-desc').value = '';
+  aiResultData = null;
+}
+
+function closeNewModal() {
+  document.getElementById('modal-nueva').classList.remove('open');
+}
+
+function handleFiles(files) {
+  Array.from(files).forEach(f => {
+    if (uploadedFiles.length >= 5) return;
+    uploadedFiles.push(f);
+    const reader = new FileReader();
+    reader.onload = e => {
+      const wrap = document.createElement('div');
+      wrap.className = 'upload-thumb-wrap';
+      wrap.innerHTML = `<img class="upload-thumb" src="${e.target.result}"><button class="upload-thumb-del" onclick="removeFile(${uploadedFiles.length-1},this)">✕</button>`;
+      document.getElementById('upload-preview').appendChild(wrap);
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+}
+
+function removeFile(idx, btn) {
+  uploadedFiles.splice(idx, 1);
+  btn.closest('.upload-thumb-wrap').remove();
+}
+
+function backToForm() {
+  document.getElementById('form-step-1').style.display = 'block';
+  document.getElementById('form-step-2').style.display = 'none';
+}
+
+async function analyzeRequest() {
+  const cat = document.getElementById('f-categoria').value;
+  const ubi = document.getElementById('f-ubicacion').value;
+  const desc = document.getElementById('f-desc').value.trim();
+  const urgencia = document.getElementById('f-urgencia').value;
+
+  if (!cat || !ubi || !desc) {
+    showToast('⚠️ Completa categoría, ubicación y descripción', 'warn');
+    return;
+  }
+
+  document.getElementById('form-step-1').style.display = 'none';
+  document.getElementById('form-step-2').style.display = 'block';
+  document.getElementById('ai-loading-bar').style.display = 'block';
+  document.getElementById('ai-loading-text').style.display = 'block';
+  document.getElementById('ai-result-box').classList.remove('show', 'approved', 'rejected', 'pending');
+  document.getElementById('ai-actions').style.display = 'none';
+
+  // animate loading bar
+  const fill = document.getElementById('ai-loading-fill');
+  const loadText = document.getElementById('ai-loading-text');
+  const steps = [
+    [20, 'Leyendo datos de tu vivienda...'],
+    [45, 'Verificando plazos de garantía...'],
+    [65, 'Analizando descripción e imágenes...'],
+    [85, 'Consultando normativa vigente...'],
+    [100, 'Generando dictamen...']
+  ];
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i >= steps.length) { clearInterval(interval); return; }
+    fill.style.width = steps[i][0] + '%';
+    loadText.textContent = steps[i][1];
+    i++;
+  }, 600);
+
+  // Call real Claude API
+  const garantia = GARANTIAS.find(g => g.categoria === cat);
+  const añosGarantia = garantia ? garantia.años : 5;
+  const baseCalculo = garantia ? garantia.baseCalculo : 'dom';
+  const baseLabel = garantia ? garantia.baseLabel : 'Recepción DOM';
+  const añosTranscurridos = getAñosTranscurridos(baseCalculo).toFixed(2);
+  const enGarantia = parseFloat(añosTranscurridos) < añosGarantia;
+
+  const prompt = `Eres un experto en postventa de viviendas y normativa chilena de construcción. Evalúa si la siguiente solicitud corresponde a garantía postventa, usando DOS marcos normativos en paralelo:\n\n=== MARCO 1: LGUC Art. 18 (PLAZOS DE GARANTÍA) ===\n- 10 años desde recepción DOM: fallas estructurales (cimientos, vigas, muros de carga, losas)\n- 5 años desde recepción DOM: instalaciones (eléctrico, sanitario, gas), filtraciones cubiertas/muros, otras fallas\n- 3 años desde inscripción CBR: terminaciones y acabados (pinturas, cerámicas, puertas, ventanas)\n\n=== MARCO 2: MANUAL DE TOLERANCIAS CDT-CChC 3ª Ed. 2018 (CALIDAD DEL DEFECTO) ===\nUsa estas tolerancias para determinar si el defecto descrito SUPERA lo admisible:\nMUROS ALBAÑILERÍA: verticalidad máx 0,2% altura (h≤3m); planeidad ±3mm/1,2m; fisuras max 2% unidades por paño\nMUROS HORMIGÓN: planeidad G4 (obra gruesa con estuco) ±8mm en 1,5m, ±15mm en 3m; cuadratura muro-losa 2mm\nLOSAS HORMIGÓN (cielo): planeidad G4 ±9mm en 1,5m, ±17mm en 3m, ±25mm en 6m\nRADIERES/PISOS: planeidad G5 ±3mm en 1,5m, ±5mm en 3m, ±7mm en 6m; resaltes máx 2mm\nTABIQUES: planeidad ±3mm terminado, verticalidad máx 5mm piso-cielo, cuadratura 3mm\nESTUCOS: verticalidad ±5mm por piso; planeidad ±5mm\nENLUCIDOS YESO: planeidad ±3mm/1,2m; linealidad aristas ±3mm/m; verticalidad aristas ±2mm/m\nCERÁMICOS PISO: diferencia nivel entre palmetas máx 1mm; alineación canterías ±2mm en 3m\nCERÁMICOS MURO: diferencia nivel entre palmetas máx 2mm; alineación ±2mm en 3m\nPUERTAS: verticalidad vano ±0,3% altura; planeidad hoja ±3mm; paralelismo hoja-marco 3mm\nVENTANAS: paralelismo hojas/marco ±2mm; sin luz visible entre marco y hoja cerrada\nPISOS FLOTANTES: planeidad 3mm en 3m\nPINTURAS INTERIORES: imperfecciones visibles a menos de 1m no admitidas; sombras máx 1mm espesor/5mm largo\nPINTURAS EXTERIORES: imperfecciones visibles a menos de 5m no admitidas\nGUARDAPOLVOS: dist. guardapolvo-muro máx 1mm; dist. guardapolvo-piso máx 3mm\nCIELOS RASOS: planeidad ±3mm con regla de 1,2m\nCLOSETS: verticalidad hojas 1mm/m (corredera), 2mm/m (abatibles); alineación entre puertas 2mm\nMUEBLES COCINA/BAÑO: paralelismo respecto de paramentos 3mm; horizontalidad mesones 1mm/m\nARTEFACTOS ELÉCTRICOS: alineación entre artefactos ±2mm; horizontalidad ±1mm\n\n=== DATOS DE LA VIVIENDA ===\n- Recepci\u00f3n definitiva DOM: ${PROYECTO?.fecha_recepcion_dom || 'no disponible'}\n- Inscripci\u00f3n CBR: ${VIVIENDA?.fecha_inscripcion_cbr || 'no disponible'}\n- Entrega de unidad: ${VIVIENDA?.fecha_entrega || 'no disponible'}\n- A\u00f1os transcurridos desde base de c\u00f3mputo aplicable: ${a\u00f1osTranscurridos} a\u00f1os\n- Base de c\u00f3mputo: ${baseLabel}\n- Categor\u00eda del problema: ${cat}\n- Garant\u00eda LGUC para esta categor\u00eda: ${a\u00f1osGarantia} a\u00f1os\n- \u00bfDentro del plazo legal?: ${enGarantia ? 'S\u00cd' : 'NO'}\n- Ubicaci\u00f3n del problema: ${ubi}\n- Urgencia declarada: ${urgencia}\n\n=== DESCRIPCI\u00d3N DEL PROBLEMA ===\n${desc}\n\nResponde SOLO con un JSON v\u00e1lido (sin texto adicional) con esta estructura exacta:\n{\n  "resultado": "approved" | "rejected" | "pending",\n  "titulo": "texto corto (m\u00e1x 60 chars)",\n  "subtitulo": "plazo garant\u00eda y base de c\u00f3mputo",\n  "resumen": "P\u00e1rrafo 2-3 l\u00edneas: evaluar LGUC (\u00bfest\u00e1 en plazo?) Y tolerancia CDT (\u00bfsupera el l\u00edmite admisible?)",\n  "items": [\n    { "texto": "Resultado LGUC: plazo de garant\u00eda", "tipo": "green" | "red" | "amber" },\n    { "texto": "Resultado CDT 2018: tolerancia admisible", "tipo": "green" | "red" | "amber" },\n    { "texto": "Conclusi\u00f3n t\u00e9cnica", "tipo": "green" | "red" | "amber" }\n  ],\n  "recomendacion": "Acci\u00f3n recomendada al cliente (1 l\u00ednea)"\n}}`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    clearInterval(interval);
+    fill.style.width = '100%';
+
+    await new Promise(r => setTimeout(r, 400));
+
+    const data = await response.json();
+    const text = data.content.map(i => i.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    aiResultData = { ...parsed, cat, ubi, desc, urgencia };
+
+    document.getElementById('ai-loading-bar').style.display = 'none';
+    document.getElementById('ai-loading-text').style.display = 'none';
+
+    const box = document.getElementById('ai-result-box');
+    box.className = `ai-result show ${parsed.resultado}`;
+    document.getElementById('ai-icon').textContent = parsed.resultado === 'approved' ? '✅' : parsed.resultado === 'rejected' ? '❌' : '⚠️';
+    document.getElementById('ai-title').textContent = parsed.titulo;
+    document.getElementById('ai-subtitle').textContent = parsed.subtitulo;
+    document.getElementById('ai-body').textContent = parsed.resumen;
+
+    const itemsC = document.getElementById('ai-items');
+    itemsC.innerHTML = '';
+    (parsed.items || []).forEach(item => {
+      itemsC.innerHTML += `<div class="ai-result-item">
+        <div class="ai-item-dot dot-${item.tipo}"></div>
+        <span>${item.texto}</span>
+      </div>`;
+    });
+    if (parsed.recomendacion) {
+      itemsC.innerHTML += `<div style="margin-top:0.8rem;padding:8px 10px;background:rgba(0,0,0,0.05);border-radius:8px;font-size:12.5px;"><strong>Recomendación:</strong> ${parsed.recomendacion}</div>`;
+    }
+
+    document.getElementById('ai-actions').style.display = 'flex';
+    document.getElementById('btn-submit').textContent = parsed.resultado === 'rejected' 
+      ? '📤 Enviar de todas formas' 
+      : '✓ Confirmar y Enviar Solicitud';
+
+  } catch (err) {
+    clearInterval(interval);
+    document.getElementById('ai-loading-text').textContent = 'Error al conectar con IA. Continuando con análisis local...';
+    await new Promise(r => setTimeout(r, 1000));
+    showLocalAnalysis(cat, añosGarantia, parseFloat(añosTranscurridos), desc, ubi, urgencia);
+  }
+}
+
+function showLocalAnalysis(cat, añosGarantia, añosUso, desc, ubi, urgencia) {
+  const enGarantia = añosUso < añosGarantia;
+  const resultado = enGarantia ? 'approved' : 'rejected';
+  document.getElementById('ai-loading-bar').style.display = 'none';
+  document.getElementById('ai-loading-text').style.display = 'none';
+
+  const box = document.getElementById('ai-result-box');
+  box.className = `ai-result show ${resultado}`;
+  document.getElementById('ai-icon').textContent = enGarantia ? '✅' : '❌';
+  document.getElementById('ai-title').textContent = enGarantia ? 'Solicitud dentro de período de garantía' : 'Fuera del período de garantía';
+  document.getElementById('ai-subtitle').textContent = `Garantía ${añosGarantia} años · Uso actual: ${añosUso.toFixed(1)} años`;
+  document.getElementById('ai-body').textContent = enGarantia
+    ? `Basado en la Ley 19.537 y el contrato de compraventa, el elemento indicado cuenta con una garantía de ${añosGarantia} años. Han transcurrido ${añosUso.toFixed(1)} años desde la entrega, por lo que la solicitud se encuentra dentro del período de cobertura.`
+    : `El período de garantía de ${añosGarantia} años para esta categoría ha vencido. Han transcurrido ${añosUso.toFixed(1)} años desde la entrega de la vivienda.`;
+
+  document.getElementById('ai-items').innerHTML = `<div class="ai-result-item"><div class="ai-item-dot ${enGarantia?'dot-green':'dot-red'}"></div><span>${enGarantia?'Dentro':'Fuera'} del período de garantía</span></div>`;
+  aiResultData = { resultado, cat, ubi, desc, urgencia };
+  document.getElementById('ai-actions').style.display = 'flex';
+}
+
+async function submitRequest() {
+  if (!aiResultData) return;
+  const btn = document.getElementById('btn-submit');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  try {
+    const desc = document.getElementById('f-desc').value;
+    const titulo = desc.substring(0, 60) + (desc.length > 60 ? '...' : '');
+    // Calcular garantía con los datos reales de la vivienda
+    const garantia = GARANTIAS.find(g => g.categoria === aiResultData.cat);
+    const añosGar = garantia ? garantia.años : 5;
+    const baseCalculo = garantia ? garantia.baseCalculo : 'dom';
+    const fechaBase = getFechaBase(baseCalculo);
+    const fechaVenc = new Date(fechaBase);
+    fechaVenc.setFullYear(fechaVenc.getFullYear() + añosGar);
+    const ahora = new Date();
+    const aplica = ahora <= fechaVenc;
+
+    const payload = {
+      vivienda_id: VIVIENDA.id,
+      cliente_id: USER.id,
+      categoria: aiResultData.cat,
+      ubicacion_vivienda: aiResultData.ubi,
+      titulo,
+      descripcion: desc,
+      urgencia: aiResultData.urgencia,
+      // Estado automático: si IA rechaza, queda rechazada directamente
+      estado: aiResultData.resultado === 'rejected' ? 'rechazada' : 'enviada',
+      resultado_ia: aiResultData.resultado === 'approved' ? 'aprobada' : aiResultData.resultado === 'rejected' ? 'rechazada' : 'revision',
+      ia_titulo: aiResultData.titulo || '',
+      ia_resumen: aiResultData.resumen || '',
+      ia_items: aiResultData.items || [],
+      ia_recomendacion: aiResultData.recomendacion || '',
+      ia_fecha: new Date().toISOString(),
+      ia_modelo: 'claude-sonnet-4-20250514',
+      garantia_aplica: aplica,
+      garantia_anos: añosGar,
+      garantia_fecha_inicio: fechaBase.toISOString().split('T')[0],
+      garantia_fecha_venc: fechaVenc.toISOString().split('T')[0],
+      garantia_base_calculo: baseCalculo,
+    };
+
+    const { data: sol, error } = await sb.from('solicitudes').insert(payload).select().single();
+    if (error) throw error;
+
+    // Guardar historial inicial
+    const estadoInicial = aiResultData.resultado === 'rejected' ? 'rechazada' : 'enviada';
+    const descIA = aiResultData.resultado === 'rejected'
+      ? 'IA: Fuera de garantía — solicitud rechazada automáticamente'
+      : aplica ? 'IA: Dentro de garantía LGUC — requiere revisión del equipo'
+      : 'IA: Resultado pendiente de revisión';
+    await sb.from('historial_solicitud').insert([
+      { solicitud_id: sol.id, estado_nuevo: estadoInicial, descripcion: 'Solicitud creada por ' + USER.name, autor_nombre: USER.name, es_automatico: false, cliente_id: USER.id },
+      { solicitud_id: sol.id, estado_nuevo: estadoInicial, descripcion: descIA, autor_nombre: 'Sistema IA', es_automatico: true }
+    ]);
+
+    // Subir fotos si hay
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      const file = uploadedFiles[i];
+      const path = sol.id + '/' + Date.now() + '_' + i + '.' + file.name.split('.').pop();
+      const { data: upData } = await sb.storage.from('fotos-solicitudes').upload(path, file);
+      if (upData) {
+        const { data: urlData } = sb.storage.from('fotos-solicitudes').getPublicUrl(path);
+        await sb.from('fotos_solicitud').insert({ solicitud_id: sol.id, storage_path: path, url_publica: urlData?.publicUrl, nombre_original: file.name, tamano_bytes: file.size, mime_type: file.type, orden: i });
+      }
+    }
+
+    await loadSolicitudes();
+    closeNewModal();
+    renderRecentSolicitudes();
+    renderSolicitudesFull();
+    document.getElementById('badge-sol').textContent = SOLICITUDES.filter(s => s.estado === 'enviada' || s.estado === 'en_revision' || s.estado === 'en_reparacion').length;
+    showToast('✅ Solicitud enviada correctamente');
+    navigate('solicitudes');
+    // Notificar al equipo sobre nueva solicitud
+    notificarEquipo('nueva_solicitud', 'Nueva solicitud recibida', 'El cliente ha enviado una nueva solicitud de garantía.', null);
+  } catch(err) {
+    console.error(err);
+    showToast('⚠️ Error al enviar. Intenta nuevamente.');
+  } finally {
+    btn.textContent = '✓ Confirmar y Enviar Solicitud'; btn.disabled = false;
+  }
+}
+
+// ═══════════════════════════════════════
+// VIV TABS
+// ═══════════════════════════════════════
+
+function vivTab(el, tab) {
+  document.querySelectorAll('#view-vivienda .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['planos','certificados','manuales','visitas'].forEach(t => {
+    const el2 = document.getElementById('viv-tab-'+t);
+    if (el2) el2.style.display = t === tab ? (t === 'visitas' ? 'block' : 'grid') : 'none';
+  });
+  if (tab === 'visitas') cargarVisitasCliente();
+}
+
+async function cargarVisitasCliente() {
+  if (!VIVIENDA || !VIVIENDA.id) return;
+  const lista = document.getElementById('visitas-lista');
+  lista.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text3);">Cargando...</div>';
+
+  const { data, error } = await sb.from('visitas')
+    .select('*')
+    .eq('vivienda_id', VIVIENDA.id)
+    .order('fecha_visita', { ascending: false });
+
+  if (error || !data || data.length === 0) {
+    lista.innerHTML =
+      '<div style="text-align:center;padding:40px 20px;color:var(--text3);">' +
+      '<div style="font-size:36px;margin-bottom:12px;">📅</div>' +
+      '<div style="font-size:15px;font-weight:600;color:var(--text2);margin-bottom:6px;">Sin visitas programadas</div>' +
+      '<div style="font-size:13px;">Cuando el equipo programe una visita, aparecerá aquí.</div></div>';
+    return;
+  }
+
+  const hoy = new Date().toISOString().split('T')[0];
+  const proximas = data.filter(v => v.fecha_visita >= hoy);
+  const pasadas  = data.filter(v => v.fecha_visita < hoy);
+
+  const estColores = {
+    programada: { cls: 'badge-pending',  icon: '🕐' },
+    confirmada: { cls: 'badge-progress', icon: '✓'  },
+    realizada:  { cls: 'badge-approved', icon: '✅' },
+    cancelada:  { cls: 'badge-rejected', icon: '✗'  },
+  };
+
+  const tarjeta = v => {
+    const est     = estColores[v.estado] || estColores['programada'];
+    const fechaStr = new Date(v.fecha_visita + 'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    const horaStr  = v.hora_inicio ? v.hora_inicio.substring(0,5) + (v.hora_fin ? ' – ' + v.hora_fin.substring(0,5) : '') + ' hrs' : '';
+    return '<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">' +
+      '<span class="badge ' + est.cls + '">' + est.icon + ' ' + v.estado.charAt(0).toUpperCase() + v.estado.slice(1) + '</span>' +
+      '</div>' +
+      '<div style="font-size:15px;font-weight:600;margin-bottom:6px;">' + v.titulo + '</div>' +
+      '<div style="font-size:13px;color:var(--text2);margin-bottom:3px;">📅 ' + fechaStr + '</div>' +
+      (horaStr ? '<div style="font-size:13px;color:var(--text2);margin-bottom:3px;">⏰ ' + horaStr + '</div>' : '') +
+      (v.responsable ? '<div style="font-size:13px;color:var(--text2);margin-bottom:3px;">👷 ' + v.responsable + '</div>' : '') +
+      (v.descripcion ? '<div style="font-size:12px;color:var(--text3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">' + v.descripcion + '</div>' : '') +
+      (v.notas_post && v.estado === 'realizada' ? '<div style="font-size:12px;color:var(--green-light);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">📝 ' + v.notas_post + '</div>' : '') +
+      '</div>';
+  };
+
+  let html = '';
+  if (proximas.length > 0) {
+    html += '<div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;">Próximas visitas</div>';
+    html += proximas.map(tarjeta).join('');
+  }
+  if (pasadas.length > 0) {
+    html += '<div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin:16px 0 8px;">Visitas realizadas</div>';
+    html += pasadas.map(tarjeta).join('');
+  }
+  lista.innerHTML = html;
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+
+function showToast(msg, type='ok') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(100%)'; t.style.transition = 'all 0.3s'; setTimeout(() => t.remove(), 300); }, 3500);
+}
+
+// ═══════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeNewModal();
+});
+
+// ═══════════════════════════════════════
+// DESCARGA DE DOCUMENTOS
+// ═══════════════════════════════════════
+async function descargarDocumento(el) {
+  const nombre = el.dataset.nombre || 'documento';
+  const storagePath = el.dataset.storage;
+
+  // Si hay archivo real en Supabase Storage, intentar descargarlo
+  if (storagePath) {
+    try {
+      const { data, error } = await sb.storage.from('documentos').download(storagePath);
+      if (!error && data) {
+        const url = URL.createObjectURL(data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nombre + '.pdf';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('⬇ Descargando ' + nombre);
+        return;
+      }
+    } catch(e) {}
+  }
+
+  // Si no hay archivo en Storage, mostrar mensaje informativo
+  showToast('📄 ' + nombre + ' — Documento no disponible aún. La constructora lo subirá pronto.');
+}
+
+// ═══════════════════════════════════════
+// SESSION RESTORE — auto-login si hay sesión activa
+// ═══════════════════════════════════════
+(async function restoreSession() {
+  showLoadingScreen(true);
+
+  // Detectar magic link en la URL (token_hash o access_token)
+  const hash = window.location.hash;
+  const params = new URLSearchParams(window.location.search);
+  const hasToken = hash.includes('access_token') || hash.includes('token_hash') || params.get('token_hash');
+
+  if (hasToken) {
+    // Supabase procesa el token automáticamente via onAuthStateChange
+    // Solo esperamos que resuelva
+    await new Promise(resolve => setTimeout(resolve, 1500));
+  }
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (session && session.user) {
+    // Limpiar token de la URL para que no quede visible
+    if (hasToken) window.history.replaceState(null, '', window.location.pathname);
+    await loadUserData(session.user);
+  } else {
+    showLoadingScreen(false);
+  }
+  // Escuchar cambios de auth (ej: token expirado)
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session && !USER) {
+      // Magic link login exitoso
+      window.history.replaceState(null, '', window.location.pathname);
+      await loadUserData(session.user);
+    }
+    if (event === 'SIGNED_OUT') {
+      USER = null; VIVIENDA = null; PROYECTO = null; SOLICITUDES = [];
+      document.getElementById('screen-app').classList.remove('active');
+      document.getElementById('screen-login').classList.add('active');
+    }
+  });
+})();
+
+document.getElementById('dash-date').textContent = new Date().toLocaleDateString('es-CL', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+// ═══════════════════════════════════════
+// PWA — BOTTOM NAV SYNC
+// ═══════════════════════════════════════
+function setBN(el) {
+  document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+const _origNavigate = navigate;
+window.navigate = function(view) {
+  _origNavigate(view);
+  const bnEl = document.querySelector('.bottom-nav-item[data-bn="' + view + '"]');
+  setBN(bnEl || null);
+};
+
+// ═══════════════════════════════════════
+// PWA — INLINE MANIFEST
+// ═══════════════════════════════════════
+const manifest = {
+  name: "Nidus",
+  short_name: "Nidusa",
+  description: "Portal de postventa para propietarios — LGUC Art. 18",
+  start_url: "./",
+  display: "standalone",
+  background_color: "#1E2D28",
+  theme_color: "#1E2D28",
+  orientation: "portrait-primary",
+  categories: ["business", "utilities"],
+  icons: [
+    { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%231E2D28'/%3E%3Crect x='16' y='16' width='160' height='160' rx='28' fill='%233D6B5E'/%3E%3Ctext x='96' y='128' font-size='88' text-anchor='middle'%3E%F0%9F%8F%97%3C/text%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+    { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231E2D28'/%3E%3Crect x='40' y='40' width='432' height='432' rx='60' fill='%233D6B5E'/%3E%3Ctext x='256' y='330' font-size='240' text-anchor='middle'%3E%F0%9F%8F%97%3C/text%3E%3C/svg%3E", sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+  ],
+  shortcuts: [
+    { name: "Nueva Solicitud", short_name: "Nueva", url: "./?action=nueva" },
+    { name: "Mis Solicitudes", short_name: "Solicitudes", url: "./?action=solicitudes" }
+  ]
+};
+
+try {
+  const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  document.getElementById('manifest-placeholder').setAttribute('href', URL.createObjectURL(blob));
+} catch(e) {}
+
+// ═══════════════════════════════════════
+// PWA — INSTALL PROMPT
+// ═══════════════════════════════════════
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!sessionStorage.getItem('installDismissed') && !isStandalone()) {
+    setTimeout(() => { document.getElementById('install-banner').classList.add('show'); }, 4000);
+  }
+});
+
+document.getElementById('install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('install-banner').classList.remove('show');
+  if (outcome === 'accepted') showToast('✅ App instalada correctamente');
+});
+
+function dismissInstall() {
+  document.getElementById('install-banner').classList.remove('show');
+  sessionStorage.setItem('installDismissed', '1');
+}
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-banner').classList.remove('show');
+  showToast('🏠 Nidus instalada en tu pantalla de inicio');
+});
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+function checkIOSInstall() {
+  if (isIOS() && !isStandalone() && !sessionStorage.getItem('iosTipDismissed')) {
+    setTimeout(() => { document.getElementById('ios-tip').classList.add('show'); }, 5000);
+  }
+}
+
+// ═══════════════════════════════════════
+// PWA — SERVICE WORKER (blob URL)
+// ═══════════════════════════════════════
+const SW_CODE = `
+const CACHE_NAME = 'postventa-v1';
+self.addEventListener('install', e => { self.skipWaiting(); });
+self.addEventListener('activate', e => { self.clients.claim(); });
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  if (e.request.url.includes('api.anthropic.com')) return;
+  e.respondWith(
+    caches.open(CACHE_NAME).then(cache =>
+      cache.match(e.request).then(cached => {
+        const networkFetch = fetch(e.request).then(res => {
+          if (res.ok) cache.put(e.request, res.clone());
+          return res;
+        }).catch(() => cached);
+        return cached || networkFetch;
+      })
+    )
+  );
+});
+`;
+
+if ('serviceWorker' in navigator) {
+  try {
+    const swBlob = new Blob([SW_CODE], { type: 'application/javascript' });
+    navigator.serviceWorker.register(URL.createObjectURL(swBlob), { scope: './' })
+      .then(() => console.log('[PWA] Service Worker registrado'))
+      .catch(err => console.log('[PWA] SW:', err));
+  } catch(e) {}
+}
+
+// Handle URL shortcuts
+const urlParams = new URLSearchParams(window.location.search);
+const _action = urlParams.get('action');
+if (_action === 'nueva') setTimeout(() => openNewModal(), 800);
+if (_action === 'solicitudes') setTimeout(() => navigate('solicitudes'), 500);
+
+
+// ═══════════════════════════════════════
+// NOTIFICACIONES
+// ═══════════════════════════════════════
+
+let NOTIF_PANEL_OPEN = false;
+
+async function cargarNotificaciones() {
+  if (!USER || !USER.id) return;
+  try {
+    const { data } = await sb.from('notificaciones')
+      .select('*')
+      .eq('destinatario_id', USER.id)
+      .order('created_at', { ascending: false })
+      .limit(30);
+
+    const notifs = data || [];
+    const noLeidas = notifs.filter(n => !n.leida).length;
+
+    // Actualizar badge
+    const badge = document.getElementById('notif-badge');
+    if (badge) {
+      if (noLeidas > 0) {
+        badge.textContent = noLeidas > 9 ? '9+' : noLeidas;
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    // Renderizar lista
+    const lista = document.getElementById('notif-lista');
+    if (!lista) return;
+
+    if (notifs.length === 0) {
+      lista.innerHTML = '<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px;">Sin notificaciones</div>';
+      return;
+    }
+
+    const iconos = {
+      nueva_solicitud:  '📋',
+      cambio_estado:    '🔄',
+      visita_programada:'📅',
+      comentario:       '💬',
+    };
+
+    lista.innerHTML = '';
+    notifs.forEach(n => {
+      const fecha = new Date(n.created_at).toLocaleDateString('es-CL',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+      const icon  = iconos[n.tipo] || '🔔';
+      const div = document.createElement('div');
+      div.className = 'notif-item' + (!n.leida ? ' unread' : '');
+      div.onclick = function() { abrirNotif(n.id, n.solicitud_id || ''); };
+      div.innerHTML =
+        '<div class="notif-dot ' + (n.leida ? 'read' : '') + '"></div>' +
+        '<div class="notif-body">' +
+          '<div class="notif-title">' + icon + ' ' + n.titulo + '</div>' +
+          (n.mensaje ? '<div class="notif-msg">' + n.mensaje + '</div>' : '') +
+          '<div class="notif-fecha">' + fecha + '</div>' +
+        '</div>';
+      lista.appendChild(div);
+    });
+  } catch(e) { console.error('cargarNotificaciones:', e); }
+}
+
+async function abrirNotif(notifId, solicitudId) {
+  // Marcar como leída
+  await sb.from('notificaciones').update({ leida: true }).eq('id', notifId);
+  toggleNotifPanel();
+  // Navegar a la solicitud si existe
+  if (solicitudId) {
+    navigate('solicitudes');
+    setTimeout(() => openDetalle(solicitudId), 300);
+  }
+  cargarNotificaciones();
+}
+
+async function marcarTodasLeidas() {
+  if (!USER) return;
+  await sb.from('notificaciones').update({ leida: true })
+    .eq('destinatario_id', USER.id).eq('leida', false);
+  cargarNotificaciones();
+}
+
+function toggleNotifPanel() {
+  const panel = document.getElementById('notif-panel');
+  if (!panel) return;
+  NOTIF_PANEL_OPEN = !NOTIF_PANEL_OPEN;
+  panel.style.display = NOTIF_PANEL_OPEN ? 'flex' : 'none';
+  if (NOTIF_PANEL_OPEN) cargarNotificaciones();
+}
+
+// Cerrar panel al hacer clic fuera
+document.addEventListener('click', e => {
+  if (NOTIF_PANEL_OPEN) {
+    const panel = document.getElementById('notif-panel');
+    const bell  = document.getElementById('notif-bell');
+    if (panel && !panel.contains(e.target) && bell && !bell.contains(e.target)) {
+      NOTIF_PANEL_OPEN = false;
+      panel.style.display = 'none';
+    }
+  }
+});
+
+// Crear notificación (llamada desde otras funciones)
+async function crearNotificacion(destinatarioId, tipo, titulo, mensaje, solicitudId) {
+  if (!destinatarioId) return;
+  try {
+    await sb.from('notificaciones').insert({
+      destinatario_id: destinatarioId,
+      tipo,
+      titulo,
+      mensaje: mensaje || null,
+      solicitud_id: solicitudId || null,
+      leida: false,
+    });
+  } catch(e) { console.error('crearNotificacion:', e); }
+}
+
+// Polling cada 30 segundos para nuevas notificaciones
+setInterval(() => {
+  if (USER) cargarNotificaciones();
+}, 30000);
+
+
+// Notificar a todos los usuarios del equipo (rol postventa/admin)
+async function notificarEquipo(tipo, titulo, mensaje, solicitudId) {
+  try {
+    const { data: equipo } = await sb.from('clientes')
+      .select('id')
+      .in('rol', ['admin', 'postventa']);
+    if (!equipo || equipo.length === 0) return;
+    const notifs = equipo.map(u => ({
+      destinatario_id: u.id,
+      tipo,
+      titulo,
+      mensaje: mensaje || null,
+      solicitud_id: solicitudId || null,
+      leida: false,
+    }));
+    await sb.from('notificaciones').insert(notifs);
+  } catch(e) { console.error('notificarEquipo:', e); }
+}
+
+// Notificar al cliente dueño de una vivienda
+async function notificarCliente(viviendasId, tipo, titulo, mensaje, solicitudId) {
+  try {
+    const { data: clientes } = await sb.from('clientes')
+      .select('id')
+      .eq('vivienda_id', viviendasId)
+      .eq('rol', 'cliente');
+    if (!clientes || clientes.length === 0) return;
+    const notifs = clientes.map(u => ({
+      destinatario_id: u.id,
+      tipo,
+      titulo,
+      mensaje: mensaje || null,
+      solicitud_id: solicitudId || null,
+      leida: false,
+    }));
+    await sb.from('notificaciones').insert(notifs);
+  } catch(e) { console.error('notificarCliente:', e); }
+}
+
+</script>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bottom-nav-item active" data-bn="dashboard" onclick="navigate('dashboard');setBN(this)"><span class="bn-icon">📊</span><span class="bn-label">Mi Portal</span></div>
+  <div class="bottom-nav-item" data-bn="solicitudes" onclick="navigate('solicitudes');setBN(this)"><span class="bn-icon">📋</span><span class="bn-label">Solicitudes</span></div>
+  <div class="bottom-nav-item" data-bn="garantias" onclick="navigate('garantias');setBN(this)"><span class="bn-icon">🛡️</span><span class="bn-label">Garantías</span></div>
+  <div class="bottom-nav-item" data-bn="vivienda" onclick="navigate('vivienda');setBN(this)"><span class="bn-icon">🏠</span><span class="bn-label">Vivienda</span></div>
+  <div class="bottom-nav-item" data-bn="perfil" onclick="navigate('perfil');setBN(this)"><span class="bn-icon">👤</span><span class="bn-label">Perfil</span></div>
+</nav>
+
+<!-- ═══ FAB ═══ -->
+<button class="fab" onclick="openNewModal()">＋</button>
+
+<!-- ═══ INSTALL BANNER (Android/Chrome) ═══ -->
+<div class="install-banner" id="install-banner">
+  <div class="ib-icon">🏗️</div>
+  <div class="ib-body"><div class="ib-title">Instalar Nidus</div><div class="ib-sub">Accede sin internet · Funciona sin App Store</div></div>
+  <button class="ib-btn" id="install-btn">Instalar</button>
+  <button class="ib-close" onclick="dismissInstall()">✕</button>
+</div>
+
+<!-- ═══ iOS TIP ═══ -->
+<div class="ios-tip" id="ios-tip">
+  <div class="ios-tip-row">
+    <span>Para instalar en iPhone: toca <strong>Compartir ↑</strong> en Safari y selecciona <strong>"Agregar a pantalla de inicio"</strong></span>
+    <button class="ios-tip-close" onclick="this.closest('.ios-tip').classList.remove('show');sessionStorage.setItem('iosTipDismissed','1')">✕</button>
+  </div>
+</div>
+</body>
+</html>

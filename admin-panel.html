@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nidus — Panel Administración</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg: #0F1714;
+  --bg2: #162019;
+  --bg3: #1E2D28;
+  --card: #1A2820;
+  --card2: #213529;
+  --border: #2A3F37;
+  --green: #4F8272;
+  --green2: #5D9E8A;
+  --green-light: #7DC4AD;
+  --amber: #C9913A;
+  --red: #C0533A;
+  --blue: #3A7DC0;
+  --text: #EAF2EE;
+  --text2: #A8C4B8;
+  --text3: #6B9080;
+  --accent: #7DC4AD;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 240px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+}
+
+.sidebar-logo {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo .logo-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+
+.sidebar-logo .logo-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.sidebar-user {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.user-info .user-name { font-size: 13px; font-weight: 600; }
+.user-info .user-role { font-size: 11px; color: var(--text3); }
+
+.nav-section {
+  padding: 12px 12px 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text3);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  margin: 2px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text2);
+  transition: all 0.15s;
+  border: none;
+  background: none;
+  width: calc(100% - 16px);
+  text-align: left;
+}
+
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--green); color: #fff; }
+.nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+.nav-item .nav-badge {
+  margin-left: auto;
+  background: var(--amber);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 8px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text3);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-logout:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+/* ── MAIN CONTENT ── */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topbar-title { font-size: 18px; font-weight: 700; }
+.topbar-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+.btn-primary { background: var(--green); color: #fff; }
+.btn-primary:hover { background: var(--green2); }
+.btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--card2); }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+
+.content { padding: 24px 28px; flex: 1; }
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── STATS GRID ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.stat-value { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.stat-sub { font-size: 12px; color: var(--text3); }
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.card-title { font-size: 15px; font-weight: 600; }
+.card-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: var(--bg3); }
+th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 12px 14px; border-top: 1px solid var(--border); vertical-align: middle; }
+tr:hover td { background: var(--bg3); }
+.td-actions { display: flex; gap: 6px; justify-content: flex-end; }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-pending  { background: rgba(201,145,58,0.15); color: var(--amber); }
+.badge-progress { background: rgba(58,125,192,0.15); color: var(--blue); }
+.badge-approved { background: rgba(79,130,114,0.2); color: var(--green-light); }
+.badge-rejected { background: rgba(192,83,58,0.15); color: var(--red); }
+.badge-info     { background: rgba(125,196,173,0.1); color: var(--accent); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.modal-sub { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--green); }
+.form-select option { background: var(--bg3); }
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── SOLICITUD DETAIL PANEL ── */
+.detail-panel {
+  display: none;
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 480px;
+  background: var(--bg2);
+  border-left: 1px solid var(--border);
+  z-index: 200;
+  overflow-y: auto;
+  box-shadow: -8px 0 32px rgba(0,0,0,0.4);
+}
+.detail-panel.open { display: block; }
+
+.detail-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg2);
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.detail-body { padding: 20px 24px; }
+
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 16px;
+  padding-left: 16px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 2px solid var(--bg2);
+}
+
+.timeline-date { font-size: 11px; color: var(--text3); margin-bottom: 2px; }
+.timeline-text { font-size: 13px; }
+
+/* ── STATUS FLOW ── */
+.status-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.status-btn {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text2);
+  transition: all 0.15s;
+}
+.status-btn:hover { border-color: var(--green); color: var(--green-light); }
+.status-btn.current { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* ── FILTERS ── */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.filter-input {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  min-width: 180px;
+}
+.filter-input:focus { border-color: var(--green); }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text3);
+}
+.empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state .empty-title { font-size: 15px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+
+/* ── LOGIN ── */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+.login-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: var(--shadow);
+}
+.login-logo { font-size: 22px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.login-sub { font-size: 13px; color: var(--text3); margin-bottom: 28px; }
+.login-err { background: rgba(192,83,58,0.15); color: var(--red); border-radius: 8px; padding: 10px 12px; font-size: 13px; margin-bottom: 14px; display: none; }
+
+/* ── LOADING ── */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  flex-direction: column;
+  gap: 16px;
+}
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── AGENDA ── */
+.agenda-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.visita-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.visita-card:hover { border-color: var(--green); }
+.visita-fecha { font-size: 11px; color: var(--text3); margin-bottom: 6px; }
+.visita-titulo { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.visita-dir { font-size: 12px; color: var(--text3); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--green);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 9999;
+  transition: transform 0.3s;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── FILE UPLOAD ── */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 13px;
+  color: var(--text3);
+}
+.upload-zone:hover { border-color: var(--green); color: var(--green-light); }
+
+.app-layout { display: none; width: 100%; }
+.app-layout.visible { display: flex; width: 100%; }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading-screen" id="loading">
+  <div class="spinner"></div>
+  <div style="font-size:13px;color:var(--text3);">Cargando panel...</div>
+</div>
+
+<!-- Login -->
+<div class="login-screen" id="login-screen" style="display:none;">
+  <div class="login-box">
+    <div class="login-logo">🏡 Nidus</div>
+    <div class="login-sub">Panel de Administración · Nidus</div>
+    <div class="login-err" id="login-err"></div>
+    <div class="form-group">
+      <label class="form-label">Correo electrónico</label>
+      <input class="form-input" id="adm-email" type="email" placeholder="admin@constructora.cl" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input class="form-input" id="adm-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-top:8px;" id="adm-login-btn" onclick="doLogin()">Ingresar al panel</button>
+  </div>
+</div>
+
+<!-- App Layout -->
+<div class="app-layout" id="app-layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-title">🏡 Nidus</div>
+      <div class="logo-sub">Panel de Administración · Nidus</div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="adm-avatar">—</div>
+      <div class="user-info">
+        <div class="user-name" id="adm-name">—</div>
+        <div class="user-role">Equipo Postventa</div>
+      </div>
+    </div>
+
+    <div class="nav-section">Principal</div>
+    <button class="nav-item active" data-view="dashboard" onclick="navigate('dashboard')">
+      <span class="nav-icon">📊</span> Dashboard
+    </button>
+    <button class="nav-item" data-view="solicitudes" onclick="navigate('solicitudes')">
+      <span class="nav-icon">📋</span> Solicitudes
+      <span class="nav-badge" id="nav-badge-sol">0</span>
+    </button>
+    <button class="nav-item" data-view="agenda" onclick="navigate('agenda')">
+      <span class="nav-icon">📅</span> Agenda
+    </button>
+
+    <div class="nav-section">Gestión</div>
+    <button class="nav-item" data-view="proyectos" onclick="navigate('proyectos')">
+      <span class="nav-icon">🏘️</span> Proyectos
+    </button>
+    <button class="nav-item" data-view="viviendas" onclick="navigate('viviendas')">
+      <span class="nav-icon">🏠</span> Viviendas
+    </button>
+    <button class="nav-item" data-view="clientes" onclick="navigate('clientes')">
+      <span class="nav-icon">👥</span> Clientes
+    </button>
+    <button class="nav-item" data-view="documentos" onclick="navigate('documentos')">
+      <span class="nav-icon">📁</span> Documentos
+    </button>
+
+    <div class="sidebar-bottom">
+      <button class="btn-logout" onclick="doLogout()">↩ Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-sub" id="topbar-sub"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div id="adm-notif-bell" onclick="toggleAdmNotif()" style="position:relative;cursor:pointer;font-size:20px;padding:4px 8px;border-radius:8px;transition:background 0.15s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
+          🔔
+          <span id="adm-notif-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#C0533A;color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--bg2);">0</span>
+        </div>
+        <div class="topbar-actions" id="topbar-actions"></div>
+      </div>
+    </div>
+
+    <!-- NOTIF PANEL ADMIN -->
+    <div id="adm-notif-panel" style="display:none;position:fixed;top:56px;right:16px;width:340px;max-height:480px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.4);z-index:500;flex-direction:column;">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:14px;font-weight:700;">🔔 Notificaciones</span>
+        <button onclick="admMarcarLeidas()" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;">Marcar leídas</button>
+      </div>
+      <div id="adm-notif-lista" style="overflow-y:auto;max-height:400px;">
+        <div style="padding:24px;text-align:center;color:var(--text3);font-size:13px;">Cargando...</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="view active" id="view-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Solicitudes</div>
+            <div class="stat-value" id="d-total">—</div>
+            <div class="stat-sub" id="d-total-sub">Cargando...</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pendientes</div>
+            <div class="stat-value" id="d-pendientes" style="color:var(--amber)">—</div>
+            <div class="stat-sub">Requieren atención</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">En Proceso</div>
+            <div class="stat-value" id="d-proceso" style="color:var(--blue)">—</div>
+            <div class="stat-sub">En ejecución</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Resueltas</div>
+            <div class="stat-value" id="d-resueltas" style="color:var(--green-light)">—</div>
+            <div class="stat-sub">Completadas</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Solicitudes Recientes</div>
+                <div class="card-sub">Últimas 5 ingresadas</div>
+              </div>
+              <button class="btn btn-sm btn-secondary" onclick="navigate('solicitudes')">Ver todas</button>
+            </div>
+            <div id="d-recientes">
+              <div class="empty-state"><div class="empty-icon">📋</div><div>Cargando...</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Próximas Visitas</div>
+                <div class="card-sub">Agenda de los próximos 7 días</div>
+              </div>
+              <button class="btn btn-sm btn-secondary" onclick="navigate('agenda')">Ver agenda</button>
+            </div>
+            <div id="d-visitas">
+              <div class="empty-state"><div class="empty-icon">📅</div><div>Cargando...</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SOLICITUDES ── -->
+      <div class="view" id="view-solicitudes">
+        <div class="filters">
+          <input class="filter-input" id="f-buscar" placeholder="🔍 Buscar solicitud..." oninput="filtrarSolicitudes()">
+          <select class="filter-input" id="f-estado" onchange="filtrarSolicitudes()">
+            <option value="">Todos los estados</option>
+            <option value="enviada">Enviada</option>
+            <option value="en_revision">En revisión</option>
+            <option value="aprobada">Aprobada</option>
+            <option value="materiales_comprados">Materiales comprados</option>
+            <option value="visita_programada">Visita programada</option>
+            <option value="en_reparacion">En reparación</option>
+            <option value="resuelta">Resuelta</option>
+            <option value="rechazada">Rechazada</option>
+            <option value="cerrada">Cerrada</option>
+          </select>
+          <select class="filter-input" id="f-proyecto" onchange="filtrarSolicitudes()">
+            <option value="">Todos los proyectos</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>N°</th>
+                <th>Cliente / Vivienda</th>
+                <th>Problema</th>
+                <th>Estado</th>
+                <th>Urgencia</th>
+                <th>Fecha</th>
+                <th style="text-align:right;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="sol-tbody">
+              <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text3);">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── AGENDA ── -->
+      <div class="view" id="view-agenda">
+        <div class="agenda-grid" id="agenda-grid">
+          <div class="empty-state"><div class="empty-icon">📅</div><div class="empty-title">Cargando agenda...</div></div>
+        </div>
+      </div>
+
+      <!-- ── PROYECTOS ── -->
+      <div class="view" id="view-proyectos">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Ciudad</th>
+                <th>Recepción DOM</th>
+                <th>Viviendas</th>
+                <th style="text-align:right;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="proy-tbody">
+              <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text3);">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── VIVIENDAS ── -->
+      <div class="view" id="view-viviendas">
+        <div class="filters">
+          <select class="filter-input" id="f-proy-viv" onchange="cargarViviendas()">
+            <option value="">Todos los proyectos</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Unidad</th>
+                <th>Proyecto</th>
+                <th>Superficie</th>
+                <th>Entrega</th>
+                <th>Cliente</th>
+                <th style="text-align:right;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="viv-tbody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3);">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── CLIENTES ── -->
+      <div class="view" id="view-clientes">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Vivienda</th>
+                <th>Rol</th>
+                <th style="text-align:right;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="cli-tbody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3);">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── PROYECTO DETALLE ── -->
+      <div class="view" id="view-proyecto-detalle">
+        <div class="card" style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+            <button onclick="navigate('proyectos')" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;">← Volver</button>
+            <div>
+              <div class="card-title" id="pd-nombre">—</div>
+              <div class="card-sub" id="pd-meta">—</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;" id="pd-stats"></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Viviendas</div>
+            </div>
+            <div id="pd-viviendas"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Solicitudes del proyecto</div>
+            </div>
+            <div id="pd-solicitudes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DOCUMENTOS ── -->
+      <div class="view" id="view-documentos">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Subir documento</div>
+              <div class="card-sub">Selecciona la vivienda y el tipo de documento</div>
+            </div>
+          </div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div class="form-group" style="margin:0;">
+              <label class="form-label">Vivienda</label>
+              <select class="form-select" id="doc-vivienda">
+                <option value="">Selecciona una vivienda...</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label class="form-label">Tipo</label>
+              <select class="form-select" id="doc-tipo">
+                <option value="certificados">Certificado</option>
+                <option value="manuales">Manual</option>
+                <option value="planos">Plano</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nombre del documento</label>
+            <input class="form-input" id="doc-nombre" placeholder="ej: recepcion-municipal.pdf">
+          </div>
+          <div class="upload-zone" id="upload-zone" onclick="document.getElementById('doc-file').click()">
+            📎 Haz clic para seleccionar un archivo PDF
+            <input type="file" id="doc-file" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="previewFile(this)">
+          </div>
+          <div id="upload-preview" style="margin-top:10px;font-size:13px;color:var(--accent);display:none;"></div>
+          <button class="btn btn-primary" style="margin-top:16px;" onclick="subirDocumento()">⬆ Subir documento</button>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app-layout -->
+
+<!-- ── DETAIL PANEL (Solicitud) ── -->
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-header">
+    <button onclick="closeDetail()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px;">✕</button>
+    <div style="flex:1;">
+      <div style="font-size:15px;font-weight:700;" id="dp-titulo">—</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:2px;" id="dp-meta">—</div>
+    </div>
+    <div id="dp-badge"></div>
+  </div>
+  <div class="detail-body">
+    <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">DESCRIPCIÓN</div>
+    <div style="font-size:13px;margin-bottom:20px;" id="dp-desc">—</div>
+
+    <div style="font-size:12px;color:var(--text3);margin-bottom:8px;">CAMBIAR ESTADO</div>
+    <div class="status-flow" id="dp-estados"></div>
+
+    <div style="font-size:12px;color:var(--text3);margin:16px 0 8px;">PROGRAMAR VISITA</div>
+    <div class="form-row" style="margin-bottom:10px;">
+      <div>
+        <label class="form-label">Fecha</label>
+        <input class="form-input" type="date" id="dp-fecha-visita">
+      </div>
+      <div>
+        <label class="form-label">Hora inicio</label>
+        <input class="form-input" type="time" id="dp-hora-visita">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Responsable</label>
+      <input class="form-input" id="dp-responsable" placeholder="Nombre del técnico">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notas de la visita</label>
+      <textarea class="form-textarea" id="dp-notas-visita" placeholder="Detalle del trabajo a realizar..."></textarea>
+    </div>
+    <button class="btn btn-primary" style="width:100%;" onclick="programarVisita()">📅 Programar visita</button>
+
+    <div id="dp-fotos"></div>
+    <div style="font-size:12px;color:var(--text3);margin:20px 0 8px;">HISTORIAL</div>
+    <div class="timeline" id="dp-historial"></div>
+  </div>
+</div>
+
+<!-- ── MODALS ── -->
+
+<!-- Modal Nuevo Proyecto -->
+<div class="modal-overlay" id="modal-proyecto">
+  <div class="modal">
+    <div class="modal-title">Nuevo Proyecto</div>
+    <div class="modal-sub">Ingresa los datos del proyecto inmobiliario</div>
+    <div class="form-group">
+      <label class="form-label">Nombre del proyecto *</label>
+      <input class="form-input" id="mp-nombre" placeholder="ej: Altos del Portal">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Ciudad *</label>
+        <input class="form-input" id="mp-ciudad" placeholder="ej: Temuco">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Comuna</label>
+        <input class="form-input" id="mp-comuna" placeholder="ej: Padre Las Casas">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Recepción DOM</label>
+        <input class="form-input" type="date" id="mp-dom">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rol Avalúo</label>
+        <input class="form-input" id="mp-rol" placeholder="ej: 4434-50">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Dirección</label>
+      <input class="form-input" id="mp-dir" placeholder="Calle, número">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-proyecto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarProyecto()">Guardar proyecto</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nueva Vivienda -->
+<div class="modal-overlay" id="modal-vivienda">
+  <div class="modal">
+    <div class="modal-title">Nueva Vivienda</div>
+    <div class="modal-sub">Agrega una unidad a un proyecto existente</div>
+    <div class="form-group">
+      <label class="form-label">Proyecto *</label>
+      <select class="form-select" id="mv-proyecto"></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Tipo unidad</label>
+        <select class="form-select" id="mv-tipo">
+          <option value="Casa">Casa</option>
+          <option value="Departamento">Departamento</option>
+          <option value="Oficina">Oficina</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Número / Letra *</label>
+        <input class="form-input" id="mv-numero" placeholder="ej: 378 / 4B">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Piso</label>
+        <input class="form-input" type="number" id="mv-piso" placeholder="ej: 4">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Superficie (m²)</label>
+        <input class="form-input" type="number" id="mv-sup" placeholder="ej: 292.58">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Fecha entrega</label>
+        <input class="form-input" type="date" id="mv-entrega">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Inscripción CBR</label>
+        <input class="form-input" type="date" id="mv-cbr">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-vivienda')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarVivienda()">Guardar vivienda</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nuevo Cliente -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-title">Nuevo Cliente</div>
+    <div class="modal-sub">Registra un propietario y asígnalo a una vivienda</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Nombre *</label>
+        <input class="form-input" id="mc-nombre" placeholder="Juan">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Apellido *</label>
+        <input class="form-input" id="mc-apellido" placeholder="González">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Email *</label>
+        <input class="form-input" type="email" id="mc-email" placeholder="cliente@mail.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Teléfono</label>
+        <input class="form-input" id="mc-tel" placeholder="+56 9 1234 5678">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Vivienda asignada</label>
+        <select class="form-select" id="mc-vivienda"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rol</label>
+        <select class="form-select" id="mc-rol">
+          <option value="cliente">Cliente</option>
+          <option value="postventa">Postventa</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-cliente')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarCliente()">Guardar cliente</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPA_URL = 'https://mndfizjyuupzovwcupdk.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZGZpemp5dXVwem92d2N1cGRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjg1NDYsImV4cCI6MjA5MDY0NDU0Nn0.5mlbaMRvF9kMp5JrPQmJrGWVWim5dTfL30JcBs_Ow-0';
+
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+const ESTADOS = {
+  enviada:              { label: '○ Enviada',              cls: 'badge-pending' },
+  en_revision:          { label: '→ En revisión',          cls: 'badge-progress' },
+  aprobada:             { label: '✓ Aprobada',             cls: 'badge-approved' },
+  materiales_comprados: { label: '🛒 Materiales comprados', cls: 'badge-progress' },
+  visita_programada:    { label: '📅 Visita programada',   cls: 'badge-progress' },
+  en_reparacion:        { label: '🔧 En reparación',       cls: 'badge-progress' },
+  resuelta:             { label: '✓ Resuelta',             cls: 'badge-approved' },
+  rechazada:            { label: '✗ Rechazada',            cls: 'badge-rejected' },
+  cerrada:              { label: '— Cerrada',              cls: 'badge-info' },
+};
+
+const FLUJO_ESTADOS = [
+  'enviada','en_revision','aprobada','materiales_comprados',
+  'visita_programada','en_reparacion','resuelta','cerrada'
+];
+
+let USER = null;
+let ALL_SOLICITUDES = [];
+let ALL_PROYECTOS = [];
+let ALL_VIVIENDAS = [];
+let ALL_CLIENTES = [];
+let ALL_VISITAS = [];
+let CURRENT_SOL = null;
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    USER = session.user;
+    await initApp();
+  } else {
+    showLogin();
+  }
+});
+
+function showLogin() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+async function doLogin() {
+  const email = document.getElementById('adm-email').value.trim();
+  const pass  = document.getElementById('adm-pass').value;
+  const err   = document.getElementById('adm-login-btn');
+  const errEl = document.getElementById('login-err');
+  errEl.style.display = 'none';
+
+  if (!email || !pass) { errEl.textContent = 'Ingresa email y contraseña.'; errEl.style.display = 'block'; return; }
+
+  err.textContent = 'Ingresando...';
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  err.textContent = 'Ingresar al panel';
+
+  if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; return; }
+  USER = data.user;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('loading').style.display = 'flex';
+  await initApp();
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  location.reload();
+}
+
+async function initApp() {
+  // Set user info
+  const name = USER.email.split('@')[0];
+  const initials = name.substring(0,2).toUpperCase();
+  document.getElementById('adm-avatar').textContent = initials;
+  document.getElementById('adm-name').textContent = USER.email;
+
+  // Load all data
+  try {
+    await Promise.all([
+      cargarSolicitudes(),
+      cargarProyectos(),
+      cargarViviendas(),
+      cargarClientes(),
+      cargarVisitas(),
+    ]);
+  } catch(e) {
+    console.error('Error cargando datos:', e);
+  }
+
+  renderDashboard();
+  cargarNotifAdmin();
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('app-layout').classList.add('visible');
+}
+
+// ── DATA LOADERS ──
+async function cargarSolicitudes() {
+  try {
+    const { data } = await sb.from('solicitudes').select('*').order('created_at', { ascending: false });
+    ALL_SOLICITUDES = data || [];
+    const badge = document.getElementById('nav-badge-sol');
+    if (badge) badge.textContent = ALL_SOLICITUDES.filter(s => ['enviada','en_revision'].includes(s.estado)).length;
+  } catch(e) { console.error('cargarSolicitudes:', e); }
+}
+
+async function cargarProyectos() {
+  try {
+    const { data } = await sb.from('proyectos').select('*').order('nombre');
+    ALL_PROYECTOS = data || [];
+  } catch(e) { console.error('cargarProyectos:', e); }
+}
+
+async function cargarViviendas(proyectoId) {
+  try {
+    let q = sb.from('viviendas').select('*').order('numero_unidad');
+    if (proyectoId) q = q.eq('proyecto_id', proyectoId);
+    const { data } = await q;
+    ALL_VIVIENDAS = data || [];
+  } catch(e) { console.error('cargarViviendas:', e); }
+}
+
+async function cargarClientes() {
+  try {
+    const { data } = await sb.from('clientes').select('*').order('nombre');
+    ALL_CLIENTES = data || [];
+  } catch(e) { console.error('cargarClientes:', e); }
+}
+
+async function cargarVisitas() {
+  try {
+    const { data } = await sb.from('visitas').select('*').order('fecha_visita');
+    ALL_VISITAS = data || [];
+  } catch(e) { console.error('cargarVisitas:', e); ALL_VISITAS = []; }
+}
+
+// ── NAVIGATION ──
+function navigate(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  // Proyecto detalle uses proyectos nav item as active
+  if (view === 'proyecto-detalle') {
+    const proyBtn = document.querySelector('[data-view="proyectos"]');
+    if (proyBtn) proyBtn.classList.add('active');
+  }
+  document.getElementById('view-' + view).classList.add('active');
+  document.querySelector('[data-view="' + view + '"]').classList.add('active');
+  closeDetail();
+
+  const titles = {
+    dashboard:           ['Dashboard', 'Resumen general del sistema'],
+    solicitudes:         ['Solicitudes', 'Gestión de todas las solicitudes'],
+    agenda:              ['Agenda', 'Visitas e ingresos programados'],
+    proyectos:           ['Proyectos', 'Proyectos inmobiliarios registrados'],
+    'proyecto-detalle':  ['Proyecto', 'Detalle de viviendas y solicitudes'],
+    viviendas:           ['Viviendas', 'Unidades por proyecto'],
+    clientes:            ['Clientes', 'Propietarios registrados'],
+    documentos:          ['Documentos', 'Subida de archivos por vivienda'],
+  };
+
+  document.getElementById('topbar-title').textContent = titles[view][0];
+  document.getElementById('topbar-sub').textContent   = titles[view][1];
+
+  const actions = {
+    proyectos:  '<button class="btn btn-primary" onclick="openModal(\'modal-proyecto\')">+ Nuevo proyecto</button>',
+    viviendas:  '<button class="btn btn-primary" onclick="openModal(\'modal-vivienda\')">+ Nueva vivienda</button>',
+    clientes:   '<button class="btn btn-secondary" onclick="openModal(\'modal-cliente\')">+ Registrar</button> <button class="btn btn-primary" onclick="openModal(\'modal-invitar\')">✉ Invitar cliente</button>',
+    solicitudes:'',
+    agenda:     '<button class="btn btn-primary" onclick="openModal(\'modal-visita-libre\')">+ Programar visita</button>',
+  };
+  document.getElementById('topbar-actions').innerHTML = actions[view] || '';
+
+  if (view === 'solicitudes') renderSolicitudes();
+  if (view === 'proyectos')   renderProyectos();
+  if (view === 'viviendas')   renderViviendas();
+  if (view === 'clientes')    renderClientes();
+  if (view === 'agenda')      renderAgenda();
+  if (view === 'documentos')  poblarSelectsDoc();
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  const total     = ALL_SOLICITUDES.length;
+  const pendientes = ALL_SOLICITUDES.filter(s => ['enviada'].includes(s.estado)).length;
+  const proceso   = ALL_SOLICITUDES.filter(s => ['en_revision','aprobada','materiales_comprados','visita_programada','en_reparacion'].includes(s.estado)).length;
+  const resueltas = ALL_SOLICITUDES.filter(s => ['resuelta','cerrada'].includes(s.estado)).length;
+
+  document.getElementById('d-total').textContent      = total;
+  document.getElementById('d-total-sub').textContent  = total + ' solicitudes registradas';
+  document.getElementById('d-pendientes').textContent = pendientes;
+  document.getElementById('d-proceso').textContent    = proceso;
+  document.getElementById('d-resueltas').textContent  = resueltas;
+
+  // Recientes
+  const recDiv = document.getElementById('d-recientes');
+  if (ALL_SOLICITUDES.length === 0) {
+    recDiv.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">Sin solicitudes</div></div>';
+  } else {
+    recDiv.innerHTML = ALL_SOLICITUDES.slice(0,5).map(s => {
+      const est = ESTADOS[s.estado] || ESTADOS['enviada'];
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="abrirDetalle(\'' + s.id + '\')">' +
+        '<div><div style="font-size:13px;font-weight:600;">' + (s.titulo||s.title||'Sin título') + '</div>' +
+        '<div style="font-size:11px;color:var(--text3);margin-top:2px;">' + (s.numero||'') + ' · ' + fmtFecha(s.created_at) + '</div></div>' +
+        '<span class="badge ' + est.cls + '">' + est.label + '</span></div>';
+    }).join('');
+  }
+
+  // Visitas próximas
+  const hoy = new Date().toISOString().split('T')[0];
+  const en7 = new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0];
+  const proximas = ALL_VISITAS.filter(v => v.fecha_visita >= hoy && v.fecha_visita <= en7);
+  const visDiv = document.getElementById('d-visitas');
+  if (proximas.length === 0) {
+    visDiv.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-title">Sin visitas esta semana</div></div>';
+  } else {
+    visDiv.innerHTML = proximas.map(v =>
+      '<div style="padding:8px 0;border-bottom:1px solid var(--border);">' +
+      '<div style="font-size:13px;font-weight:600;">' + v.titulo + '</div>' +
+      '<div style="font-size:11px;color:var(--text3);margin-top:2px;">📅 ' + fmtFecha(v.fecha_visita) + (v.hora_inicio ? ' · ' + v.hora_inicio.substring(0,5) : '') + (v.responsable ? ' · ' + v.responsable : '') + '</div></div>'
+    ).join('');
+  }
+}
+
+// ── SOLICITUDES ──
+function renderSolicitudes() {
+  poblarFiltroProyectos();
+  filtrarSolicitudes();
+}
+
+function poblarFiltroProyectos() {
+  const sel = document.getElementById('f-proyecto');
+  sel.innerHTML = '<option value="">Todos los proyectos</option>' +
+    ALL_PROYECTOS.map(p => '<option value="' + p.id + '">' + p.nombre + '</option>').join('');
+}
+
+function filtrarSolicitudes() {
+  const buscar  = document.getElementById('f-buscar').value.toLowerCase();
+  const estado  = document.getElementById('f-estado').value;
+  const proyId  = document.getElementById('f-proyecto').value;
+
+  let lista = ALL_SOLICITUDES.filter(s => {
+    const txt = (s.titulo||s.title||'') + ' ' + (s.descripcion||'') + ' ' + (s.numero||'');
+    const okBuscar = !buscar || txt.toLowerCase().includes(buscar);
+    const okEstado = !estado || s.estado === estado;
+    const okProy   = !proyId; // TODO: join con viviendas para filtrar por proyecto
+    return okBuscar && okEstado && okProy;
+  });
+
+  const tbody = document.getElementById('sol-tbody');
+  if (lista.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text3);">Sin solicitudes que coincidan</td></tr>';
+    return;
+  }
+
+  const clienteMap = {};
+  ALL_CLIENTES.forEach(c => { clienteMap[c.id] = c.nombre + ' ' + c.apellido; });
+  const vivMap = {};
+  ALL_VIVIENDAS.forEach(v => { vivMap[v.id] = (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad; });
+
+  tbody.innerHTML = lista.map(s => {
+    const est = ESTADOS[s.estado] || ESTADOS['enviada'];
+    const urg = s.urgencia || 'media';
+    const urgCls = urg === 'alta' ? 'badge-rejected' : urg === 'baja' ? 'badge-approved' : 'badge-pending';
+    const cliente = clienteMap[s.cliente_id] || '—';
+    const viv = vivMap[s.vivienda_id] || '—';
+    return '<tr style="cursor:pointer;" onclick="abrirDetalle(\'' + s.id + '\')">' +
+      '<td style="font-size:11px;color:var(--text3);">' + (s.numero||s.id.substring(0,8)) + '</td>' +
+      '<td><div style="font-weight:600;font-size:13px;">' + cliente + '</div><div style="font-size:11px;color:var(--text3);">' + viv + '</div></td>' +
+      '<td style="max-width:200px;"><div style="font-size:13px;font-weight:500;">' + (s.titulo||s.title||'Sin título') + '</div><div style="font-size:11px;color:var(--text3);">' + (s.ubicacion_vivienda||'') + '</div></td>' +
+      '<td><span class="badge ' + est.cls + '">' + est.label + '</span></td>' +
+      '<td><span class="badge ' + urgCls + '">' + urg + '</span></td>' +
+      '<td style="font-size:12px;color:var(--text3);">' + fmtFecha(s.created_at) + '</td>' +
+      '<td class="td-actions"><button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();abrirDetalle(\'' + s.id + '\')">Ver</button></td></tr>';
+  }).join('');
+}
+
+// ── DETALLE SOLICITUD ──
+async function abrirDetalle(id) {
+  CURRENT_SOL = ALL_SOLICITUDES.find(s => s.id === id);
+  if (!CURRENT_SOL) return;
+
+  const s = CURRENT_SOL;
+  const est = ESTADOS[s.estado] || ESTADOS['enviada'];
+
+  document.getElementById('dp-titulo').textContent = s.titulo || s.title || 'Sin título';
+  document.getElementById('dp-meta').textContent   = (s.numero||'') + ' · ' + fmtFecha(s.created_at) + (s.ubicacion_vivienda ? ' · ' + s.ubicacion_vivienda : '');
+  document.getElementById('dp-badge').innerHTML    = '<span class="badge ' + est.cls + '">' + est.label + '</span>';
+  document.getElementById('dp-desc').textContent   = s.descripcion || s.desc || '(Sin descripción)';
+
+  // Flujo de estados
+  document.getElementById('dp-estados').innerHTML = FLUJO_ESTADOS.map(e => {
+    const ec = ESTADOS[e] || {};
+    const isCurrent = s.estado === e;
+    return '<button class="status-btn ' + (isCurrent?'current':'') + '" onclick="cambiarEstado(\'' + e + '\')">' + ec.label + '</button>';
+  }).join('') + '<button class="status-btn" style="border-color:var(--red);color:var(--red);" onclick="cambiarEstado(\'rechazada\')">✗ Rechazada</button>';
+
+  // Historial
+  await cargarHistorial(id);
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+async function cargarHistorial(solId) {
+  const [{ data: hist }, { data: fotos }] = await Promise.all([
+    sb.from('historial_solicitud').select('*').eq('solicitud_id', solId).order('created_at'),
+    sb.from('fotos_solicitud').select('*').eq('solicitud_id', solId).order('orden'),
+  ]);
+
+  const visitas = ALL_VISITAS.filter(v => v.solicitud_id === solId);
+
+  // Mostrar fotos del cliente
+  const fotosEl = document.getElementById('dp-fotos');
+  if (fotosEl) {
+    if (fotos && fotos.length > 0) {
+      fotosEl.innerHTML =
+        '<div style="font-size:12px;color:var(--text3);margin-bottom:8px;">FOTOS DEL CLIENTE (' + fotos.length + ')</div>' +
+        '<div id="dp-fotos-grid" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;"></div>';
+      const grid = document.getElementById('dp-fotos-grid');
+      fotos.forEach(f => {
+        const img = document.createElement('img');
+        img.src = f.url_publica;
+        img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid var(--border);';
+        img.title = 'Ver foto completa';
+        img.onclick = function() { window.open(f.url_publica, '_blank'); };
+        grid.appendChild(img);
+      });
+    } else {
+      fotosEl.innerHTML = '<div style="font-size:12px;color:var(--text3);margin-bottom:16px;">Sin fotos adjuntas</div>';
+    }
+  }
+
+  const items = [
+    ...(hist||[]).map(h => ({ fecha: h.created_at, texto: h.descripcion || 'Cambio de estado' })),
+    ...visitas.map(v => ({ fecha: v.fecha_visita + 'T' + (v.hora_inicio||'00:00:00'), texto: '📅 Visita programada: ' + v.titulo + (v.responsable ? ' · ' + v.responsable : '') })),
+  ].sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+
+  if (items.length === 0) {
+    document.getElementById('dp-historial').innerHTML = '<div style="font-size:13px;color:var(--text3);">Sin historial registrado aún.</div>';
+    return;
+  }
+
+  document.getElementById('dp-historial').innerHTML = items.map(i =>
+    '<div class="timeline-item"><div class="timeline-date">' + fmtFecha(i.fecha) + '</div><div class="timeline-text">' + i.texto + '</div></div>'
+  ).join('');
+}
+
+async function cambiarEstado(nuevoEstado) {
+  if (!CURRENT_SOL) return;
+  const { error } = await sb.from('solicitudes').update({ estado: nuevoEstado, updated_at: new Date().toISOString() }).eq('id', CURRENT_SOL.id);
+  if (error) { showToast('Error al actualizar estado'); return; }
+
+  // Registrar en historial
+  await sb.from('historial_solicitud').insert({
+    solicitud_id: CURRENT_SOL.id,
+    estado_nuevo: nuevoEstado,
+    descripcion: 'Estado cambiado a: ' + (ESTADOS[nuevoEstado]?.label || nuevoEstado),
+    created_at: new Date().toISOString()
+  });
+
+  CURRENT_SOL.estado = nuevoEstado;
+  const idx = ALL_SOLICITUDES.findIndex(s => s.id === CURRENT_SOL.id);
+  if (idx >= 0) ALL_SOLICITUDES[idx].estado = nuevoEstado;
+
+  showToast('✓ Estado actualizado: ' + (ESTADOS[nuevoEstado]?.label || nuevoEstado));
+  // Notificar al cliente
+  if (CURRENT_SOL.vivienda_id) {
+    const estadoLabel = ESTADOS[nuevoEstado] ? ESTADOS[nuevoEstado].label : nuevoEstado;
+    notificarClienteDesdAdmin(
+      CURRENT_SOL.id,
+      CURRENT_SOL.vivienda_id,
+      'cambio_estado',
+      'Estado actualizado: ' + estadoLabel,
+      'Tu solicitud ' + (CURRENT_SOL.numero||'') + ' ha sido actualizada.'
+    );
+  }
+  abrirDetalle(CURRENT_SOL.id);
+  document.getElementById('nav-badge-sol').textContent = ALL_SOLICITUDES.filter(s => ['enviada','en_revision'].includes(s.estado)).length;
+  if (document.getElementById('view-solicitudes').classList.contains('active')) filtrarSolicitudes();
+  if (document.getElementById('view-dashboard').classList.contains('active')) renderDashboard();
+}
+
+async function programarVisita() {
+  if (!CURRENT_SOL) return;
+  const fecha = document.getElementById('dp-fecha-visita').value;
+  const hora  = document.getElementById('dp-hora-visita').value;
+  const resp  = document.getElementById('dp-responsable').value;
+  const notas = document.getElementById('dp-notas-visita').value;
+
+  if (!fecha) { showToast('Selecciona una fecha para la visita'); return; }
+
+  const titulo = 'Visita · ' + (CURRENT_SOL.titulo || CURRENT_SOL.title || 'Solicitud');
+  const { error } = await sb.from('visitas').insert({
+    solicitud_id:  CURRENT_SOL.id,
+    vivienda_id:   CURRENT_SOL.vivienda_id,
+    titulo,
+    fecha_visita:  fecha,
+    hora_inicio:   hora || null,
+    responsable:   resp || null,
+    notas_post:    notas || null,
+    estado:        'programada'
+  });
+
+  if (error) { showToast('Error al programar visita: ' + error.message); return; }
+
+  // Cambiar estado automáticamente a visita_programada
+  await cambiarEstado('visita_programada');
+  await cargarVisitas();
+  showToast('📅 Visita programada para el ' + fmtFecha(fecha));
+  // Notificar al cliente
+  if (CURRENT_SOL && CURRENT_SOL.vivienda_id) {
+    notificarClienteDesdAdmin(
+      CURRENT_SOL.id,
+      CURRENT_SOL.vivienda_id,
+      'visita_programada',
+      '📅 Visita programada',
+      'Se ha agendado una visita para el ' + fmtFecha(fecha) + (resp ? ' con ' + resp : '') + '.'
+    );
+  }
+
+  // Limpiar campos
+  document.getElementById('dp-fecha-visita').value = '';
+  document.getElementById('dp-hora-visita').value = '';
+  document.getElementById('dp-responsable').value = '';
+  document.getElementById('dp-notas-visita').value = '';
+  await cargarHistorial(CURRENT_SOL.id);
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('open');
+  CURRENT_SOL = null;
+}
+
+// ── PROYECTOS ──
+function renderProyectos() {
+  const tbody = document.getElementById('proy-tbody');
+  if (ALL_PROYECTOS.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text3);">Sin proyectos registrados</td></tr>';
+    return;
+  }
+  tbody.innerHTML = ALL_PROYECTOS.map(p => {
+    const vivCount = ALL_VIVIENDAS.filter(v => v.proyecto_id === p.id).length;
+    return '<tr><td style="font-weight:600;">' + p.nombre + '</td>' +
+      '<td style="color:var(--text3);">' + (p.ciudad||'—') + '</td>' +
+      '<td style="color:var(--text3);">' + (p.fecha_recepcion_dom ? fmtFecha(p.fecha_recepcion_dom) : '—') + '</td>' +
+      '<td><span class="badge badge-info">' + vivCount + ' unidades</span></td>' +
+      '<td class="td-actions"><button class="btn btn-sm btn-secondary" onclick="editarProyecto(\'' + p.id + '\')">Editar</button></td></tr>';
+  }).join('');
+}
+
+async function guardarProyecto() {
+  const nombre = document.getElementById('mp-nombre').value.trim();
+  const ciudad = document.getElementById('mp-ciudad').value.trim();
+  if (!nombre || !ciudad) { showToast('Nombre y ciudad son obligatorios'); return; }
+
+  const data = {
+    nombre,
+    ciudad,
+    comuna:              document.getElementById('mp-comuna').value.trim() || null,
+    fecha_recepcion_dom: document.getElementById('mp-dom').value || null,
+    rol_avaluo:          document.getElementById('mp-rol').value.trim() || null,
+    direccion:           document.getElementById('mp-dir').value.trim() || null,
+  };
+
+  const { error } = await sb.from('proyectos').insert(data);
+  if (error) { showToast('Error: ' + error.message); return; }
+
+  showToast('✓ Proyecto guardado');
+  closeModal('modal-proyecto');
+  await cargarProyectos();
+  renderProyectos();
+}
+
+// ── VIVIENDAS ──
+function renderViviendas() {
+  poblarSelectProyecto('f-proy-viv');
+  mostrarViviendas();
+}
+
+function mostrarViviendas() {
+  const proyId = document.getElementById('f-proy-viv').value;
+  const lista  = proyId ? ALL_VIVIENDAS.filter(v => v.proyecto_id === proyId) : ALL_VIVIENDAS;
+  const tbody  = document.getElementById('viv-tbody');
+  const proyMap = {};
+  ALL_PROYECTOS.forEach(p => { proyMap[p.id] = p.nombre; });
+  const cliMap = {};
+  ALL_CLIENTES.forEach(c => { cliMap[c.vivienda_id] = c.nombre + ' ' + c.apellido; });
+
+  if (lista.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3);">Sin viviendas' + (proyId ? ' en este proyecto' : ' registradas') + '</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = lista.map(v =>
+    '<tr><td style="font-weight:600;">' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + (v.piso ? ' · Piso ' + v.piso : '') + '</td>' +
+    '<td style="color:var(--text3);">' + (proyMap[v.proyecto_id]||'—') + '</td>' +
+    '<td style="color:var(--text3);">' + (v.superficie_total||v.superficie_interior||'—') + ' m²</td>' +
+    '<td style="color:var(--text3);">' + (v.fecha_entrega ? fmtFecha(v.fecha_entrega) : '—') + '</td>' +
+    '<td>' + (cliMap[v.id] ? '<span class="badge badge-approved">' + cliMap[v.id] + '</span>' : '<span class="badge badge-pending">Sin asignar</span>') + '</td>' +
+    '<td class="td-actions"><button class="btn btn-sm btn-secondary">Editar</button></td></tr>'
+  ).join('');
+}
+
+async function guardarVivienda() {
+  const proyId  = document.getElementById('mv-proyecto').value;
+  const numero  = document.getElementById('mv-numero').value.trim();
+  if (!proyId || !numero) { showToast('Proyecto y número son obligatorios'); return; }
+
+  const data = {
+    proyecto_id:          proyId,
+    tipo_unidad:          document.getElementById('mv-tipo').value,
+    numero_unidad:        numero,
+    piso:                 document.getElementById('mv-piso').value || null,
+    superficie_total:     document.getElementById('mv-sup').value || null,
+    fecha_entrega:        document.getElementById('mv-entrega').value || null,
+    fecha_inscripcion_cbr:document.getElementById('mv-cbr').value || null,
+  };
+
+  const { error } = await sb.from('viviendas').insert(data);
+  if (error) { showToast('Error: ' + error.message); return; }
+
+  showToast('✓ Vivienda guardada');
+  closeModal('modal-vivienda');
+  await cargarViviendas();
+  mostrarViviendas();
+}
+
+// ── CLIENTES ──
+function renderClientes() {
+  const tbody = document.getElementById('cli-tbody');
+  const vivMap = {};
+  ALL_VIVIENDAS.forEach(v => { vivMap[v.id] = (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad; });
+
+  if (ALL_CLIENTES.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3);">Sin clientes registrados</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = ALL_CLIENTES.map(c =>
+    '<tr><td style="font-weight:600;">' + c.nombre + ' ' + (c.apellido||'') + '</td>' +
+    '<td style="color:var(--text3);">' + (c.email||'—') + '</td>' +
+    '<td style="color:var(--text3);">' + (c.telefono||'—') + '</td>' +
+    '<td>' + (c.vivienda_id && vivMap[c.vivienda_id] ? '<span class="badge badge-info">' + vivMap[c.vivienda_id] + '</span>' : '<span style="color:var(--text3);">—</span>') + '</td>' +
+    '<td><span class="badge ' + (c.rol === 'admin' ? 'badge-rejected' : c.rol === 'postventa' ? 'badge-progress' : 'badge-approved') + '">' + (c.rol||'cliente') + '</span></td>' +
+    '<td class="td-actions"><button class="btn btn-sm btn-secondary">Editar</button></td></tr>'
+  ).join('');
+}
+
+async function guardarCliente() {
+  const nombre = document.getElementById('mc-nombre').value.trim();
+  const email  = document.getElementById('mc-email').value.trim();
+  if (!nombre || !email) { showToast('Nombre y email son obligatorios'); return; }
+
+  const data = {
+    nombre,
+    apellido:    document.getElementById('mc-apellido').value.trim() || null,
+    email,
+    telefono:    document.getElementById('mc-tel').value.trim() || null,
+    vivienda_id: document.getElementById('mc-vivienda').value || null,
+    rol:         document.getElementById('mc-rol').value || 'cliente',
+  };
+
+  const { error } = await sb.from('clientes').insert(data);
+  if (error) { showToast('Error: ' + error.message); return; }
+
+  showToast('✓ Cliente guardado');
+  closeModal('modal-cliente');
+  await cargarClientes();
+  renderClientes();
+}
+
+// ── AGENDA ──
+function renderAgenda() {
+  const grid = document.getElementById('agenda-grid');
+  if (ALL_VISITAS.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-title">Sin visitas programadas</div><div>Programa una visita desde el detalle de una solicitud</div></div>';
+    return;
+  }
+
+  const hoy = new Date().toISOString().split('T')[0];
+  const vivMap = {};
+  ALL_VIVIENDAS.forEach(v => { vivMap[v.id] = (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad; });
+
+  const sorted = [...ALL_VISITAS].sort((a,b) => new Date(a.fecha_visita) - new Date(b.fecha_visita));
+  const pasadas = sorted.filter(v => v.fecha_visita < hoy);
+  const proximas = sorted.filter(v => v.fecha_visita >= hoy);
+
+  let html = '';
+  if (proximas.length > 0) {
+    html += '<div style="grid-column:1/-1;font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Próximas</div>';
+    html += proximas.map(v => visitaCard(v, vivMap, false)).join('');
+  }
+  if (pasadas.length > 0) {
+    html += '<div style="grid-column:1/-1;font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin:16px 0 4px;">Realizadas</div>';
+    html += pasadas.map(v => visitaCard(v, vivMap, true)).join('');
+  }
+  grid.innerHTML = html;
+}
+
+function visitaCard(v, vivMap, pasada) {
+  const estCls = { programada:'badge-pending', confirmada:'badge-progress', realizada:'badge-approved', cancelada:'badge-rejected' };
+  return '<div class="visita-card" style="' + (pasada ? 'opacity:0.6;' : '') + '">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">' +
+    '<span class="badge ' + (estCls[v.estado]||'badge-pending') + '">' + v.estado + '</span>' +
+    '<span style="font-size:11px;color:var(--text3);">' + fmtFecha(v.fecha_visita) + (v.hora_inicio ? ' · ' + v.hora_inicio.substring(0,5) : '') + '</span></div>' +
+    '<div class="visita-titulo">' + v.titulo + '</div>' +
+    (v.responsable ? '<div class="visita-dir">👷 ' + v.responsable + '</div>' : '') +
+    (v.vivienda_id && vivMap[v.vivienda_id] ? '<div class="visita-dir">🏠 ' + vivMap[v.vivienda_id] + '</div>' : '') +
+    '</div>';
+}
+
+// ── DOCUMENTOS ──
+function poblarSelectsDoc() {
+  const sel = document.getElementById('doc-vivienda');
+  const proyMap = {};
+  ALL_PROYECTOS.forEach(p => { proyMap[p.id] = p.nombre; });
+  sel.innerHTML = '<option value="">Selecciona una vivienda...</option>' +
+    ALL_VIVIENDAS.map(v =>
+      '<option value="' + v.id + '">' + (proyMap[v.proyecto_id]||'—') + ' · ' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + '</option>'
+    ).join('');
+}
+
+function previewFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const prev = document.getElementById('upload-preview');
+  prev.style.display = 'block';
+  prev.textContent = '📎 ' + file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
+  document.getElementById('upload-zone').textContent = '✓ ' + file.name;
+  if (!document.getElementById('doc-nombre').value) {
+    document.getElementById('doc-nombre').value = file.name;
+  }
+}
+
+async function subirDocumento() {
+  const vivId  = document.getElementById('doc-vivienda').value;
+  const tipo   = document.getElementById('doc-tipo').value;
+  const nombre = document.getElementById('doc-nombre').value.trim();
+  const file   = document.getElementById('doc-file').files[0];
+
+  if (!vivId)   { showToast('Selecciona una vivienda'); return; }
+  if (!nombre)  { showToast('Ingresa el nombre del documento'); return; }
+  if (!file)    { showToast('Selecciona un archivo'); return; }
+
+  const path = tipo + '/' + nombre;
+  const { error } = await sb.storage.from('documentos').upload(path, file, { upsert: true });
+
+  if (error) { showToast('Error al subir: ' + error.message); return; }
+
+  showToast('✓ Documento subido correctamente');
+  document.getElementById('doc-nombre').value = '';
+  document.getElementById('upload-zone').textContent = '📎 Haz clic para seleccionar un archivo PDF';
+  document.getElementById('upload-preview').style.display = 'none';
+  document.getElementById('doc-file').value = '';
+}
+
+// ── MODALS / HELPERS ──
+function openModal(id) {
+  // Populate selects inside modals
+  if (id === 'modal-vivienda') poblarSelectProyecto('mv-proyecto');
+  if (id === 'modal-cliente') {
+    const sel = document.getElementById('mc-vivienda');
+    const proyMap = {};
+    ALL_PROYECTOS.forEach(p => { proyMap[p.id] = p.nombre; });
+    sel.innerHTML = '<option value="">Sin asignar</option>' +
+      ALL_VIVIENDAS.map(v => '<option value="' + v.id + '">' + (proyMap[v.proyecto_id]||'—') + ' · ' + (v.tipo_unidad||'U') + ' ' + v.numero_unidad + '</option>').join('');
+  }
+  document.getElementById(id).classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function poblarSelectProyecto(selId) {
+  const sel = document.getElementById(selId);
+  if (!sel) return;
+  const opts = ALL_PROYECTOS.map(p => '<option value="' + p.id + '">' + p.nombre + '</option>').join('');
+  if (selId === 'f-proy-viv') {
+    sel.innerHTML = '<option value="">Todos los proyectos</option>' + opts;
+  } else {
+    sel.innerHTML = '<option value="">Selecciona proyecto...</option>' + opts;
+  }
+}
+
+function editarProyecto(id) {
+  const proy = ALL_PROYECTOS.find(p => p.id === id);
+  if (!proy) return;
+  abrirDetalleProyecto(proy);
+}
+
+function abrirDetalleProyecto(proy) {
+  navigate('proyecto-detalle');
+
+  // Header
+  document.getElementById('pd-nombre').textContent = proy.nombre;
+  document.getElementById('pd-meta').textContent =
+    (proy.ciudad || '') +
+    (proy.fecha_recepcion_dom ? ' · DOM: ' + fmtFecha(proy.fecha_recepcion_dom) : '') +
+    (proy.rol_avaluo ? ' · Rol: ' + proy.rol_avaluo : '');
+
+  // Stats
+  const vivs   = ALL_VIVIENDAS.filter(v => v.proyecto_id === proy.id);
+  const vivIds = vivs.map(v => v.id);
+  const sols   = ALL_SOLICITUDES.filter(s => vivIds.includes(s.vivienda_id));
+  const pend   = sols.filter(s => ['enviada','en_revision'].includes(s.estado)).length;
+  const resuel = sols.filter(s => ['resuelta','cerrada'].includes(s.estado)).length;
+
+  document.getElementById('pd-stats').innerHTML =
+    statCard('Viviendas', vivs.length, '', '') +
+    statCard('Solicitudes', sols.length, '', '') +
+    statCard('Pendientes', pend, 'color:var(--amber)', '') +
+    statCard('Resueltas', resuel, 'color:var(--green-light)', '');
+
+  // Viviendas
+  const cliMap = {};
+  ALL_CLIENTES.forEach(cl => { cliMap[cl.vivienda_id] = cl.nombre + ' ' + (cl.apellido||''); });
+  const vivDiv = document.getElementById('pd-viviendas');
+  if (vivs.length === 0) {
+    vivDiv.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text3);font-size:13px;">Sin viviendas registradas</div>';
+  } else {
+    vivDiv.innerHTML = vivs.map(v => {
+      const solsViv = ALL_SOLICITUDES.filter(s => s.vivienda_id === v.id);
+      const cliente = cliMap[v.id] || 'Sin asignar';
+      return '<div style="padding:12px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="filtrarPorVivienda('' + v.id + '')">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+        '<div>' +
+        '<div style="font-size:13px;font-weight:600;">' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + (v.piso ? ' · Piso ' + v.piso : '') + '</div>' +
+        '<div style="font-size:11px;color:var(--text3);margin-top:2px;">👤 ' + cliente + '</div>' +
+        '</div>' +
+        '<span class="badge badge-info">' + solsViv.length + ' sol.</span>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  // Solicitudes del proyecto
+  renderSolsProyecto(sols);
+}
+
+function statCard(label, val, style, sub) {
+  return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;">' +
+    '<div style="font-size:11px;color:var(--text3);margin-bottom:4px;">' + label + '</div>' +
+    '<div style="font-size:22px;font-weight:700;' + style + '">' + val + '</div>' +
+    (sub ? '<div style="font-size:11px;color:var(--text3);">' + sub + '</div>' : '') +
+    '</div>';
+}
+
+function filtrarPorVivienda(vivId) {
+  const sols = ALL_SOLICITUDES.filter(s => s.vivienda_id === vivId);
+  renderSolsProyecto(sols);
+}
+
+function renderSolsProyecto(sols) {
+  const div = document.getElementById('pd-solicitudes');
+  if (sols.length === 0) {
+    div.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text3);font-size:13px;">Sin solicitudes</div>';
+    return;
+  }
+  div.innerHTML = sols.map(s => {
+    const est = ESTADOS[s.estado] || ESTADOS['enviada'];
+    return '<div style="padding:12px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="abrirDetalle('' + s.id + '')">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">' +
+      '<span style="font-size:13px;font-weight:600;">' + (s.titulo||s.title||'Sin título') + '</span>' +
+      '<span class="badge ' + est.cls + '">' + est.label + '</span>' +
+      '</div>' +
+      '<div style="font-size:11px;color:var(--text3);">' + (s.numero||'') + ' · ' + fmtFecha(s.created_at) + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+function fmtFecha(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('es-CL', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Cerrar modals y panel con Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeDetail();
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+// ═══════════════════════════════════════
+// NOTIFICACIONES ADMIN
+// ═══════════════════════════════════════
+
+let ADM_NOTIF_OPEN = false;
+
+async function cargarNotifAdmin() {
+  if (!USER) return;
+  try {
+    // Buscar el cliente con este email para obtener su ID
+    const { data: perfil } = await sb.from('clientes')
+      .select('id').eq('email', USER.email).single();
+    if (!perfil) return;
+
+    const { data } = await sb.from('notificaciones')
+      .select('*')
+      .eq('destinatario_id', perfil.id)
+      .order('created_at', { ascending: false })
+      .limit(30);
+
+    const notifs = data || [];
+    const noLeidas = notifs.filter(n => !n.leida).length;
+
+    const badge = document.getElementById('adm-notif-badge');
+    if (badge) {
+      if (noLeidas > 0) {
+        badge.textContent = noLeidas > 9 ? '9+' : noLeidas;
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    const lista = document.getElementById('adm-notif-lista');
+    if (!lista) return;
+    if (notifs.length === 0) {
+      lista.innerHTML = '<div style="padding:32px;text-align:center;color:var(--text3);font-size:13px;">Sin notificaciones</div>';
+      return;
+    }
+
+    const iconos = { nueva_solicitud:'📋', cambio_estado:'🔄', visita_programada:'📅', comentario:'💬' };
+    lista.innerHTML = '';
+    notifs.forEach(n => {
+      const fecha = new Date(n.created_at).toLocaleDateString('es-CL',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+      const icon = iconos[n.tipo] || '🔔';
+      const div = document.createElement('div');
+      div.style.cssText = 'padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;background:' + (!n.leida ? 'rgba(79,130,114,0.08)' : 'transparent') + ';';
+      div.onclick = function() { admAbrirNotif(n.id, n.solicitud_id || ''); };
+      div.innerHTML =
+        '<div style="display:flex;gap:8px;align-items:flex-start;">' +
+        '<div style="width:8px;height:8px;border-radius:50%;background:' + (!n.leida ? 'var(--accent)' : 'transparent') + ';border:1px solid var(--border);flex-shrink:0;margin-top:5px;"></div>' +
+        '<div style="flex:1;">' +
+        '<div style="font-size:13px;font-weight:600;margin-bottom:2px;">' + icon + ' ' + n.titulo + '</div>' +
+        (n.mensaje ? '<div style="font-size:12px;color:var(--text3);margin-bottom:2px;">' + n.mensaje + '</div>' : '') +
+        '<div style="font-size:11px;color:var(--text3);">' + fecha + '</div>' +
+        '</div></div>';
+      lista.appendChild(div);
+    });
+
+    window._admPerfilId = perfil.id;
+  } catch(e) { console.error('cargarNotifAdmin:', e); }
+}
+
+async function admAbrirNotif(notifId, solicitudId) {
+  await sb.from('notificaciones').update({ leida: true }).eq('id', notifId);
+  toggleAdmNotif();
+  if (solicitudId) {
+    navigate('solicitudes');
+    setTimeout(() => abrirDetalle(solicitudId), 300);
+  }
+  cargarNotifAdmin();
+}
+
+async function admMarcarLeidas() {
+  if (!window._admPerfilId) return;
+  await sb.from('notificaciones').update({ leida: true })
+    .eq('destinatario_id', window._admPerfilId).eq('leida', false);
+  cargarNotifAdmin();
+}
+
+function toggleAdmNotif() {
+  const panel = document.getElementById('adm-notif-panel');
+  ADM_NOTIF_OPEN = !ADM_NOTIF_OPEN;
+  panel.style.display = ADM_NOTIF_OPEN ? 'flex' : 'none';
+  if (ADM_NOTIF_OPEN) cargarNotifAdmin();
+}
+
+document.addEventListener('click', e => {
+  if (ADM_NOTIF_OPEN) {
+    const panel = document.getElementById('adm-notif-panel');
+    const bell  = document.getElementById('adm-notif-bell');
+    if (panel && !panel.contains(e.target) && bell && !bell.contains(e.target)) {
+      ADM_NOTIF_OPEN = false;
+      panel.style.display = 'none';
+    }
+  }
+});
+
+// Notificar al cliente cuando el admin cambia estado
+async function notificarClienteDesdAdmin(solicitudId, viviendaId, tipo, titulo, mensaje) {
+  try {
+    const { data: clientes } = await sb.from('clientes')
+      .select('id').eq('vivienda_id', viviendaId).eq('rol', 'cliente');
+    if (!clientes || clientes.length === 0) return;
+    await sb.from('notificaciones').insert(
+      clientes.map(cl => ({
+        destinatario_id: cl.id,
+        tipo,
+        titulo,
+        mensaje: mensaje || null,
+        solicitud_id: solicitudId || null,
+        leida: false,
+      }))
+    );
+  } catch(e) { console.error('notificarClienteDesdAdmin:', e); }
+}
+
+// Polling cada 30s
+setInterval(() => { if (USER) cargarNotifAdmin(); }, 30000);
+
+
+// ═══════════════════════════════════════
+// INVITACIÓN DE CLIENTES
+// ═══════════════════════════════════════
+
+let INV_ESTADO = 'verificar'; // 'verificar' | 'confirmar'
+let INV_CLIENTE = null;
+
+// Reset modal al abrirlo
+const origOpenModal = openModal;
+function openModal(id) {
+  if (id === 'modal-invitar') {
+    INV_ESTADO = 'verificar';
+    INV_CLIENTE = null;
+    document.getElementById('inv-email').value = '';
+    document.getElementById('inv-err') && (document.getElementById('invitar-err').style.display = 'none');
+    document.getElementById('invitar-ok').style.display = 'none';
+    document.getElementById('inv-vivienda-info').style.display = 'none';
+    document.getElementById('inv-btn').textContent = 'Verificar email';
+  }
+  origOpenModal(id);
+}
+
+async function enviarInvitacion() {
+  const email = document.getElementById('inv-email').value.trim().toLowerCase();
+  const errEl = document.getElementById('invitar-err');
+  const okEl  = document.getElementById('invitar-ok');
+  const btn   = document.getElementById('inv-btn');
+
+  errEl.style.display = 'none';
+  okEl.style.display  = 'none';
+
+  if (!email) {
+    errEl.textContent = 'Ingresa el email del cliente.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // PASO 1: Verificar que el email esté registrado y tenga vivienda
+  if (INV_ESTADO === 'verificar') {
+    btn.textContent = 'Verificando...';
+    btn.disabled = true;
+
+    try {
+      const { data: cliente, error } = await sb.from('clientes')
+        .select('*, viviendas(*), proyectos:viviendas(proyecto_id)')
+        .eq('email', email)
+        .single();
+
+      if (error || !cliente) {
+        errEl.textContent = '✗ Email no encontrado. Primero registra al cliente con "+ Registrar".';
+        errEl.style.display = 'block';
+        btn.textContent = 'Verificar email';
+        btn.disabled = false;
+        return;
+      }
+
+      if (!cliente.vivienda_id) {
+        errEl.textContent = '✗ Este cliente no tiene una vivienda asignada. Edítalo y asígnale una vivienda primero.';
+        errEl.style.display = 'block';
+        btn.textContent = 'Verificar email';
+        btn.disabled = false;
+        return;
+      }
+
+      // Buscar info de vivienda
+      const viv = ALL_VIVIENDAS.find(v => v.id === cliente.vivienda_id);
+      const proy = ALL_PROYECTOS.find(p => p.id === (viv ? viv.proyecto_id : null));
+
+      INV_CLIENTE = cliente;
+      INV_ESTADO = 'confirmar';
+
+      // Mostrar info de vivienda
+      const vivNombre = viv ? (viv.tipo_unidad||'Unidad') + ' ' + viv.numero_unidad : '—';
+      const proyNombre = proy ? proy.nombre : '—';
+      document.getElementById('inv-viv-nombre').textContent = '🏠 ' + vivNombre;
+      document.getElementById('inv-viv-proyecto').textContent = '🏘️ ' + proyNombre;
+      document.getElementById('inv-vivienda-info').style.display = 'block';
+
+      okEl.textContent = '✓ Cliente verificado: ' + cliente.nombre + ' ' + (cliente.apellido||'') + '. ¿Enviar invitación?';
+      okEl.style.display = 'block';
+      btn.textContent = '✉ Enviar link de acceso';
+      btn.disabled = false;
+
+    } catch(e) {
+      errEl.textContent = 'Error al verificar: ' + e.message;
+      errEl.style.display = 'block';
+      btn.textContent = 'Verificar email';
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  // PASO 2: Enviar magic link
+  if (INV_ESTADO === 'confirmar') {
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+
+    try {
+      const { error } = await sb.auth.signInWithOtp({
+        email: email,
+        options: {
+          shouldCreateUser: true,
+          emailRedirectTo: window.location.origin + '/index.html',
+        }
+      });
+
+      if (error) throw error;
+
+      okEl.textContent = '✅ Link de acceso enviado a ' + email + '. El cliente tiene 1 hora para usarlo.';
+      okEl.style.display = 'block';
+      errEl.style.display = 'none';
+      btn.textContent = '✓ Enviado';
+      btn.disabled = true;
+
+      showToast('✉ Invitación enviada a ' + email);
+
+      // Cerrar modal después de 3 segundos
+      setTimeout(() => closeModal('modal-invitar'), 3000);
+
+    } catch(e) {
+      errEl.textContent = 'Error al enviar: ' + e.message;
+      errEl.style.display = 'block';
+      btn.textContent = '✉ Enviar link de acceso';
+      btn.disabled = false;
+    }
+  }
+}
+
+</script>
+
+<!-- Modal Invitar Cliente -->
+<div class="modal-overlay" id="modal-invitar">
+  <div class="modal">
+    <div class="modal-title">✉ Invitar Cliente</div>
+    <div class="modal-sub">El cliente recibirá un link mágico para acceder a su portal sin contraseña. Su email debe estar registrado y asociado a una vivienda.</div>
+    <div id="invitar-err" style="display:none;background:rgba(192,83,58,0.15);color:#C0533A;border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;"></div>
+    <div id="invitar-ok" style="display:none;background:rgba(79,130,114,0.15);color:#7DC4AD;border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;"></div>
+    <div class="form-group">
+      <label class="form-label">Email del cliente *</label>
+      <input class="form-input" id="inv-email" type="email" placeholder="cliente@email.com">
+    </div>
+    <div id="inv-vivienda-info" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px;">
+      <div style="font-weight:600;margin-bottom:4px;" id="inv-viv-nombre">—</div>
+      <div style="color:var(--text3);" id="inv-viv-proyecto">—</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-invitar')">Cancelar</button>
+      <button class="btn btn-primary" id="inv-btn" onclick="enviarInvitacion()">Verificar email</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
