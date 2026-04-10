@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nidus — Panel Administración</title>
+<title>Nidus â Panel AdministraciÃ³n</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
@@ -37,7 +37,7 @@ body {
   display: flex;
 }
 
-/* ── SIDEBAR ── */
+/* ââ SIDEBAR ââ */
 .sidebar {
   width: 240px;
   background: var(--bg2);
@@ -151,7 +151,7 @@ body {
 }
 .btn-logout:hover { background: var(--red); color: #fff; border-color: var(--red); }
 
-/* ── MAIN CONTENT ── */
+/* ââ MAIN CONTENT ââ */
 .main {
   margin-left: 240px;
   flex: 1;
@@ -195,11 +195,11 @@ body {
 
 .content { padding: 24px 28px; flex: 1; }
 
-/* ── VIEWS ── */
+/* ââ VIEWS ââ */
 .view { display: none; }
 .view.active { display: block; }
 
-/* ── STATS GRID ── */
+/* ââ STATS GRID ââ */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -218,7 +218,7 @@ body {
 .stat-value { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
 .stat-sub { font-size: 12px; color: var(--text3); }
 
-/* ── CARDS ── */
+/* ââ CARDS ââ */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -237,7 +237,7 @@ body {
 .card-title { font-size: 15px; font-weight: 600; }
 .card-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
 
-/* ── TABLE ── */
+/* ââ TABLE ââ */
 .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
 
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -247,7 +247,7 @@ td { padding: 12px 14px; border-top: 1px solid var(--border); vertical-align: mi
 tr:hover td { background: var(--bg3); }
 .td-actions { display: flex; gap: 6px; justify-content: flex-end; }
 
-/* ── BADGE ── */
+/* ââ BADGE ââ */
 .badge {
   display: inline-block;
   padding: 3px 8px;
@@ -261,7 +261,7 @@ tr:hover td { background: var(--bg3); }
 .badge-rejected { background: rgba(192,83,58,0.15); color: var(--red); }
 .badge-info     { background: rgba(125,196,173,0.1); color: var(--accent); }
 
-/* ── MODAL ── */
+/* ââ MODAL ââ */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -316,7 +316,7 @@ tr:hover td { background: var(--bg3); }
   border-top: 1px solid var(--border);
 }
 
-/* ── SOLICITUD DETAIL PANEL ── */
+/* ââ SOLICITUD DETAIL PANEL ââ */
 .detail-panel {
   display: none;
   position: fixed;
@@ -373,7 +373,7 @@ tr:hover td { background: var(--bg3); }
 .timeline-date { font-size: 11px; color: var(--text3); margin-bottom: 2px; }
 .timeline-text { font-size: 13px; }
 
-/* ── STATUS FLOW ── */
+/* ââ STATUS FLOW ââ */
 .status-flow {
   display: flex;
   flex-wrap: wrap;
@@ -395,7 +395,7 @@ tr:hover td { background: var(--bg3); }
 .status-btn:hover { border-color: var(--green); color: var(--green-light); }
 .status-btn.current { background: var(--green); color: #fff; border-color: var(--green); }
 
-/* ── FILTERS ── */
+/* ââ FILTERS ââ */
 .filters {
   display: flex;
   gap: 10px;
@@ -414,7 +414,7 @@ tr:hover td { background: var(--bg3); }
 }
 .filter-input:focus { border-color: var(--green); }
 
-/* ── EMPTY STATE ── */
+/* ââ EMPTY STATE ââ */
 .empty-state {
   text-align: center;
   padding: 48px 20px;
@@ -423,7 +423,7 @@ tr:hover td { background: var(--bg3); }
 .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
 .empty-state .empty-title { font-size: 15px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
 
-/* ── LOGIN ── */
+/* ââ LOGIN ââ */
 .login-screen {
   min-height: 100vh;
   display: flex;
@@ -444,7 +444,7 @@ tr:hover td { background: var(--bg3); }
 .login-sub { font-size: 13px; color: var(--text3); margin-bottom: 28px; }
 .login-err { background: rgba(192,83,58,0.15); color: var(--red); border-radius: 8px; padding: 10px 12px; font-size: 13px; margin-bottom: 14px; display: none; }
 
-/* ── LOADING ── */
+/* ââ LOADING ââ */
 .loading-screen {
   position: fixed;
   inset: 0;
@@ -465,7 +465,7 @@ tr:hover td { background: var(--bg3); }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── AGENDA ── */
+/* ââ AGENDA ââ */
 .agenda-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -484,7 +484,7 @@ tr:hover td { background: var(--bg3); }
 .visita-titulo { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .visita-dir { font-size: 12px; color: var(--text3); }
 
-/* ── TOAST ── */
+/* ââ TOAST ââ */
 .toast {
   position: fixed;
   bottom: 24px;
@@ -502,7 +502,7 @@ tr:hover td { background: var(--bg3); }
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
-/* ── FILE UPLOAD ── */
+/* ââ FILE UPLOAD ââ */
 .upload-zone {
   border: 2px dashed var(--border);
   border-radius: 10px;
@@ -530,16 +530,16 @@ tr:hover td { background: var(--bg3); }
 <!-- Login -->
 <div class="login-screen" id="login-screen" style="display:none;">
   <div class="login-box">
-    <div class="login-logo">🏡 Nidus</div>
-    <div class="login-sub">Panel de Administración · Nidus</div>
+    <div class="login-logo">ð¡ Nidus</div>
+    <div class="login-sub">Panel de AdministraciÃ³n Â· Nidus</div>
     <div class="login-err" id="login-err"></div>
     <div class="form-group">
-      <label class="form-label">Correo electrónico</label>
+      <label class="form-label">Correo electrÃ³nico</label>
       <input class="form-input" id="adm-email" type="email" placeholder="admin@constructora.cl" autocomplete="username">
     </div>
     <div class="form-group">
-      <label class="form-label">Contraseña</label>
-      <input class="form-input" id="adm-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+      <label class="form-label">ContraseÃ±a</label>
+      <input class="form-input" id="adm-pass" type="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" autocomplete="current-password">
     </div>
     <button class="btn btn-primary" style="width:100%;margin-top:8px;" id="adm-login-btn" onclick="doLogin()">Ingresar al panel</button>
   </div>
@@ -551,45 +551,45 @@ tr:hover td { background: var(--bg3); }
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-title">🏡 Nidus</div>
-      <div class="logo-sub">Panel de Administración · Nidus</div>
+      <div class="logo-title">ð¡ Nidus</div>
+      <div class="logo-sub">Panel de AdministraciÃ³n Â· Nidus</div>
     </div>
     <div class="sidebar-user">
-      <div class="user-avatar" id="adm-avatar">—</div>
+      <div class="user-avatar" id="adm-avatar">â</div>
       <div class="user-info">
-        <div class="user-name" id="adm-name">—</div>
+        <div class="user-name" id="adm-name">â</div>
         <div class="user-role">Equipo Postventa</div>
       </div>
     </div>
 
     <div class="nav-section">Principal</div>
     <button class="nav-item active" data-view="dashboard" onclick="navigate('dashboard')">
-      <span class="nav-icon">📊</span> Dashboard
+      <span class="nav-icon">ð</span> Dashboard
     </button>
     <button class="nav-item" data-view="solicitudes" onclick="navigate('solicitudes')">
-      <span class="nav-icon">📋</span> Solicitudes
+      <span class="nav-icon">ð</span> Solicitudes
       <span class="nav-badge" id="nav-badge-sol">0</span>
     </button>
     <button class="nav-item" data-view="agenda" onclick="navigate('agenda')">
-      <span class="nav-icon">📅</span> Agenda
+      <span class="nav-icon">ð</span> Agenda
     </button>
 
-    <div class="nav-section">Gestión</div>
+    <div class="nav-section">GestiÃ³n</div>
     <button class="nav-item" data-view="proyectos" onclick="navigate('proyectos')">
-      <span class="nav-icon">🏘️</span> Proyectos
+      <span class="nav-icon">ðï¸</span> Proyectos
     </button>
     <button class="nav-item" data-view="viviendas" onclick="navigate('viviendas')">
-      <span class="nav-icon">🏠</span> Viviendas
+      <span class="nav-icon">ð </span> Viviendas
     </button>
     <button class="nav-item" data-view="clientes" onclick="navigate('clientes')">
-      <span class="nav-icon">👥</span> Clientes
+      <span class="nav-icon">ð¥</span> Clientes
     </button>
     <button class="nav-item" data-view="documentos" onclick="navigate('documentos')">
-      <span class="nav-icon">📁</span> Documentos
+      <span class="nav-icon">ð</span> Documentos
     </button>
 
     <div class="sidebar-bottom">
-      <button class="btn-logout" onclick="doLogout()">↩ Cerrar sesión</button>
+      <button class="btn-logout" onclick="doLogout()">â© Cerrar sesiÃ³n</button>
     </div>
   </div>
 
@@ -604,7 +604,7 @@ tr:hover td { background: var(--bg3); }
       </div>
       <div style="display:flex;align-items:center;gap:12px;">
         <div id="adm-notif-bell" onclick="toggleAdmNotif()" style="position:relative;cursor:pointer;font-size:20px;padding:4px 8px;border-radius:8px;transition:background 0.15s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
-          🔔
+          ð
           <span id="adm-notif-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#C0533A;color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--bg2);">0</span>
         </div>
         <div class="topbar-actions" id="topbar-actions"></div>
@@ -614,8 +614,8 @@ tr:hover td { background: var(--bg3); }
     <!-- NOTIF PANEL ADMIN -->
     <div id="adm-notif-panel" style="display:none;position:fixed;top:56px;right:16px;width:340px;max-height:480px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.4);z-index:500;flex-direction:column;">
       <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-size:14px;font-weight:700;">🔔 Notificaciones</span>
-        <button onclick="admMarcarLeidas()" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;">Marcar leídas</button>
+        <span style="font-size:14px;font-weight:700;">ð Notificaciones</span>
+        <button onclick="admMarcarLeidas()" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;">Marcar leÃ­das</button>
       </div>
       <div id="adm-notif-lista" style="overflow-y:auto;max-height:400px;">
         <div style="padding:24px;text-align:center;color:var(--text3);font-size:13px;">Cargando...</div>
@@ -625,27 +625,27 @@ tr:hover td { background: var(--bg3); }
     <!-- Content -->
     <div class="content">
 
-      <!-- ── DASHBOARD ── -->
+      <!-- ââ DASHBOARD ââ -->
       <div class="view active" id="view-dashboard">
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-label">Total Solicitudes</div>
-            <div class="stat-value" id="d-total">—</div>
+            <div class="stat-value" id="d-total">â</div>
             <div class="stat-sub" id="d-total-sub">Cargando...</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Pendientes</div>
-            <div class="stat-value" id="d-pendientes" style="color:var(--amber)">—</div>
-            <div class="stat-sub">Requieren atención</div>
+            <div class="stat-value" id="d-pendientes" style="color:var(--amber)">â</div>
+            <div class="stat-sub">Requieren atenciÃ³n</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">En Proceso</div>
-            <div class="stat-value" id="d-proceso" style="color:var(--blue)">—</div>
-            <div class="stat-sub">En ejecución</div>
+            <div class="stat-value" id="d-proceso" style="color:var(--blue)">â</div>
+            <div class="stat-sub">En ejecuciÃ³n</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Resueltas</div>
-            <div class="stat-value" id="d-resueltas" style="color:var(--green-light)">—</div>
+            <div class="stat-value" id="d-resueltas" style="color:var(--green-light)">â</div>
             <div class="stat-sub">Completadas</div>
           </div>
         </div>
@@ -655,41 +655,41 @@ tr:hover td { background: var(--bg3); }
             <div class="card-header">
               <div>
                 <div class="card-title">Solicitudes Recientes</div>
-                <div class="card-sub">Últimas 5 ingresadas</div>
+                <div class="card-sub">Ãltimas 5 ingresadas</div>
               </div>
               <button class="btn btn-sm btn-secondary" onclick="navigate('solicitudes')">Ver todas</button>
             </div>
             <div id="d-recientes">
-              <div class="empty-state"><div class="empty-icon">📋</div><div>Cargando...</div></div>
+              <div class="empty-state"><div class="empty-icon">ð</div><div>Cargando...</div></div>
             </div>
           </div>
           <div class="card">
             <div class="card-header">
               <div>
-                <div class="card-title">Próximas Visitas</div>
-                <div class="card-sub">Agenda de los próximos 7 días</div>
+                <div class="card-title">PrÃ³ximas Visitas</div>
+                <div class="card-sub">Agenda de los prÃ³ximos 7 dÃ­as</div>
               </div>
               <button class="btn btn-sm btn-secondary" onclick="navigate('agenda')">Ver agenda</button>
             </div>
             <div id="d-visitas">
-              <div class="empty-state"><div class="empty-icon">📅</div><div>Cargando...</div></div>
+              <div class="empty-state"><div class="empty-icon">ð</div><div>Cargando...</div></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ── SOLICITUDES ── -->
+      <!-- ââ SOLICITUDES ââ -->
       <div class="view" id="view-solicitudes">
         <div class="filters">
-          <input class="filter-input" id="f-buscar" placeholder="🔍 Buscar solicitud..." oninput="filtrarSolicitudes()">
+          <input class="filter-input" id="f-buscar" placeholder="ð Buscar solicitud..." oninput="filtrarSolicitudes()">
           <select class="filter-input" id="f-estado" onchange="filtrarSolicitudes()">
             <option value="">Todos los estados</option>
             <option value="enviada">Enviada</option>
-            <option value="en_revision">En revisión</option>
+            <option value="en_revision">En revisiÃ³n</option>
             <option value="aprobada">Aprobada</option>
             <option value="materiales_comprados">Materiales comprados</option>
             <option value="visita_programada">Visita programada</option>
-            <option value="en_reparacion">En reparación</option>
+            <option value="en_reparacion">En reparaciÃ³n</option>
             <option value="resuelta">Resuelta</option>
             <option value="rechazada">Rechazada</option>
             <option value="cerrada">Cerrada</option>
@@ -702,13 +702,13 @@ tr:hover td { background: var(--bg3); }
           <table>
             <thead>
               <tr>
-                <th>N°</th>
+                <th>NÂ°</th>
                 <th>Cliente / Vivienda</th>
                 <th>Problema</th>
                 <th>Estado</th>
                 <th>Urgencia</th>
                 <th>Fecha</th>
-                <th style="text-align:right;">Acción</th>
+                <th style="text-align:right;">AcciÃ³n</th>
               </tr>
             </thead>
             <tbody id="sol-tbody">
@@ -718,14 +718,14 @@ tr:hover td { background: var(--bg3); }
         </div>
       </div>
 
-      <!-- ── AGENDA ── -->
+      <!-- ââ AGENDA ââ -->
       <div class="view" id="view-agenda">
         <div class="agenda-grid" id="agenda-grid">
-          <div class="empty-state"><div class="empty-icon">📅</div><div class="empty-title">Cargando agenda...</div></div>
+          <div class="empty-state"><div class="empty-icon">ð</div><div class="empty-title">Cargando agenda...</div></div>
         </div>
       </div>
 
-      <!-- ── PROYECTOS ── -->
+      <!-- ââ PROYECTOS ââ -->
       <div class="view" id="view-proyectos">
         <div class="table-wrap">
           <table>
@@ -733,9 +733,9 @@ tr:hover td { background: var(--bg3); }
               <tr>
                 <th>Nombre</th>
                 <th>Ciudad</th>
-                <th>Recepción DOM</th>
+                <th>RecepciÃ³n DOM</th>
                 <th>Viviendas</th>
-                <th style="text-align:right;">Acción</th>
+                <th style="text-align:right;">AcciÃ³n</th>
               </tr>
             </thead>
             <tbody id="proy-tbody">
@@ -745,7 +745,7 @@ tr:hover td { background: var(--bg3); }
         </div>
       </div>
 
-      <!-- ── VIVIENDAS ── -->
+      <!-- ââ VIVIENDAS ââ -->
       <div class="view" id="view-viviendas">
         <div class="filters">
           <select class="filter-input" id="f-proy-viv" onchange="cargarViviendas()">
@@ -761,7 +761,7 @@ tr:hover td { background: var(--bg3); }
                 <th>Superficie</th>
                 <th>Entrega</th>
                 <th>Cliente</th>
-                <th style="text-align:right;">Acción</th>
+                <th style="text-align:right;">AcciÃ³n</th>
               </tr>
             </thead>
             <tbody id="viv-tbody">
@@ -771,7 +771,7 @@ tr:hover td { background: var(--bg3); }
         </div>
       </div>
 
-      <!-- ── CLIENTES ── -->
+      <!-- ââ CLIENTES ââ -->
       <div class="view" id="view-clientes">
         <div class="table-wrap">
           <table>
@@ -779,10 +779,10 @@ tr:hover td { background: var(--bg3); }
               <tr>
                 <th>Nombre</th>
                 <th>Email</th>
-                <th>Teléfono</th>
+                <th>TelÃ©fono</th>
                 <th>Vivienda</th>
                 <th>Rol</th>
-                <th style="text-align:right;">Acción</th>
+                <th style="text-align:right;">AcciÃ³n</th>
               </tr>
             </thead>
             <tbody id="cli-tbody">
@@ -792,14 +792,14 @@ tr:hover td { background: var(--bg3); }
         </div>
       </div>
 
-      <!-- ── PROYECTO DETALLE ── -->
+      <!-- ââ PROYECTO DETALLE ââ -->
       <div class="view" id="view-proyecto-detalle">
         <div class="card" style="margin-bottom:16px;">
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
-            <button onclick="navigate('proyectos')" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;">← Volver</button>
+            <button onclick="navigate('proyectos')" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;">â Volver</button>
             <div>
-              <div class="card-title" id="pd-nombre">—</div>
-              <div class="card-sub" id="pd-meta">—</div>
+              <div class="card-title" id="pd-nombre">â</div>
+              <div class="card-sub" id="pd-meta">â</div>
             </div>
           </div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;" id="pd-stats"></div>
@@ -821,7 +821,7 @@ tr:hover td { background: var(--bg3); }
         </div>
       </div>
 
-      <!-- ── DOCUMENTOS ── -->
+      <!-- ââ DOCUMENTOS ââ -->
       <div class="view" id="view-documentos">
         <div class="card">
           <div class="card-header">
@@ -851,11 +851,11 @@ tr:hover td { background: var(--bg3); }
             <input class="form-input" id="doc-nombre" placeholder="ej: recepcion-municipal.pdf">
           </div>
           <div class="upload-zone" id="upload-zone" onclick="document.getElementById('doc-file').click()">
-            📎 Haz clic para seleccionar un archivo PDF
+            ð Haz clic para seleccionar un archivo PDF
             <input type="file" id="doc-file" accept=".pdf,.jpg,.jpeg,.png" style="display:none;" onchange="previewFile(this)">
           </div>
           <div id="upload-preview" style="margin-top:10px;font-size:13px;color:var(--accent);display:none;"></div>
-          <button class="btn btn-primary" style="margin-top:16px;" onclick="subirDocumento()">⬆ Subir documento</button>
+          <button class="btn btn-primary" style="margin-top:16px;" onclick="subirDocumento()">â¬ Subir documento</button>
         </div>
       </div>
 
@@ -863,19 +863,19 @@ tr:hover td { background: var(--bg3); }
   </div><!-- /main -->
 </div><!-- /app-layout -->
 
-<!-- ── DETAIL PANEL (Solicitud) ── -->
+<!-- ââ DETAIL PANEL (Solicitud) ââ -->
 <div class="detail-panel" id="detail-panel">
   <div class="detail-header">
-    <button onclick="closeDetail()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px;">✕</button>
+    <button onclick="closeDetail()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px;">â</button>
     <div style="flex:1;">
-      <div style="font-size:15px;font-weight:700;" id="dp-titulo">—</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:2px;" id="dp-meta">—</div>
+      <div style="font-size:15px;font-weight:700;" id="dp-titulo">â</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:2px;" id="dp-meta">â</div>
     </div>
     <div id="dp-badge"></div>
   </div>
   <div class="detail-body">
-    <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">DESCRIPCIÓN</div>
-    <div style="font-size:13px;margin-bottom:20px;" id="dp-desc">—</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">DESCRIPCIÃN</div>
+    <div style="font-size:13px;margin-bottom:20px;" id="dp-desc">â</div>
 
     <div style="font-size:12px;color:var(--text3);margin-bottom:8px;">CAMBIAR ESTADO</div>
     <div class="status-flow" id="dp-estados"></div>
@@ -893,13 +893,13 @@ tr:hover td { background: var(--bg3); }
     </div>
     <div class="form-group">
       <label class="form-label">Responsable</label>
-      <input class="form-input" id="dp-responsable" placeholder="Nombre del técnico">
+      <input class="form-input" id="dp-responsable" placeholder="Nombre del tÃ©cnico">
     </div>
     <div class="form-group">
       <label class="form-label">Notas de la visita</label>
       <textarea class="form-textarea" id="dp-notas-visita" placeholder="Detalle del trabajo a realizar..."></textarea>
     </div>
-    <button class="btn btn-primary" style="width:100%;" onclick="programarVisita()">📅 Programar visita</button>
+    <button class="btn btn-primary" style="width:100%;" onclick="programarVisita()">ð Programar visita</button>
 
     <div id="dp-fotos"></div>
     <div style="font-size:12px;color:var(--text3);margin:20px 0 8px;">HISTORIAL</div>
@@ -907,7 +907,7 @@ tr:hover td { background: var(--bg3); }
   </div>
 </div>
 
-<!-- ── MODALS ── -->
+<!-- ââ MODALS ââ -->
 
 <!-- Modal Nuevo Proyecto -->
 <div class="modal-overlay" id="modal-proyecto">
@@ -930,17 +930,17 @@ tr:hover td { background: var(--bg3); }
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">Recepción DOM</label>
+        <label class="form-label">RecepciÃ³n DOM</label>
         <input class="form-input" type="date" id="mp-dom">
       </div>
       <div class="form-group">
-        <label class="form-label">Rol Avalúo</label>
+        <label class="form-label">Rol AvalÃºo</label>
         <input class="form-input" id="mp-rol" placeholder="ej: 4434-50">
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">Dirección</label>
-      <input class="form-input" id="mp-dir" placeholder="Calle, número">
+      <label class="form-label">DirecciÃ³n</label>
+      <input class="form-input" id="mp-dir" placeholder="Calle, nÃºmero">
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('modal-proyecto')">Cancelar</button>
@@ -968,7 +968,7 @@ tr:hover td { background: var(--bg3); }
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Número / Letra *</label>
+        <label class="form-label">NÃºmero / Letra *</label>
         <input class="form-input" id="mv-numero" placeholder="ej: 378 / 4B">
       </div>
     </div>
@@ -978,7 +978,7 @@ tr:hover td { background: var(--bg3); }
         <input class="form-input" type="number" id="mv-piso" placeholder="ej: 4">
       </div>
       <div class="form-group">
-        <label class="form-label">Superficie (m²)</label>
+        <label class="form-label">Superficie (mÂ²)</label>
         <input class="form-input" type="number" id="mv-sup" placeholder="ej: 292.58">
       </div>
     </div>
@@ -988,7 +988,7 @@ tr:hover td { background: var(--bg3); }
         <input class="form-input" type="date" id="mv-entrega">
       </div>
       <div class="form-group">
-        <label class="form-label">Inscripción CBR</label>
+        <label class="form-label">InscripciÃ³n CBR</label>
         <input class="form-input" type="date" id="mv-cbr">
       </div>
     </div>
@@ -1003,7 +1003,7 @@ tr:hover td { background: var(--bg3); }
 <div class="modal-overlay" id="modal-cliente">
   <div class="modal">
     <div class="modal-title">Nuevo Cliente</div>
-    <div class="modal-sub">Registra un propietario y asígnalo a una vivienda</div>
+    <div class="modal-sub">Registra un propietario y asÃ­gnalo a una vivienda</div>
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Nombre *</label>
@@ -1011,7 +1011,7 @@ tr:hover td { background: var(--bg3); }
       </div>
       <div class="form-group">
         <label class="form-label">Apellido *</label>
-        <input class="form-input" id="mc-apellido" placeholder="González">
+        <input class="form-input" id="mc-apellido" placeholder="GonzÃ¡lez">
       </div>
     </div>
     <div class="form-row">
@@ -1020,7 +1020,7 @@ tr:hover td { background: var(--bg3); }
         <input class="form-input" type="email" id="mc-email" placeholder="cliente@mail.com">
       </div>
       <div class="form-group">
-        <label class="form-label">Teléfono</label>
+        <label class="form-label">TelÃ©fono</label>
         <input class="form-input" id="mc-tel" placeholder="+56 9 1234 5678">
       </div>
     </div>
@@ -1055,15 +1055,15 @@ const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 const ESTADOS = {
-  enviada:              { label: '○ Enviada',              cls: 'badge-pending' },
-  en_revision:          { label: '→ En revisión',          cls: 'badge-progress' },
-  aprobada:             { label: '✓ Aprobada',             cls: 'badge-approved' },
-  materiales_comprados: { label: '🛒 Materiales comprados', cls: 'badge-progress' },
-  visita_programada:    { label: '📅 Visita programada',   cls: 'badge-progress' },
-  en_reparacion:        { label: '🔧 En reparación',       cls: 'badge-progress' },
-  resuelta:             { label: '✓ Resuelta',             cls: 'badge-approved' },
-  rechazada:            { label: '✗ Rechazada',            cls: 'badge-rejected' },
-  cerrada:              { label: '— Cerrada',              cls: 'badge-info' },
+  enviada:              { label: 'â Enviada',              cls: 'badge-pending' },
+  en_revision:          { label: 'â En revisiÃ³n',          cls: 'badge-progress' },
+  aprobada:             { label: 'â Aprobada',             cls: 'badge-approved' },
+  materiales_comprados: { label: 'ð Materiales comprados', cls: 'badge-progress' },
+  visita_programada:    { label: 'ð Visita programada',   cls: 'badge-progress' },
+  en_reparacion:        { label: 'ð§ En reparaciÃ³n',       cls: 'badge-progress' },
+  resuelta:             { label: 'â Resuelta',             cls: 'badge-approved' },
+  rechazada:            { label: 'â Rechazada',            cls: 'badge-rejected' },
+  cerrada:              { label: 'â Cerrada',              cls: 'badge-info' },
 };
 
 const FLUJO_ESTADOS = [
@@ -1079,7 +1079,7 @@ let ALL_CLIENTES = [];
 let ALL_VISITAS = [];
 let CURRENT_SOL = null;
 
-// ── INIT ──
+// ââ INIT ââ
 window.addEventListener('DOMContentLoaded', async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
@@ -1102,7 +1102,7 @@ async function doLogin() {
   const errEl = document.getElementById('login-err');
   errEl.style.display = 'none';
 
-  if (!email || !pass) { errEl.textContent = 'Ingresa email y contraseña.'; errEl.style.display = 'block'; return; }
+  if (!email || !pass) { errEl.textContent = 'Ingresa email y contraseÃ±a.'; errEl.style.display = 'block'; return; }
 
   err.textContent = 'Ingresando...';
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
@@ -1146,7 +1146,7 @@ async function initApp() {
   document.getElementById('app-layout').classList.add('visible');
 }
 
-// ── DATA LOADERS ──
+// ââ DATA LOADERS ââ
 async function cargarSolicitudes() {
   try {
     const { data } = await sb.from('solicitudes').select('*').order('created_at', { ascending: false });
@@ -1186,7 +1186,7 @@ async function cargarVisitas() {
   } catch(e) { console.error('cargarVisitas:', e); ALL_VISITAS = []; }
 }
 
-// ── NAVIGATION ──
+// ââ NAVIGATION ââ
 function navigate(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1201,7 +1201,7 @@ function navigate(view) {
 
   const titles = {
     dashboard:           ['Dashboard', 'Resumen general del sistema'],
-    solicitudes:         ['Solicitudes', 'Gestión de todas las solicitudes'],
+    solicitudes:         ['Solicitudes', 'GestiÃ³n de todas las solicitudes'],
     agenda:              ['Agenda', 'Visitas e ingresos programados'],
     proyectos:           ['Proyectos', 'Proyectos inmobiliarios registrados'],
     'proyecto-detalle':  ['Proyecto', 'Detalle de viviendas y solicitudes'],
@@ -1216,7 +1216,7 @@ function navigate(view) {
   const actions = {
     proyectos:  '<button class="btn btn-primary" onclick="openModal(\'modal-proyecto\')">+ Nuevo proyecto</button>',
     viviendas:  '<button class="btn btn-primary" onclick="openModal(\'modal-vivienda\')">+ Nueva vivienda</button>',
-    clientes:   '<button class="btn btn-secondary" onclick="openModal(\'modal-cliente\')">+ Registrar</button> <button class="btn btn-primary" onclick="openModal(\'modal-invitar\')">✉ Invitar cliente</button>',
+    clientes:   '<button class="btn btn-secondary" onclick="openModal(\'modal-cliente\')">+ Registrar</button> <button class="btn btn-primary" onclick="openModal(\'modal-invitar\')">â Invitar cliente</button>',
     solicitudes:'',
     agenda:     '<button class="btn btn-primary" onclick="openModal(\'modal-visita-libre\')">+ Programar visita</button>',
   };
@@ -1230,7 +1230,7 @@ function navigate(view) {
   if (view === 'documentos')  poblarSelectsDoc();
 }
 
-// ── DASHBOARD ──
+// ââ DASHBOARD ââ
 function renderDashboard() {
   const total     = ALL_SOLICITUDES.length;
   const pendientes = ALL_SOLICITUDES.filter(s => ['enviada'].includes(s.estado)).length;
@@ -1246,34 +1246,34 @@ function renderDashboard() {
   // Recientes
   const recDiv = document.getElementById('d-recientes');
   if (ALL_SOLICITUDES.length === 0) {
-    recDiv.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">Sin solicitudes</div></div>';
+    recDiv.innerHTML = '<div class="empty-state"><div class="empty-icon">ð</div><div class="empty-title">Sin solicitudes</div></div>';
   } else {
     recDiv.innerHTML = ALL_SOLICITUDES.slice(0,5).map(s => {
       const est = ESTADOS[s.estado] || ESTADOS['enviada'];
       return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="abrirDetalle(\'' + s.id + '\')">' +
-        '<div><div style="font-size:13px;font-weight:600;">' + (s.titulo||s.title||'Sin título') + '</div>' +
-        '<div style="font-size:11px;color:var(--text3);margin-top:2px;">' + (s.numero||'') + ' · ' + fmtFecha(s.created_at) + '</div></div>' +
+        '<div><div style="font-size:13px;font-weight:600;">' + (s.titulo||s.title||'Sin tÃ­tulo') + '</div>' +
+        '<div style="font-size:11px;color:var(--text3);margin-top:2px;">' + (s.numero||'') + ' Â· ' + fmtFecha(s.created_at) + '</div></div>' +
         '<span class="badge ' + est.cls + '">' + est.label + '</span></div>';
     }).join('');
   }
 
-  // Visitas próximas
+  // Visitas prÃ³ximas
   const hoy = new Date().toISOString().split('T')[0];
   const en7 = new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0];
   const proximas = ALL_VISITAS.filter(v => v.fecha_visita >= hoy && v.fecha_visita <= en7);
   const visDiv = document.getElementById('d-visitas');
   if (proximas.length === 0) {
-    visDiv.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-title">Sin visitas esta semana</div></div>';
+    visDiv.innerHTML = '<div class="empty-state"><div class="empty-icon">ð</div><div class="empty-title">Sin visitas esta semana</div></div>';
   } else {
     visDiv.innerHTML = proximas.map(v =>
       '<div style="padding:8px 0;border-bottom:1px solid var(--border);">' +
       '<div style="font-size:13px;font-weight:600;">' + v.titulo + '</div>' +
-      '<div style="font-size:11px;color:var(--text3);margin-top:2px;">📅 ' + fmtFecha(v.fecha_visita) + (v.hora_inicio ? ' · ' + v.hora_inicio.substring(0,5) : '') + (v.responsable ? ' · ' + v.responsable : '') + '</div></div>'
+      '<div style="font-size:11px;color:var(--text3);margin-top:2px;">ð ' + fmtFecha(v.fecha_visita) + (v.hora_inicio ? ' Â· ' + v.hora_inicio.substring(0,5) : '') + (v.responsable ? ' Â· ' + v.responsable : '') + '</div></div>'
     ).join('');
   }
 }
 
-// ── SOLICITUDES ──
+// ââ SOLICITUDES ââ
 function renderSolicitudes() {
   poblarFiltroProyectos();
   filtrarSolicitudes();
@@ -1313,12 +1313,12 @@ function filtrarSolicitudes() {
     const est = ESTADOS[s.estado] || ESTADOS['enviada'];
     const urg = s.urgencia || 'media';
     const urgCls = urg === 'alta' ? 'badge-rejected' : urg === 'baja' ? 'badge-approved' : 'badge-pending';
-    const cliente = clienteMap[s.cliente_id] || '—';
-    const viv = vivMap[s.vivienda_id] || '—';
+    const cliente = clienteMap[s.cliente_id] || 'â';
+    const viv = vivMap[s.vivienda_id] || 'â';
     return '<tr style="cursor:pointer;" onclick="abrirDetalle(\'' + s.id + '\')">' +
       '<td style="font-size:11px;color:var(--text3);">' + (s.numero||s.id.substring(0,8)) + '</td>' +
       '<td><div style="font-weight:600;font-size:13px;">' + cliente + '</div><div style="font-size:11px;color:var(--text3);">' + viv + '</div></td>' +
-      '<td style="max-width:200px;"><div style="font-size:13px;font-weight:500;">' + (s.titulo||s.title||'Sin título') + '</div><div style="font-size:11px;color:var(--text3);">' + (s.ubicacion_vivienda||'') + '</div></td>' +
+      '<td style="max-width:200px;"><div style="font-size:13px;font-weight:500;">' + (s.titulo||s.title||'Sin tÃ­tulo') + '</div><div style="font-size:11px;color:var(--text3);">' + (s.ubicacion_vivienda||'') + '</div></td>' +
       '<td><span class="badge ' + est.cls + '">' + est.label + '</span></td>' +
       '<td><span class="badge ' + urgCls + '">' + urg + '</span></td>' +
       '<td style="font-size:12px;color:var(--text3);">' + fmtFecha(s.created_at) + '</td>' +
@@ -1326,7 +1326,7 @@ function filtrarSolicitudes() {
   }).join('');
 }
 
-// ── DETALLE SOLICITUD ──
+// ââ DETALLE SOLICITUD ââ
 async function abrirDetalle(id) {
   CURRENT_SOL = ALL_SOLICITUDES.find(s => s.id === id);
   if (!CURRENT_SOL) return;
@@ -1334,17 +1334,17 @@ async function abrirDetalle(id) {
   const s = CURRENT_SOL;
   const est = ESTADOS[s.estado] || ESTADOS['enviada'];
 
-  document.getElementById('dp-titulo').textContent = s.titulo || s.title || 'Sin título';
-  document.getElementById('dp-meta').textContent   = (s.numero||'') + ' · ' + fmtFecha(s.created_at) + (s.ubicacion_vivienda ? ' · ' + s.ubicacion_vivienda : '');
+  document.getElementById('dp-titulo').textContent = s.titulo || s.title || 'Sin tÃ­tulo';
+  document.getElementById('dp-meta').textContent   = (s.numero||'') + ' Â· ' + fmtFecha(s.created_at) + (s.ubicacion_vivienda ? ' Â· ' + s.ubicacion_vivienda : '');
   document.getElementById('dp-badge').innerHTML    = '<span class="badge ' + est.cls + '">' + est.label + '</span>';
-  document.getElementById('dp-desc').textContent   = s.descripcion || s.desc || '(Sin descripción)';
+  document.getElementById('dp-desc').textContent   = s.descripcion || s.desc || '(Sin descripciÃ³n)';
 
   // Flujo de estados
   document.getElementById('dp-estados').innerHTML = FLUJO_ESTADOS.map(e => {
     const ec = ESTADOS[e] || {};
     const isCurrent = s.estado === e;
     return '<button class="status-btn ' + (isCurrent?'current':'') + '" onclick="cambiarEstado(\'' + e + '\')">' + ec.label + '</button>';
-  }).join('') + '<button class="status-btn" style="border-color:var(--red);color:var(--red);" onclick="cambiarEstado(\'rechazada\')">✗ Rechazada</button>';
+  }).join('') + '<button class="status-btn" style="border-color:var(--red);color:var(--red);" onclick="cambiarEstado(\'rechazada\')">â Rechazada</button>';
 
   // Historial
   await cargarHistorial(id);
@@ -1382,11 +1382,11 @@ async function cargarHistorial(solId) {
 
   const items = [
     ...(hist||[]).map(h => ({ fecha: h.created_at, texto: h.descripcion || 'Cambio de estado' })),
-    ...visitas.map(v => ({ fecha: v.fecha_visita + 'T' + (v.hora_inicio||'00:00:00'), texto: '📅 Visita programada: ' + v.titulo + (v.responsable ? ' · ' + v.responsable : '') })),
+    ...visitas.map(v => ({ fecha: v.fecha_visita + 'T' + (v.hora_inicio||'00:00:00'), texto: 'ð Visita programada: ' + v.titulo + (v.responsable ? ' Â· ' + v.responsable : '') })),
   ].sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
 
   if (items.length === 0) {
-    document.getElementById('dp-historial').innerHTML = '<div style="font-size:13px;color:var(--text3);">Sin historial registrado aún.</div>';
+    document.getElementById('dp-historial').innerHTML = '<div style="font-size:13px;color:var(--text3);">Sin historial registrado aÃºn.</div>';
     return;
   }
 
@@ -1412,7 +1412,7 @@ async function cambiarEstado(nuevoEstado) {
   const idx = ALL_SOLICITUDES.findIndex(s => s.id === CURRENT_SOL.id);
   if (idx >= 0) ALL_SOLICITUDES[idx].estado = nuevoEstado;
 
-  showToast('✓ Estado actualizado: ' + (ESTADOS[nuevoEstado]?.label || nuevoEstado));
+  showToast('â Estado actualizado: ' + (ESTADOS[nuevoEstado]?.label || nuevoEstado));
   // Notificar al cliente
   if (CURRENT_SOL.vivienda_id) {
     const estadoLabel = ESTADOS[nuevoEstado] ? ESTADOS[nuevoEstado].label : nuevoEstado;
@@ -1439,7 +1439,7 @@ async function programarVisita() {
 
   if (!fecha) { showToast('Selecciona una fecha para la visita'); return; }
 
-  const titulo = 'Visita · ' + (CURRENT_SOL.titulo || CURRENT_SOL.title || 'Solicitud');
+  const titulo = 'Visita Â· ' + (CURRENT_SOL.titulo || CURRENT_SOL.title || 'Solicitud');
   const { error } = await sb.from('visitas').insert({
     solicitud_id:  CURRENT_SOL.id,
     vivienda_id:   CURRENT_SOL.vivienda_id,
@@ -1453,17 +1453,17 @@ async function programarVisita() {
 
   if (error) { showToast('Error al programar visita: ' + error.message); return; }
 
-  // Cambiar estado automáticamente a visita_programada
+  // Cambiar estado automÃ¡ticamente a visita_programada
   await cambiarEstado('visita_programada');
   await cargarVisitas();
-  showToast('📅 Visita programada para el ' + fmtFecha(fecha));
+  showToast('ð Visita programada para el ' + fmtFecha(fecha));
   // Notificar al cliente
   if (CURRENT_SOL && CURRENT_SOL.vivienda_id) {
     notificarClienteDesdAdmin(
       CURRENT_SOL.id,
       CURRENT_SOL.vivienda_id,
       'visita_programada',
-      '📅 Visita programada',
+      'ð Visita programada',
       'Se ha agendado una visita para el ' + fmtFecha(fecha) + (resp ? ' con ' + resp : '') + '.'
     );
   }
@@ -1481,7 +1481,7 @@ function closeDetail() {
   CURRENT_SOL = null;
 }
 
-// ── PROYECTOS ──
+// ââ PROYECTOS ââ
 function renderProyectos() {
   const tbody = document.getElementById('proy-tbody');
   if (ALL_PROYECTOS.length === 0) {
@@ -1491,8 +1491,8 @@ function renderProyectos() {
   tbody.innerHTML = ALL_PROYECTOS.map(p => {
     const vivCount = ALL_VIVIENDAS.filter(v => v.proyecto_id === p.id).length;
     return '<tr><td style="font-weight:600;">' + p.nombre + '</td>' +
-      '<td style="color:var(--text3);">' + (p.ciudad||'—') + '</td>' +
-      '<td style="color:var(--text3);">' + (p.fecha_recepcion_dom ? fmtFecha(p.fecha_recepcion_dom) : '—') + '</td>' +
+      '<td style="color:var(--text3);">' + (p.ciudad||'â') + '</td>' +
+      '<td style="color:var(--text3);">' + (p.fecha_recepcion_dom ? fmtFecha(p.fecha_recepcion_dom) : 'â') + '</td>' +
       '<td><span class="badge badge-info">' + vivCount + ' unidades</span></td>' +
       '<td class="td-actions"><button class="btn btn-sm btn-secondary" onclick="editarProyecto(\'' + p.id + '\')">Editar</button></td></tr>';
   }).join('');
@@ -1515,13 +1515,13 @@ async function guardarProyecto() {
   const { error } = await sb.from('proyectos').insert(data);
   if (error) { showToast('Error: ' + error.message); return; }
 
-  showToast('✓ Proyecto guardado');
+  showToast('â Proyecto guardado');
   closeModal('modal-proyecto');
   await cargarProyectos();
   renderProyectos();
 }
 
-// ── VIVIENDAS ──
+// ââ VIVIENDAS ââ
 function renderViviendas() {
   poblarSelectProyecto('f-proy-viv');
   mostrarViviendas();
@@ -1542,10 +1542,10 @@ function mostrarViviendas() {
   }
 
   tbody.innerHTML = lista.map(v =>
-    '<tr><td style="font-weight:600;">' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + (v.piso ? ' · Piso ' + v.piso : '') + '</td>' +
-    '<td style="color:var(--text3);">' + (proyMap[v.proyecto_id]||'—') + '</td>' +
-    '<td style="color:var(--text3);">' + (v.superficie_total||v.superficie_interior||'—') + ' m²</td>' +
-    '<td style="color:var(--text3);">' + (v.fecha_entrega ? fmtFecha(v.fecha_entrega) : '—') + '</td>' +
+    '<tr><td style="font-weight:600;">' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + (v.piso ? ' Â· Piso ' + v.piso : '') + '</td>' +
+    '<td style="color:var(--text3);">' + (proyMap[v.proyecto_id]||'â') + '</td>' +
+    '<td style="color:var(--text3);">' + (v.superficie_total||v.superficie_interior||'â') + ' mÂ²</td>' +
+    '<td style="color:var(--text3);">' + (v.fecha_entrega ? fmtFecha(v.fecha_entrega) : 'â') + '</td>' +
     '<td>' + (cliMap[v.id] ? '<span class="badge badge-approved">' + cliMap[v.id] + '</span>' : '<span class="badge badge-pending">Sin asignar</span>') + '</td>' +
     '<td class="td-actions"><button class="btn btn-sm btn-secondary">Editar</button></td></tr>'
   ).join('');
@@ -1554,7 +1554,7 @@ function mostrarViviendas() {
 async function guardarVivienda() {
   const proyId  = document.getElementById('mv-proyecto').value;
   const numero  = document.getElementById('mv-numero').value.trim();
-  if (!proyId || !numero) { showToast('Proyecto y número son obligatorios'); return; }
+  if (!proyId || !numero) { showToast('Proyecto y nÃºmero son obligatorios'); return; }
 
   const data = {
     proyecto_id:          proyId,
@@ -1569,13 +1569,13 @@ async function guardarVivienda() {
   const { error } = await sb.from('viviendas').insert(data);
   if (error) { showToast('Error: ' + error.message); return; }
 
-  showToast('✓ Vivienda guardada');
+  showToast('â Vivienda guardada');
   closeModal('modal-vivienda');
   await cargarViviendas();
   mostrarViviendas();
 }
 
-// ── CLIENTES ──
+// ââ CLIENTES ââ
 function renderClientes() {
   const tbody = document.getElementById('cli-tbody');
   const vivMap = {};
@@ -1588,9 +1588,9 @@ function renderClientes() {
 
   tbody.innerHTML = ALL_CLIENTES.map(c =>
     '<tr><td style="font-weight:600;">' + c.nombre + ' ' + (c.apellido||'') + '</td>' +
-    '<td style="color:var(--text3);">' + (c.email||'—') + '</td>' +
-    '<td style="color:var(--text3);">' + (c.telefono||'—') + '</td>' +
-    '<td>' + (c.vivienda_id && vivMap[c.vivienda_id] ? '<span class="badge badge-info">' + vivMap[c.vivienda_id] + '</span>' : '<span style="color:var(--text3);">—</span>') + '</td>' +
+    '<td style="color:var(--text3);">' + (c.email||'â') + '</td>' +
+    '<td style="color:var(--text3);">' + (c.telefono||'â') + '</td>' +
+    '<td>' + (c.vivienda_id && vivMap[c.vivienda_id] ? '<span class="badge badge-info">' + vivMap[c.vivienda_id] + '</span>' : '<span style="color:var(--text3);">â</span>') + '</td>' +
     '<td><span class="badge ' + (c.rol === 'admin' ? 'badge-rejected' : c.rol === 'postventa' ? 'badge-progress' : 'badge-approved') + '">' + (c.rol||'cliente') + '</span></td>' +
     '<td class="td-actions"><button class="btn btn-sm btn-secondary">Editar</button></td></tr>'
   ).join('');
@@ -1613,17 +1613,17 @@ async function guardarCliente() {
   const { error } = await sb.from('clientes').insert(data);
   if (error) { showToast('Error: ' + error.message); return; }
 
-  showToast('✓ Cliente guardado');
+  showToast('â Cliente guardado');
   closeModal('modal-cliente');
   await cargarClientes();
   renderClientes();
 }
 
-// ── AGENDA ──
+// ââ AGENDA ââ
 function renderAgenda() {
   const grid = document.getElementById('agenda-grid');
   if (ALL_VISITAS.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-title">Sin visitas programadas</div><div>Programa una visita desde el detalle de una solicitud</div></div>';
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">ð</div><div class="empty-title">Sin visitas programadas</div><div>Programa una visita desde el detalle de una solicitud</div></div>';
     return;
   }
 
@@ -1637,7 +1637,7 @@ function renderAgenda() {
 
   let html = '';
   if (proximas.length > 0) {
-    html += '<div style="grid-column:1/-1;font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Próximas</div>';
+    html += '<div style="grid-column:1/-1;font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">PrÃ³ximas</div>';
     html += proximas.map(v => visitaCard(v, vivMap, false)).join('');
   }
   if (pasadas.length > 0) {
@@ -1652,21 +1652,21 @@ function visitaCard(v, vivMap, pasada) {
   return '<div class="visita-card" style="' + (pasada ? 'opacity:0.6;' : '') + '">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">' +
     '<span class="badge ' + (estCls[v.estado]||'badge-pending') + '">' + v.estado + '</span>' +
-    '<span style="font-size:11px;color:var(--text3);">' + fmtFecha(v.fecha_visita) + (v.hora_inicio ? ' · ' + v.hora_inicio.substring(0,5) : '') + '</span></div>' +
+    '<span style="font-size:11px;color:var(--text3);">' + fmtFecha(v.fecha_visita) + (v.hora_inicio ? ' Â· ' + v.hora_inicio.substring(0,5) : '') + '</span></div>' +
     '<div class="visita-titulo">' + v.titulo + '</div>' +
-    (v.responsable ? '<div class="visita-dir">👷 ' + v.responsable + '</div>' : '') +
-    (v.vivienda_id && vivMap[v.vivienda_id] ? '<div class="visita-dir">🏠 ' + vivMap[v.vivienda_id] + '</div>' : '') +
+    (v.responsable ? '<div class="visita-dir">ð· ' + v.responsable + '</div>' : '') +
+    (v.vivienda_id && vivMap[v.vivienda_id] ? '<div class="visita-dir">ð  ' + vivMap[v.vivienda_id] + '</div>' : '') +
     '</div>';
 }
 
-// ── DOCUMENTOS ──
+// ââ DOCUMENTOS ââ
 function poblarSelectsDoc() {
   const sel = document.getElementById('doc-vivienda');
   const proyMap = {};
   ALL_PROYECTOS.forEach(p => { proyMap[p.id] = p.nombre; });
   sel.innerHTML = '<option value="">Selecciona una vivienda...</option>' +
     ALL_VIVIENDAS.map(v =>
-      '<option value="' + v.id + '">' + (proyMap[v.proyecto_id]||'—') + ' · ' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + '</option>'
+      '<option value="' + v.id + '">' + (proyMap[v.proyecto_id]||'â') + ' Â· ' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + '</option>'
     ).join('');
 }
 
@@ -1675,8 +1675,8 @@ function previewFile(input) {
   if (!file) return;
   const prev = document.getElementById('upload-preview');
   prev.style.display = 'block';
-  prev.textContent = '📎 ' + file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
-  document.getElementById('upload-zone').textContent = '✓ ' + file.name;
+  prev.textContent = 'ð ' + file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
+  document.getElementById('upload-zone').textContent = 'â ' + file.name;
   if (!document.getElementById('doc-nombre').value) {
     document.getElementById('doc-nombre').value = file.name;
   }
@@ -1697,14 +1697,14 @@ async function subirDocumento() {
 
   if (error) { showToast('Error al subir: ' + error.message); return; }
 
-  showToast('✓ Documento subido correctamente');
+  showToast('â Documento subido correctamente');
   document.getElementById('doc-nombre').value = '';
-  document.getElementById('upload-zone').textContent = '📎 Haz clic para seleccionar un archivo PDF';
+  document.getElementById('upload-zone').textContent = 'ð Haz clic para seleccionar un archivo PDF';
   document.getElementById('upload-preview').style.display = 'none';
   document.getElementById('doc-file').value = '';
 }
 
-// ── MODALS / HELPERS ──
+// ââ MODALS / HELPERS ââ
 function openModal(id) {
   // Populate selects inside modals
   if (id === 'modal-vivienda') poblarSelectProyecto('mv-proyecto');
@@ -1713,7 +1713,7 @@ function openModal(id) {
     const proyMap = {};
     ALL_PROYECTOS.forEach(p => { proyMap[p.id] = p.nombre; });
     sel.innerHTML = '<option value="">Sin asignar</option>' +
-      ALL_VIVIENDAS.map(v => '<option value="' + v.id + '">' + (proyMap[v.proyecto_id]||'—') + ' · ' + (v.tipo_unidad||'U') + ' ' + v.numero_unidad + '</option>').join('');
+      ALL_VIVIENDAS.map(v => '<option value="' + v.id + '">' + (proyMap[v.proyecto_id]||'â') + ' Â· ' + (v.tipo_unidad||'U') + ' ' + v.numero_unidad + '</option>').join('');
   }
   document.getElementById(id).classList.add('open');
 }
@@ -1746,8 +1746,8 @@ function abrirDetalleProyecto(proy) {
   document.getElementById('pd-nombre').textContent = proy.nombre;
   document.getElementById('pd-meta').textContent =
     (proy.ciudad || '') +
-    (proy.fecha_recepcion_dom ? ' · DOM: ' + fmtFecha(proy.fecha_recepcion_dom) : '') +
-    (proy.rol_avaluo ? ' · Rol: ' + proy.rol_avaluo : '');
+    (proy.fecha_recepcion_dom ? ' Â· DOM: ' + fmtFecha(proy.fecha_recepcion_dom) : '') +
+    (proy.rol_avaluo ? ' Â· Rol: ' + proy.rol_avaluo : '');
 
   // Stats
   const vivs   = ALL_VIVIENDAS.filter(v => v.proyecto_id === proy.id);
@@ -1775,8 +1775,8 @@ function abrirDetalleProyecto(proy) {
       return '<div style="padding:12px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="filtrarPorVivienda(\'' + v.id + '\')">' +
         '<div style="display:flex;align-items:center;justify-content:space-between;">' +
         '<div>' +
-        '<div style="font-size:13px;font-weight:600;">' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + (v.piso ? ' · Piso ' + v.piso : '') + '</div>' +
-        '<div style="font-size:11px;color:var(--text3);margin-top:2px;">👤 ' + cliente + '</div>' +
+        '<div style="font-size:13px;font-weight:600;">' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + (v.piso ? ' Â· Piso ' + v.piso : '') + '</div>' +
+        '<div style="font-size:11px;color:var(--text3);margin-top:2px;">ð¤ ' + cliente + '</div>' +
         '</div>' +
         '<span class="badge badge-info">' + solsViv.length + ' sol.</span>' +
         '</div></div>';
@@ -1810,16 +1810,16 @@ function renderSolsProyecto(sols) {
     const est = ESTADOS[s.estado] || ESTADOS['enviada'];
     return '<div style="padding:12px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="abrirDetalle(\'' + s.id + '\')">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">' +
-      '<span style="font-size:13px;font-weight:600;">' + (s.titulo||s.title||'Sin título') + '</span>' +
+      '<span style="font-size:13px;font-weight:600;">' + (s.titulo||s.title||'Sin tÃ­tulo') + '</span>' +
       '<span class="badge ' + est.cls + '">' + est.label + '</span>' +
       '</div>' +
-      '<div style="font-size:11px;color:var(--text3);">' + (s.numero||'') + ' · ' + fmtFecha(s.created_at) + '</div>' +
+      '<div style="font-size:11px;color:var(--text3);">' + (s.numero||'') + ' Â· ' + fmtFecha(s.created_at) + '</div>' +
       '</div>';
   }).join('');
 }
 
 function fmtFecha(d) {
-  if (!d) return '—';
+  if (!d) return 'â';
   return new Date(d).toLocaleDateString('es-CL', { day:'numeric', month:'short', year:'numeric' });
 }
 
@@ -1841,9 +1841,9 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
 });
 
-// ═══════════════════════════════════════
+// âââââââââââââââââââââââââââââââââââââââ
 // NOTIFICACIONES ADMIN
-// ═══════════════════════════════════════
+// âââââââââââââââââââââââââââââââââââââââ
 
 let ADM_NOTIF_OPEN = false;
 
@@ -1881,11 +1881,11 @@ async function cargarNotifAdmin() {
       return;
     }
 
-    const iconos = { nueva_solicitud:'📋', cambio_estado:'🔄', visita_programada:'📅', comentario:'💬' };
+    const iconos = { nueva_solicitud:'ð', cambio_estado:'ð', visita_programada:'ð', comentario:'ð¬' };
     lista.innerHTML = '';
     notifs.forEach(n => {
       const fecha = new Date(n.created_at).toLocaleDateString('es-CL',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-      const icon = iconos[n.tipo] || '🔔';
+      const icon = iconos[n.tipo] || 'ð';
       const div = document.createElement('div');
       div.style.cssText = 'padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;background:' + (!n.leida ? 'rgba(79,130,114,0.08)' : 'transparent') + ';';
       div.onclick = function() { admAbrirNotif(n.id, n.solicitud_id || ''); };
@@ -1962,9 +1962,9 @@ async function notificarClienteDesdAdmin(solicitudId, viviendaId, tipo, titulo, 
 setInterval(() => { if (USER) cargarNotifAdmin(); }, 30000);
 
 
-// ═══════════════════════════════════════
-// INVITACIÓN DE CLIENTES
-// ═══════════════════════════════════════
+// âââââââââââââââââââââââââââââââââââââââ
+// INVITACIÃN DE CLIENTES
+// âââââââââââââââââââââââââââââââââââââââ
 
 let INV_ESTADO = 'verificar'; // 'verificar' | 'confirmar'
 let INV_CLIENTE = null;
@@ -1999,7 +1999,7 @@ async function enviarInvitacion() {
     return;
   }
 
-  // PASO 1: Verificar que el email esté registrado y tenga vivienda
+  // PASO 1: Verificar que el email estÃ© registrado y tenga vivienda
   if (INV_ESTADO === 'verificar') {
     btn.textContent = 'Verificando...';
     btn.disabled = true;
@@ -2011,7 +2011,7 @@ async function enviarInvitacion() {
         .single();
 
       if (error || !cliente) {
-        errEl.textContent = '✗ Email no encontrado. Primero registra al cliente con "+ Registrar".';
+        errEl.textContent = 'â Email no encontrado. Primero registra al cliente con "+ Registrar".';
         errEl.style.display = 'block';
         btn.textContent = 'Verificar email';
         btn.disabled = false;
@@ -2019,7 +2019,7 @@ async function enviarInvitacion() {
       }
 
       if (!cliente.vivienda_id) {
-        errEl.textContent = '✗ Este cliente no tiene una vivienda asignada. Edítalo y asígnale una vivienda primero.';
+        errEl.textContent = 'â Este cliente no tiene una vivienda asignada. EdÃ­talo y asÃ­gnale una vivienda primero.';
         errEl.style.display = 'block';
         btn.textContent = 'Verificar email';
         btn.disabled = false;
@@ -2034,15 +2034,15 @@ async function enviarInvitacion() {
       INV_ESTADO = 'confirmar';
 
       // Mostrar info de vivienda
-      const vivNombre = viv ? (viv.tipo_unidad||'Unidad') + ' ' + viv.numero_unidad : '—';
-      const proyNombre = proy ? proy.nombre : '—';
-      document.getElementById('inv-viv-nombre').textContent = '🏠 ' + vivNombre;
-      document.getElementById('inv-viv-proyecto').textContent = '🏘️ ' + proyNombre;
+      const vivNombre = viv ? (viv.tipo_unidad||'Unidad') + ' ' + viv.numero_unidad : 'â';
+      const proyNombre = proy ? proy.nombre : 'â';
+      document.getElementById('inv-viv-nombre').textContent = 'ð  ' + vivNombre;
+      document.getElementById('inv-viv-proyecto').textContent = 'ðï¸ ' + proyNombre;
       document.getElementById('inv-vivienda-info').style.display = 'block';
 
-      okEl.textContent = '✓ Cliente verificado: ' + cliente.nombre + ' ' + (cliente.apellido||'') + '. ¿Enviar invitación?';
+      okEl.textContent = 'â Cliente verificado: ' + cliente.nombre + ' ' + (cliente.apellido||'') + '. Â¿Enviar invitaciÃ³n?';
       okEl.style.display = 'block';
-      btn.textContent = '✉ Enviar link de acceso';
+      btn.textContent = 'â Enviar link de acceso';
       btn.disabled = false;
 
     } catch(e) {
@@ -2070,21 +2070,21 @@ async function enviarInvitacion() {
 
       if (error) throw error;
 
-      okEl.textContent = '✅ Link de acceso enviado a ' + email + '. El cliente tiene 1 hora para usarlo.';
+      okEl.textContent = 'â Link de acceso enviado a ' + email + '. El cliente tiene 1 hora para usarlo.';
       okEl.style.display = 'block';
       errEl.style.display = 'none';
-      btn.textContent = '✓ Enviado';
+      btn.textContent = 'â Enviado';
       btn.disabled = true;
 
-      showToast('✉ Invitación enviada a ' + email);
+      showToast('â InvitaciÃ³n enviada a ' + email);
 
-      // Cerrar modal después de 3 segundos
+      // Cerrar modal despuÃ©s de 3 segundos
       setTimeout(() => closeModal('modal-invitar'), 3000);
 
     } catch(e) {
       errEl.textContent = 'Error al enviar: ' + e.message;
       errEl.style.display = 'block';
-      btn.textContent = '✉ Enviar link de acceso';
+      btn.textContent = 'â Enviar link de acceso';
       btn.disabled = false;
     }
   }
@@ -2095,8 +2095,8 @@ async function enviarInvitacion() {
 <!-- Modal Invitar Cliente -->
 <div class="modal-overlay" id="modal-invitar">
   <div class="modal">
-    <div class="modal-title">✉ Invitar Cliente</div>
-    <div class="modal-sub">El cliente recibirá un link mágico para acceder a su portal sin contraseña. Su email debe estar registrado y asociado a una vivienda.</div>
+    <div class="modal-title">â Invitar Cliente</div>
+    <div class="modal-sub">El cliente recibirÃ¡ un link mÃ¡gico para acceder a su portal sin contraseÃ±a. Su email debe estar registrado y asociado a una vivienda.</div>
     <div id="invitar-err" style="display:none;background:rgba(192,83,58,0.15);color:#C0533A;border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;"></div>
     <div id="invitar-ok" style="display:none;background:rgba(79,130,114,0.15);color:#7DC4AD;border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;"></div>
     <div class="form-group">
@@ -2104,8 +2104,8 @@ async function enviarInvitacion() {
       <input class="form-input" id="inv-email" type="email" placeholder="cliente@email.com">
     </div>
     <div id="inv-vivienda-info" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px;">
-      <div style="font-weight:600;margin-bottom:4px;" id="inv-viv-nombre">—</div>
-      <div style="color:var(--text3);" id="inv-viv-proyecto">—</div>
+      <div style="font-weight:600;margin-bottom:4px;" id="inv-viv-nombre">â</div>
+      <div style="color:var(--text3);" id="inv-viv-proyecto">â</div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('modal-invitar')">Cancelar</button>
