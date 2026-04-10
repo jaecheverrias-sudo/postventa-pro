@@ -5,15 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nidus — Panel Administración</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-:root {
-  --bg: #0F1714;
-  --bg2: #162019;
-  --bg3: #1E2D28;
-  --card: #1A2820;
-  --card2: #213529;
-  --border: #2A3F37;
-  --green: #4F8272;
+const ESTADOS = {
+  enviada:              { label: 'Enviada',              cls: 'badge-pending' },
+  en_revision:          { label: 'En revision',          cls: 'badge-progress' },
+  aprobada:             { label: 'Aprobada',             cls: 'badge-approved' },
+  materiales_comprados: { label: 'Materiales comprados', cls: 'badge-progress' },
+  visita_programada:    { label: 'Visita programada',    cls: 'badge-progress' },
+  en_reparacion:        { label: 'En reparacion',        cls: 'badge-progress' },
+  resuelta:             { label: 'Resuelta',             cls: 'badge-approved' },
+  rechazada:            { label: 'Rechazada',            cls: 'badge-rejected' },
+  cerrada:              { label: 'Cerrada',              cls: 'badge-info' },
+}
   --green2: #5D9E8A;
   --green-light: #7DC4AD;
   --amber: #C9913A;
