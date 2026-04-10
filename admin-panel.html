@@ -1772,7 +1772,7 @@ function abrirDetalleProyecto(proy) {
     vivDiv.innerHTML = vivs.map(v => {
       const solsViv = ALL_SOLICITUDES.filter(s => s.vivienda_id === v.id);
       const cliente = cliMap[v.id] || 'Sin asignar';
-      return '<div style="padding:12px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="filtrarPorVivienda('' + v.id + '')">' +
+      return '<div style="padding:12px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="filtrarPorVivienda(\'' + v.id + '\')">' +
         '<div style="display:flex;align-items:center;justify-content:space-between;">' +
         '<div>' +
         '<div style="font-size:13px;font-weight:600;">' + (v.tipo_unidad||'Unidad') + ' ' + v.numero_unidad + (v.piso ? ' · Piso ' + v.piso : '') + '</div>' +
